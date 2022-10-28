@@ -1,0 +1,43 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'kotlin-kapt'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+compileKotlin {
+    kotlinOptions {
+        allWarningsAsErrors = true
+    }
+}
+
+// Added as suggested in Hilt documentation at https://dagger.dev/hilt/gradle-setup
+kapt {
+    correctErrorTypes true
+}
+
+dependencies {
+
+    implementation "com.github.davidepanidev:kotlin-extensions:$kotlin_extensions_version"
+
+    // Flow
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+
+    // Hilt
+    implementation "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+
+    // Resultat - Kotlin Result with loading state support
+    implementation "fr.haan.resultat:resultat:$resultat_version"
+
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "io.strikt:strikt-core:$strikt_version"
+    testImplementation "io.mockk:mockk:$mockk_version"
+    testImplementation "app.cash.turbine:turbine:$turbine_version" // For Flow testing
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_test_version"
+
+}

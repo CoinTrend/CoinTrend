@@ -1,0 +1,21 @@
+Monitor di criptovalute essenziale, veloce e a codice aperto. Nessuna pubblicità, nessun account, solo criptovalute.
+
+<b>Funzionalità</b>
+・ Market: traccia in tempo reale Trending Coins (le crypto più ricercate nelle ultime 24 ore) e Top Coins (le 100 crypto più capitalizzate sul mercato).
+・ Favourites: tieni traccia a colpo d'occhio delle tue criptovalute preferite aggiungendole alla lista delle preferite.
+・ Search: ricerca oltre 10.000 criptovalute per nome o simbolo.
+
+<b>10.000+ criptovalute in tempo reale</b>
+CoinTrend utilizza il servizio pubblico di CoinGecko (https://www.coingecko.com/en/api) per tracciare oltre 10.000 criptovalute come Bitcoin (BTC), Ethereum (ETH), Bitcoin Cash (BCH), Ethereum Classic (ETC), Binance Coin (BNB), Crypto.com Cronos (CRO), Cardano (ADA), Solana (SOL), Monero (XRM) e molte altre!
+
+<b>Dati di mercato chiari e dettagliati</b>
+Prezzo, guadagno percentuale, grafico dell'andamento, capitalizzazione di mercato, volume di scambio 24h, prezzo maggiore 24h, prezzo inferiore 24h, circolante disponibile, circolante totale, prezzo più alto di sempre (ATH), prezzo più basso di sempre (ATL).
+
+<b>Leggero e veloce</b>
+CoinTrend memorizza localmente i dati scaricati e li aggiorna automaticamente solo quando necessario, minimizzando così il consumo di dati mobili e aumentando la durata della batteria. Puoi sempre aggiornare manualmente i dati in qualsiasi momento trascinando verso il basso le schermate!
+
+<b>100% libero e a codice aperto</b>
+Non fidarti, verifica! CoinTrend è libero al 100% e non include nessuna pubblicità o software traccianti. Il codice è visibile pubblicamente all'indirizzo https://github.com/CoinTrend. Controlla tu stesso e non esitare a contattarci se avessi qualche consiglio!
+
+<b>Progettato per Android</b>
+L'interfaccia utente è stata progettata seguendo le più aggiornate linee guide sul Material Design di Google e utilizzando esclusivamente componenti e animazioni native di Android.
