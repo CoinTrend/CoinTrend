@@ -34,6 +34,7 @@ import com.cointrend.presentation.ui.search.SearchScreen
 import dagger.hilt.android.AndroidEntryPoint
 import dev.olshevski.navigation.reimagined.*
 import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
+import timber.log.Timber
 
 @AndroidEntryPoint
 @OptIn(ExperimentalMaterial3Api::class)
@@ -140,12 +141,24 @@ class MainActivity : ComponentActivity() {
 
                     PlayStoreReviewAlert(
                         onConfirmClick = {
-                            startActivity(
-                                Intent(Intent.ACTION_VIEW).apply {
-                                    data = Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
-                                    setPackage("com.android.vending")
-                                }
-                            )
+                            val playStoreAppUri = Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+
+                            try {
+                                startActivity(
+                                    Intent(Intent.ACTION_VIEW).apply {
+                                        data = playStoreAppUri
+                                        setPackage("com.android.vending")
+                                    }
+                                )
+                            } catch (e: Exception) {
+                                Timber.e("PlayStoreReviewAlert onConfirmClick ERROR: $e")
+
+                                startActivity(
+                                    Intent(Intent.ACTION_VIEW).apply {
+                                        data = playStoreAppUri
+                                    }
+                                )
+                            }
 
                             finish()
                         },
