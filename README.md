@@ -10,7 +10,7 @@
 [![AndroidAPI](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat)](https://www.android.com/)
 [![Kotlin](https://img.shields.io/badge/kotlin-1.7.20-blue.svg?logo=kotlin)](https://kotlinlang.org)
 [![JetpackCompose](https://img.shields.io/badge/Jetpack%20Compose-1.3.0-yellow)](https://developer.android.com/jetpack/compose)
-[![License](https://img.shields.io/github/license/CoinTrend/CoinTrend?color=orange)]()
+[![License](https://img.shields.io/github/license/CoinTrend/CoinTrend?color=orange)](./LICENSE)
 [![Release](https://badgen.net/github/release/CoinTrend/CoinTrend?color=red)](https://github.com/CoinTrend/CoinTrend/releases)
 
 
@@ -88,7 +88,7 @@ The User Interface has been designed by following the latest Google's Material D
 
 ## License
 
-CoinTrend is released under [GPL-3.0 License](./LICENSE). Unless explicitly 
+CoinTrend is released under the [GPL-3.0 License](./LICENSE). Unless explicitly 
 stated otherwise all files in this repository are so licensed.
 
 All projects must properly attribute [the original source](https://github.com/CoinTrend/CoinTrend)
