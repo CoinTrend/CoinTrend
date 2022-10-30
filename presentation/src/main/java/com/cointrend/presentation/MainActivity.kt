@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.cointrend.presentation.customcomposables.sharedelements.SharedElementsRoot
 import com.cointrend.presentation.models.BottomNavigationItem
 import com.cointrend.presentation.models.CoinsListUiState
 import com.cointrend.presentation.models.Screen
@@ -30,7 +31,6 @@ import com.cointrend.presentation.ui.coinslist.CoinsListScreen
 import com.cointrend.presentation.ui.coinslist.CoinsListViewModel
 import com.cointrend.presentation.ui.favouritecoins.FavouriteCoinsScreen
 import com.cointrend.presentation.ui.search.SearchScreen
-import com.mxalbert.sharedelements.SharedElementsRoot
 import dagger.hilt.android.AndroidEntryPoint
 import dev.olshevski.navigation.reimagined.*
 import dev.olshevski.navigation.reimagined.hilt.hiltViewModel

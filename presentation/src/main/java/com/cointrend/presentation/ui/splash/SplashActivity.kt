@@ -7,10 +7,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.lifecycle.lifecycleScope
 import com.cointrend.presentation.MainActivity
+import com.cointrend.presentation.customcomposables.sharedelements.SharedElementsRoot
 import com.cointrend.presentation.models.Screen
 import com.cointrend.presentation.theme.CoinTrendTheme
 import com.cointrend.presentation.ui.coinslist.CoinsListScreen
-import com.mxalbert.sharedelements.SharedElementsRoot
 import dagger.hilt.android.AndroidEntryPoint
 import dev.olshevski.navigation.reimagined.NavBackHandler
 import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
