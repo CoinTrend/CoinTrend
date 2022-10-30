@@ -231,7 +231,7 @@ private fun PlayStoreReviewAlert(
         title = { Text(text = "What would you like to see in the next update?") },
         text = {
             Text(
-                text = "Let us know by leaving a rate and a review on Google Play Store. Your feedback counts :)",
+                text = "Let us know by leaving a rate and a review on Google Play Store.",
                 color = StocksDarkPrimaryText
             )
         },
