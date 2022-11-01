@@ -81,9 +81,11 @@ dependencies {
 
     // Compose
     implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.ui:ui-util:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation "androidx.compose.foundation:foundation:$compose_version"
     implementation 'androidx.compose.material3:material3:1.0.0'
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_ktx_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_ktx_version"
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
@@ -101,8 +103,6 @@ dependencies {
 
     // Resultat - Kotlin Result with loading state support
     implementation "fr.haan.resultat:resultat:$resultat_version"
-
-    implementation "com.mxalbert.sharedelements:shared-elements:0.1.0-SNAPSHOT"
 
     // Hilt
     implementation "com.google.dagger:hilt-android:$dagger_version"

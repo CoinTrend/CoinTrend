@@ -13,11 +13,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cointrend.presentation.customcomposables.sharedelements.SharedElement
+import com.cointrend.presentation.customcomposables.sharedelements.SharedElementsRoot
 import com.cointrend.presentation.models.CoinUiItem
 import com.cointrend.presentation.theme.CoinTrendTheme
 import com.cointrend.presentation.theme.StocksDarkPrimaryText
-import com.mxalbert.sharedelements.SharedElement
-import com.mxalbert.sharedelements.SharedElementsRoot
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber

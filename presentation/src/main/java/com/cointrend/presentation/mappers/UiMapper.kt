@@ -12,6 +12,7 @@ import com.cointrend.domain.models.Coin
 import com.cointrend.domain.models.CoinMarketData
 import com.cointrend.domain.models.CoinWithMarketData
 import com.cointrend.domain.models.Currency
+import com.cointrend.presentation.BuildConfig
 import com.cointrend.presentation.di.DateAndTimeFormatter
 import com.cointrend.presentation.di.DateOnlyFormatter
 import com.cointrend.presentation.di.TimeOnlyFormatter
@@ -210,11 +211,19 @@ class UiMapper @Inject constructor(
                 when(error.code()) {
                     429, 503 -> "The CoinGecko service is temporarily unavailable [HTTP ${error.code()}]. Please try again later."
                     in 500..599 -> "The CoinGecko server is not responding [HTTP ${error.code()}]. Please try again later."
-                    else -> error.toString()
+                    else -> if (BuildConfig.DEBUG) {
+                        error.toString()
+                    } else {
+                        "There has been an error while retrieving data [HTTP ${error.code()}]. Please try again later."
+                    }
                 }
             }
 
-            else -> error.toString()
+            else -> if (BuildConfig.DEBUG) {
+                error.toString()
+            } else {
+                "There has been an error while retrieving data. Please try again later."
+            }
         }
     }
 

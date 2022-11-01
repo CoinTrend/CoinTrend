@@ -28,11 +28,11 @@ import com.cointrend.presentation.commoncomposables.SectionTitle
 import com.cointrend.presentation.customcomposables.LineChart
 import com.cointrend.presentation.customcomposables.SegmentText
 import com.cointrend.presentation.customcomposables.SegmentedControl
+import com.cointrend.presentation.customcomposables.sharedelements.SharedElement
 import com.cointrend.presentation.models.*
 import com.cointrend.presentation.theme.StocksDarkBackgroundTranslucent
 import com.cointrend.presentation.theme.StocksDarkPrimaryText
 import com.cointrend.presentation.theme.StocksDarkSecondaryText
-import com.mxalbert.sharedelements.SharedElement
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
 import dev.olshevski.navigation.reimagined.pop

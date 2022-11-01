@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.cointrend.presentation.customcomposables.sharedelements.SharedElementsRoot
 import com.cointrend.presentation.models.BottomNavigationItem
 import com.cointrend.presentation.models.CoinsListUiState
 import com.cointrend.presentation.models.Screen
@@ -30,10 +31,10 @@ import com.cointrend.presentation.ui.coinslist.CoinsListScreen
 import com.cointrend.presentation.ui.coinslist.CoinsListViewModel
 import com.cointrend.presentation.ui.favouritecoins.FavouriteCoinsScreen
 import com.cointrend.presentation.ui.search.SearchScreen
-import com.mxalbert.sharedelements.SharedElementsRoot
 import dagger.hilt.android.AndroidEntryPoint
 import dev.olshevski.navigation.reimagined.*
 import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
+import timber.log.Timber
 
 @AndroidEntryPoint
 @OptIn(ExperimentalMaterial3Api::class)
@@ -140,12 +141,24 @@ class MainActivity : ComponentActivity() {
 
                     PlayStoreReviewAlert(
                         onConfirmClick = {
-                            startActivity(
-                                Intent(Intent.ACTION_VIEW).apply {
-                                    data = Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
-                                    setPackage("com.android.vending")
-                                }
-                            )
+                            val playStoreAppUri = Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+
+                            try {
+                                startActivity(
+                                    Intent(Intent.ACTION_VIEW).apply {
+                                        data = playStoreAppUri
+                                        setPackage("com.android.vending")
+                                    }
+                                )
+                            } catch (e: Exception) {
+                                Timber.e("PlayStoreReviewAlert onConfirmClick ERROR: $e")
+
+                                startActivity(
+                                    Intent(Intent.ACTION_VIEW).apply {
+                                        data = playStoreAppUri
+                                    }
+                                )
+                            }
 
                             finish()
                         },
@@ -218,7 +231,7 @@ private fun PlayStoreReviewAlert(
         title = { Text(text = "What would you like to see in the next update?") },
         text = {
             Text(
-                text = "Let us know by leaving a rate and a review on Google Play Store. Your feedback counts :)",
+                text = "Let us know by leaving a rate and a review on Google Play Store.",
                 color = StocksDarkPrimaryText
             )
         },

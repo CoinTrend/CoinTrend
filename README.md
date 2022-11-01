@@ -10,8 +10,8 @@
 [![AndroidAPI](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat)](https://www.android.com/)
 [![Kotlin](https://img.shields.io/badge/kotlin-1.7.20-blue.svg?logo=kotlin)](https://kotlinlang.org)
 [![JetpackCompose](https://img.shields.io/badge/Jetpack%20Compose-1.3.0-yellow)](https://developer.android.com/jetpack/compose)
-[![License](https://img.shields.io/github/license/CoinTrend/CoinTrend?color=orange)]()
-<!--[![Release](https://badgen.net/github/release/CoinTrend/CoinTrend?color=red)](https://github.com/CoinTrend/CoinTrend/releases)-->
+[![License](https://img.shields.io/github/license/CoinTrend/CoinTrend?color=orange)](./LICENSE)
+[![Release](https://badgen.net/github/release/CoinTrend/CoinTrend?color=red)](https://github.com/CoinTrend/CoinTrend/releases)
 
 
 <a 
@@ -25,7 +25,7 @@ src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web
  
  ----
  
-Lightweight and open-source cryptocurrencies market monitor for Android 📱📈 No Ads, no trackers, just coins 💎
+Lightweight, fast and open-source cryptocurrencies market monitor for Android 📱📈 No Ads, no trackers, just coins 💎
 
 ## Features
 
@@ -59,8 +59,6 @@ The User Interface has been designed by following the latest Google's Material D
 
 - **Material Design 3** 💎
 
-- **Hilt Dependency Injection** 🗡
-
 - **Multimodule Clean Architecture** 🏛 as [davidepanidev](https://github.com/davidepanidev)'s [Clean Architecture Compose Concept](https://github.com/davidepanidev/android-multimodule-architecture-concepts/tree/clean-architecture-compose-concept) which consists of 4 separate modules:
   -  _app_: Android module that contains the Android Application component and all the framework specific configurations. It has visibility over all the other modules and defines the global dependency injection configurations.
   -  _presentation_: Android module **MVVM**-based. It contains the Android UI framework components (Activities, Composables, ViewModels...) and the related resources (e.g. images, strings...). This module just observes data coming from the undelying modules through Kotlin Flows and displays it. 
@@ -89,6 +87,12 @@ The User Interface has been designed by following the latest Google's Material D
 
 
 ## License
+
+CoinTrend is released under the [GPL-3.0 License](./LICENSE). Unless explicitly 
+stated otherwise all files in this repository are so licensed.
+
+All projects must properly attribute [the original source](https://github.com/CoinTrend/CoinTrend)
+and must include an unmodified copy of the license text below in all forks.
 
 ```
 CoinTrend: lightweight, fast and open-source cryptocurrencies monitor

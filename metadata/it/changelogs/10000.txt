@@ -1,0 +1,4 @@
+Nuove funzionalità:
+- Market: traccia in tempo reale le Trending Coins (le crypto più ricercate nelle ultime 24 ore) e le Top Coins (le 100 crypto più capitalizzate sul mercato).
+- Favourites: tieni traccia a colpo d'occhio delle tue criptovalute preferite aggiungendole alla lista delle preferite.
+- Search: ricerca oltre 10.000 criptovalute per nome o simbolo.
