@@ -1,6 +1,6 @@
 <div align="center">
 
-<p><img src="https://github.com/CoinTrend/.github/blob/main/profile/images/logo.png" width="200"></p>
+<p><img src="https://github.com/CoinTrend/CoinTrend/blob/develop/metadata/en-US/images/icon.png" width="200"></p>
  
 # CoinTrend
 
@@ -14,11 +14,15 @@
 [![Release](https://badgen.net/github/release/CoinTrend/CoinTrend?color=red)](https://github.com/CoinTrend/CoinTrend/releases)
 
 
-<a 
-href='https://play.google.com/store/apps/details?id=com.cointrend&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img
- alt='Get it on Google Play' 
-src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'
- width=250/></a>
+<p align="center"> 
+  <a href='https://play.google.com/store/apps/details?id=com.cointrend&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+    <img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' height=75/>
+  </a>
+
+  <a href='https://f-droid.org/packages/com.cointrend/'>
+    <img alt='Get it on F-Droid' src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="75"/>
+  </a>
+</p>
  
 
 </div>
@@ -36,10 +40,10 @@ Lightweight, fast and open-source cryptocurrencies market monitor for Android ðŸ
 <br>
 
 <p float="left">
-  <img src="https://github.com/CoinTrend/.github/blob/main/profile/images/screen_1.jpg" width="23%" />
-  <img src="https://github.com/CoinTrend/.github/blob/main/profile/images/screen_2.jpg" width="23%" />
-  <img src="https://github.com/CoinTrend/.github/blob/main/profile/images/screen_3.jpg" width="23%" />
-  <img src="https://github.com/CoinTrend/.github/blob/main/profile/images/screen_4.jpg" width="23%" />
+  <img src="https://github.com/CoinTrend/CoinTrend/blob/develop/metadata/en-US/images/phoneScreenshots/1.jpg" width="23%" />
+  <img src="https://github.com/CoinTrend/CoinTrend/blob/develop/metadata/en-US/images/phoneScreenshots/2.jpg" width="23%" />
+  <img src="https://github.com/CoinTrend/CoinTrend/blob/develop/metadata/en-US/images/phoneScreenshots/3.jpg" width="23%" />
+  <img src="https://github.com/CoinTrend/CoinTrend/blob/develop/metadata/en-US/images/phoneScreenshots/4.jpg" width="23%" />
 </p>
 
 
