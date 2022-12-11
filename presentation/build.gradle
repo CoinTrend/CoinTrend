@@ -92,7 +92,9 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.6.0'
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
     implementation "dev.olshevski.navigation:reimagined-hilt:1.1.1"
-    implementation "com.github.bumptech.glide:compose:1.0.0-alpha.1"
+    implementation("com.github.bumptech.glide:compose:1.0.0-alpha.1") {
+        exclude group: "androidx.test"
+    }
 
     implementation "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
 
