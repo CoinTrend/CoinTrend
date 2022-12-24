@@ -403,7 +403,8 @@ fun Header(coinDetailMainUiData: CoinUiItem) {
         SharedElement(key = coinDetailMainUiData.imageUrl, screenKey = COIN_DETAIL_SCREEN_KEY) {
             CoinIcon(
                 imageUrl = coinDetailMainUiData.imageUrl,
-                size = 50.dp
+                size = 50.dp,
+                shape = MaterialTheme.shapes.large
             )
         }
 
