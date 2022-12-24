@@ -1,6 +1,6 @@
 package com.cointrend.domain.models
 
-const val NUM_TOP_COINS_TO_SHOW = 100
+const val NUM_TOP_COINS_TO_SHOW = 250
 
 const val TOP_COINS_MINUTES_REFRESH_PERIOD = 40
 const val TRENDING_COINS_MINUTES_REFRESH_PERIOD = 40

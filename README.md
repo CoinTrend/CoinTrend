@@ -33,7 +33,7 @@ Lightweight, fast and open-source cryptocurrencies market monitor for Android ðŸ
 
 ## Features
 
-- **Market**: real-time updates of the Trending Coins (the most searched coins in the last 24h) and the Top Coins (the top 100 cryptocurrencies by market cap).
+- **Market**: real-time updates of the Trending Coins (the most searched coins in the last 24h) and the Top Coins (the top 250 cryptocurrencies by market cap).
 - **Favourites**: track your favourite coins at a glance by adding them to the favourite list.
 - **Search**: search over 10.000 coins by name or symbol.
 
