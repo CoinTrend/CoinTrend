@@ -1,8 +1,6 @@
 package com.cointrend.presentation
 
 import android.animation.ObjectAnimator
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -31,10 +29,10 @@ import com.cointrend.presentation.ui.coinslist.CoinsListScreen
 import com.cointrend.presentation.ui.coinslist.CoinsListViewModel
 import com.cointrend.presentation.ui.favouritecoins.FavouriteCoinsScreen
 import com.cointrend.presentation.ui.search.SearchScreen
+import com.github.davidepanidev.androidextensions.views.openAppInPlayStore
 import dagger.hilt.android.AndroidEntryPoint
 import dev.olshevski.navigation.reimagined.*
 import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
-import timber.log.Timber
 
 @AndroidEntryPoint
 @OptIn(ExperimentalMaterial3Api::class)
@@ -141,25 +139,7 @@ class MainActivity : ComponentActivity() {
 
                     PlayStoreReviewAlert(
                         onConfirmClick = {
-                            val playStoreAppUri = Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
-
-                            try {
-                                startActivity(
-                                    Intent(Intent.ACTION_VIEW).apply {
-                                        data = playStoreAppUri
-                                        setPackage("com.android.vending")
-                                    }
-                                )
-                            } catch (e: Exception) {
-                                Timber.e("PlayStoreReviewAlert onConfirmClick ERROR: $e")
-
-                                startActivity(
-                                    Intent(Intent.ACTION_VIEW).apply {
-                                        data = playStoreAppUri
-                                    }
-                                )
-                            }
-
+                            openAppInPlayStore(packageName = packageName)
                             finish()
                         },
                         onDismissClick = {
