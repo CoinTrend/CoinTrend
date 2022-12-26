@@ -27,6 +27,11 @@ fun LineChart(
 ) {
     Timber.d("LineChart recomposition")
 
+    if (data.isEmpty()) {
+        Timber.w("LineChart invoked with empty data list.")
+        return
+    }
+
     val spacing = 0f
     val transparentGraphColor = remember(key1 = graphColor) {
         graphColor.copy(alpha = 0.5f)
