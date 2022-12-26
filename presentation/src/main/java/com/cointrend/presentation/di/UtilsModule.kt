@@ -56,6 +56,7 @@ object UtilsModule {
     @Singleton
     fun provideCurrencyFormatter(): CurrencyFormatter {
         return LocalizedCurrencyFormatter(
+            currency = Currency.getInstance(Locale.US),
             minimumFractionDigits = 2,
             maximumFractionDigits = 6
         )
