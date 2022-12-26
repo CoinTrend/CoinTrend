@@ -1,0 +1,2 @@
+Funzionalità aggiornate:
+- Market: il numero di Top Coins mostrate è stato incrementato da 100 a 250.
