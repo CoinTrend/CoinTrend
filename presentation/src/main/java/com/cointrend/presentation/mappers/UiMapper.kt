@@ -79,14 +79,9 @@ class UiMapper @Inject constructor(
     }
 
     fun mapTopCoinUiData(topCoinData: TopCoinsData): TopCoinUiData {
-        // The last update date presented is the most recent one to show the most
-        // recent update date to the user, differently from the lastUpdate
-        // considered at domain layer which is the least recent one.
-        val lastUpdate = topCoinData.topCoins.maxOfOrNull { it.marketData.lastUpdate } ?: LocalDateTime.now()
-
         return TopCoinUiData(
             topCoins = mapCoinWithMarketDataUiItemsList(topCoinData.topCoins),
-            lastUpdate = with(lastUpdate) {
+            lastUpdate = with(topCoinData.lastUpdate) {
                 if (isToday()) {
                     toFormattedString(timeOnlyFormatter)
                 } else {
