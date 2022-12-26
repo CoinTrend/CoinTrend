@@ -56,9 +56,9 @@ class TopCoinsRepositoryImpl @Inject constructor(
         }
     }
 
-    // Gets the least recent last update date among the coins
+    // Gets the most recent last update date among the coins
     private fun getLastUpdateDate(coinsList: List<CoinWithMarketData>): LocalDateTime {
-        return coinsList.minOf { it.marketData.lastUpdate }
+        return coinsList.maxOf { it.marketData.lastUpdate }
     }
 
     private fun sortCoins(coinsList: List<CoinWithMarketData>, ordering: Ordering): List<CoinWithMarketData> {
