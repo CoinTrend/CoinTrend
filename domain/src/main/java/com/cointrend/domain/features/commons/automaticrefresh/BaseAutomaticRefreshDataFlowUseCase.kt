@@ -60,7 +60,7 @@ abstract class BaseAutomaticRefreshDataFlowUseCase<OutputData : BaseDataWithLast
             if (shouldRefresh(lastUpdateDate = storedData.lastUpdate)) {
                 emitAll(refreshData(inputParams))
             }
-        }.distinctUntilChanged().conflate()
+        }.distinctUntilChanged()
     }
 
     private fun shouldRefresh(lastUpdateDate: LocalDateTime): Boolean {
