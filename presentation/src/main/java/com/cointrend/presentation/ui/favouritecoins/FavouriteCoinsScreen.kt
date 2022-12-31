@@ -1,19 +1,17 @@
 package com.cointrend.presentation.ui.favouritecoins
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.cointrend.presentation.R
 import com.cointrend.presentation.commoncomposables.CoinWithMarketDataItem
 import com.cointrend.presentation.models.COINS_LIST_SCREEN_KEY
 import com.cointrend.presentation.models.CoinUiItem
@@ -25,7 +23,10 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
 import dev.olshevski.navigation.reimagined.navigate
-import kotlinx.coroutines.launch
+import org.burnoutcrew.reorderable.ReorderableItem
+import org.burnoutcrew.reorderable.detectReorderAfterLongPress
+import org.burnoutcrew.reorderable.rememberReorderableLazyListState
+import org.burnoutcrew.reorderable.reorderable
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,14 +35,6 @@ fun FavouriteCoinsScreen(
     navController: NavController<Screen>,
     viewModel: FavouriteCoinsViewModel = hiltViewModel()
 ) {
-
-    val coinsListState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
-    val isButtonVisible = remember {
-        derivedStateOf {
-            coinsListState.firstVisibleItemIndex >= 7
-        }
-    }
 
     val swipeRefreshState = remember {
         derivedStateOf {
@@ -65,6 +58,16 @@ fun FavouriteCoinsScreen(
         )
     }
 
+    val listState = rememberReorderableLazyListState(
+        onMove = { from, to ->
+            viewModel.onCoinPositionReordered(
+                coinId = (from.key as String),
+                fromIndex = from.index,
+                toIndex = to.index
+            )
+        }
+    )
+
 
     Scaffold(
         modifier = Modifier,
@@ -78,8 +81,7 @@ fun FavouriteCoinsScreen(
                         lastUpdateDate = viewModel.state.lastUpdateDate,
                         isRefreshing = automaticRefreshState.value
                     )
-                },
-                //scrollBehavior = scrollBehavior,
+                }
             )
         }
     ) { innerPadding ->
@@ -92,67 +94,48 @@ fun FavouriteCoinsScreen(
         ) {
 
             LazyColumn(
-                state = coinsListState,
+                modifier = Modifier
+                    .reorderable(listState)
+                    .detectReorderAfterLongPress(listState)
+                    .fillMaxHeight(),
+                state = listState.listState,
                 contentPadding = innerPadding,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
 
                 items(viewModel.state.favouriteCoinsList, key = { it.id }) { item ->
-                    CoinWithMarketDataItem(
-                        modifier = Modifier.padding(horizontal = MainHorizontalPadding),
-                        item = { item },
-                        sharedElementScreenKey = { COINS_LIST_SCREEN_KEY },
-                        onCoinItemClick = {
-                            goToCoinDetail(
-                                with(item) {
-                                    CoinUiItem(
-                                        id = id,
-                                        name = name,
-                                        symbol = symbol,
-                                        imageUrl = imageUrl,
-                                        marketCapRank = marketCapRank,
-                                    )
-                                }
-                            )
-                        }
-                    )
-                }
 
-                item { 
-                    Spacer(modifier = Modifier.size(32.dp))
-                }
-                
-            }
+                    ReorderableItem(listState, key = item.id) { isDragging ->
+                        val elevation = animateDpAsState(if (isDragging) 32.dp else 0.dp)
+                        val padding =
+                            animateDpAsState(if (isDragging) 16.dp else MainHorizontalPadding)
 
-        }
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            contentAlignment = Alignment.TopCenter
-        ) {
-            AnimatedVisibility(
-                visible = isButtonVisible.value,
-                //enter = fadeIn(),
-                //exit = fadeOut()
-            ) {
-                FloatingActionButton(
-                    onClick = {
-                        coroutineScope.launch {
-                            coinsListState.animateScrollToItem(0)
-                        }
-                    },
-                    modifier = Modifier.padding(8.dp)
-                ) {
-                    Icon(painterResource(id = R.drawable.ic_double_up_arrow), contentDescription = null, tint = MaterialTheme.colorScheme.onBackground)
-                    //Text(text = "Back to top", color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.padding(horizontal = 16.dp))
+                        CoinWithMarketDataItem(
+                            modifier = Modifier
+                                .padding(horizontal = padding.value)
+                                .shadow(elevation = elevation.value),
+                            item = { item },
+                            sharedElementScreenKey = { COINS_LIST_SCREEN_KEY },
+                            onCoinItemClick = {
+                                goToCoinDetail(
+                                    with(item) {
+                                        CoinUiItem(
+                                            id = id,
+                                            name = name,
+                                            symbol = symbol,
+                                            imageUrl = imageUrl,
+                                            marketCapRank = marketCapRank,
+                                        )
+                                    }
+                                )
+                            }
+                        )
+                    }
                 }
             }
-
         }
 
-        when(val state = viewModel.state.state) {
+        when (val state = viewModel.state.state) {
             is CoinsListUiState.Error -> {
                 LaunchedEffect(key1 = snackbarHostState) {
 

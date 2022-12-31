@@ -103,6 +103,9 @@ dependencies {
     implementation "com.google.accompanist:accompanist-placeholder-material:$accompanist_version"
     //implementation "com.google.accompanist:accompanist-navigation-material:$accompanist_version"
 
+    // Reorderable LazyColumn used to reorder Favourite Coins
+    implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
+
     // Resultat - Kotlin Result with loading state support
     implementation "fr.haan.resultat:resultat:$resultat_version"
 

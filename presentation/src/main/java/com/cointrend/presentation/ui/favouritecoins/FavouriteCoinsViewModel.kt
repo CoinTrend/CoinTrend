@@ -14,10 +14,12 @@ import com.cointrend.presentation.models.FavouriteCoinsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.haan.resultat.*
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -126,6 +128,20 @@ class FavouriteCoinsViewModel @Inject constructor(
 
     fun onSwipeRefresh() {
         refreshFavouriteCoins()
+    }
+
+    fun onCoinPositionReordered(coinId: String, fromIndex: Int, toIndex: Int) {
+        Timber.d("onCoinPositionReordered -> coinId: $coinId, fromIndex: $fromIndex, toIndex: $toIndex")
+
+        //TODO: move logic to use cases and repository to modify actual the data source order
+        val list = state.favouriteCoinsList.toMutableList()
+
+        val coin = list.indexOfFirst { it.id == coinId }
+        list.add(index = toIndex, list.removeAt(coin))
+
+        state = state.copy(
+            favouriteCoinsList = list.toImmutableList()
+        )
     }
 
 }
