@@ -15,6 +15,8 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import strikt.api.expectThat
+import strikt.assertions.isA
+import strikt.assertions.isFailure
 import strikt.assertions.isSuccess
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -73,6 +75,72 @@ class FavouriteCoinsRepositoryImplTest : BaseCoroutineTestWithTestDispatcherProv
                 )
             )
         }
+    }
+
+    @Test
+    fun `reorderFavouriteCoin reorder coin in the same position correcly and insert them back into the localSource`() = runTest {
+        coEvery { localDataSource.getAllCoinsFlow() } returns flow {
+            emit(getCoinsWithMarketDataList())
+        }
+
+        coEvery { localDataSource.insertCoins(any()) } just runs
+
+
+        val result = cut.reorderFavouriteCoin(
+            coinId = "btc",
+            toIndex = 0
+        )
+
+        expectThat(result).isSuccess()
+        coVerify {
+            localDataSource.insertCoins(
+                coins = listOf(
+                    expectedCoinWithMarketDataBtc.toCoin(),
+                    expectedCoinWithMarketDataEth.toCoin(),
+                    expectedCoinWithMarketDataUsdc.toCoin(),
+                    expectedCoinWithMarketDataUsdt.toCoin(),
+                    expectedCoinWithMarketDataSol.toCoin()
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `reorderFavouriteCoin called with unknown coin, catches the Exception and returns Failure and does not modify the localSource`() = runTest {
+        coEvery { localDataSource.getAllCoinsFlow() } returns flow {
+            emit(getCoinsWithMarketDataList())
+        }
+
+
+        val result = cut.reorderFavouriteCoin(
+            coinId = "ust",
+            toIndex = 0
+        )
+
+        expectThat(result).isFailure().and {
+            this.isA<IndexOutOfBoundsException>()
+        }
+
+        coVerify(exactly = 0) { localDataSource.insertCoins(any()) }
+    }
+
+    @Test
+    fun `reorderFavouriteCoin called with out of bound index, catches the Exception and returns Failure and does not modify the localSource`() = runTest {
+        coEvery { localDataSource.getAllCoinsFlow() } returns flow {
+            emit(getCoinsWithMarketDataList())
+        }
+
+
+        val result = cut.reorderFavouriteCoin(
+            coinId = "btc",
+            toIndex = 10
+        )
+
+        expectThat(result).isFailure().and {
+            this.isA<IndexOutOfBoundsException>()
+        }
+
+        coVerify(exactly = 0) { localDataSource.insertCoins(any()) }
     }
 
 }
