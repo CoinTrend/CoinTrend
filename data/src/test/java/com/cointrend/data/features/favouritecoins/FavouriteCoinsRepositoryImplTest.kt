@@ -2,13 +2,20 @@ package com.cointrend.data.features.favouritecoins
 
 import com.cointrend.data.features.marketdata.CoinMarketDataLocalDataSource
 import com.cointrend.data.features.marketdata.CoinMarketDataRemoteDataSource
+import com.cointrend.data.features.mocks.*
+import com.cointrend.domain.models.toCoin
 import com.github.davidepanidev.kotlinextensions.utils.test.BaseCoroutineTestWithTestDispatcherProvider
-import io.mockk.MockKAnnotations
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Test
+import strikt.api.expectThat
+import strikt.assertions.isSuccess
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class FavouriteCoinsRepositoryImplTest : BaseCoroutineTestWithTestDispatcherProvider(
@@ -38,4 +45,34 @@ class FavouriteCoinsRepositoryImplTest : BaseCoroutineTestWithTestDispatcherProv
             dispatchers = testDispatcherProvider
         )
     }
+
+
+    @Test
+    fun `reorderFavouriteCoin reorder coins correcly and insert them back into the localSource`() = runTest {
+        coEvery { localDataSource.getAllCoinsFlow() } returns flow {
+            emit(getCoinsWithMarketDataList())
+        }
+
+        coEvery { localDataSource.insertCoins(any()) } just runs
+
+
+        val result = cut.reorderFavouriteCoin(
+            coinId = "usdc",
+            toIndex = 0
+        )
+
+        expectThat(result).isSuccess()
+        coVerify {
+            localDataSource.insertCoins(
+                coins = listOf(
+                    expectedCoinWithMarketDataUsdc.toCoin(),
+                    expectedCoinWithMarketDataBtc.toCoin(),
+                    expectedCoinWithMarketDataEth.toCoin(),
+                    expectedCoinWithMarketDataUsdt.toCoin(),
+                    expectedCoinWithMarketDataSol.toCoin()
+                )
+            )
+        }
+    }
+
 }

@@ -1,8 +1,8 @@
 package com.cointrend.data.features.topcoins
 
 import app.cash.turbine.test
-import com.cointrend.data.features.topcoins.mocks.expectedCoinWithMarketData
-import com.cointrend.data.features.topcoins.mocks.expectedException
+import com.cointrend.data.features.mocks.expectedCoinWithMarketData
+import com.cointrend.data.features.mocks.expectedException
 import com.cointrend.domain.exceptions.EmptyDatabaseException
 import com.cointrend.domain.features.topcoins.models.TopCoinsData
 import com.cointrend.domain.features.topcoins.models.TopCoinsRefreshParams
