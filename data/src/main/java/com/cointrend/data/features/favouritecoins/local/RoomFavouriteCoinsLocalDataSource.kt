@@ -41,6 +41,18 @@ class RoomFavouriteCoinsLocalDataSource @Inject constructor(
         }
     }
 
+    override suspend fun insertCoins(coins: List<Coin>) {
+        val mappedCoins = coins.map {
+            mapper.mapFavouriteCoinEntity(it)
+        }
+
+        withContext(dispatchers.io) {
+            dao.insertCoins(
+                coins = mappedCoins
+            )
+        }
+    }
+
     override suspend fun deleteCoin(coinId: String) {
         withContext(dispatchers.io) {
             dao.deleteCoin(coinId = coinId)

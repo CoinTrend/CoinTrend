@@ -73,3 +73,15 @@ data class CoinWithMarketData(
     image = image,
     marketData = marketData
 )
+
+fun CoinWithMarketData.toCoin(): Coin {
+    return with(this) {
+        Coin(
+            id = id,
+            name = name,
+            symbol = symbol,
+            image = image,
+            rank = rank
+        )
+    }
+}

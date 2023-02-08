@@ -8,6 +8,7 @@ import com.cointrend.domain.features.favouritecoins.models.FavouriteCoinsData
 import com.cointrend.domain.features.favouritecoins.models.FavouriteCoinsRefreshParams
 import com.cointrend.domain.models.Coin
 import com.cointrend.domain.models.CoinWithMarketData
+import com.cointrend.domain.models.toCoin
 import com.github.davidepanidev.kotlinextensions.utils.dispatchers.DispatcherProvider
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
@@ -85,6 +86,22 @@ class FavouriteCoinsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun reorderFavouriteCoin(
+        coinId: String,
+        toIndex: Int
+    ): Result<Unit> {
+        return Result.runCatching {
+            val coins = localSource.getAllCoinsFlow().first().map {
+                it.toCoin()
+            }.toMutableList()
+
+            val coinIndex = coins.indexOfFirst { it.id == coinId }
+            coins.add(index = toIndex, coins.removeAt(coinIndex))
+
+            localSource.insertCoins(coins = coins.toList())
+        }
+    }
+
     // Gets the least recent last update date among the coins
     private fun getLastUpdateDate(coinsList: List<CoinWithMarketData>): LocalDateTime {
         return coinsList.minOf { it.marketData.lastUpdate }
@@ -97,6 +114,7 @@ interface FavouriteCoinsLocalDataSource {
     fun getAllCoinsFlow(): Flow<List<CoinWithMarketData>>
     suspend fun getFavouriteCoinsIds(): List<String>
     suspend fun insertCoin(coin: Coin)
+    suspend fun insertCoins(coins: List<Coin>)
     suspend fun deleteCoin(coinId: String)
     suspend fun deleteAllCoins()
 

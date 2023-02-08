@@ -14,5 +14,6 @@ interface FavouriteCoinsRepository :
     suspend fun addFavouriteCoin(coin: Coin): Result<Unit>
     suspend fun removeFavouriteCoin(coinId: String): Result<Unit>
     suspend fun getFavouriteCoinsIds(): Result<List<String>>
+    suspend fun reorderFavouriteCoin(coinId: String, toIndex: Int): Result<Unit>
 
 }

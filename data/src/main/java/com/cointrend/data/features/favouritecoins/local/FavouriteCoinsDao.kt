@@ -19,6 +19,9 @@ abstract class FavouriteCoinsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertCoin(coin: FavouriteCoinEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun insertCoins(coins: List<FavouriteCoinEntity>)
+
     @Query("DELETE FROM favourite_coins WHERE id = :coinId")
     abstract suspend fun deleteCoin(coinId: String)
 
