@@ -2,6 +2,7 @@ package com.cointrend.domain.features.topcoins
 
 import app.cash.turbine.test
 import com.cointrend.domain.features.topcoins.mocks.*
+import com.cointrend.domain.mocks.expectedException
 import com.github.davidepanidev.kotlinextensions.utils.test.BaseCoroutineTestWithTestDispatcherProvider
 import fr.haan.resultat.Resultat
 import io.mockk.MockKAnnotations

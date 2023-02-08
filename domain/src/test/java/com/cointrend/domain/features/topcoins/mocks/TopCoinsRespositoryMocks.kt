@@ -4,6 +4,7 @@ import com.cointrend.domain.exceptions.EmptyDatabaseException
 import com.cointrend.domain.features.topcoins.TopCoinsRepository
 import com.cointrend.domain.features.topcoins.models.TopCoinsData
 import com.cointrend.domain.features.topcoins.models.TopCoinsRefreshParams
+import com.cointrend.domain.mocks.expectedException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flow
