@@ -1,7 +1,9 @@
 package com.cointrend.presentation.ui.mocks
 
+import androidx.compose.ui.graphics.Color
 import com.cointrend.domain.models.CoinMarketData
 import com.cointrend.domain.models.CoinWithMarketData
+import com.cointrend.presentation.models.CoinWithMarketDataUiItem
 import com.github.davidepanidev.kotlinextensions.utils.test.TestException
 import java.time.LocalDateTime
 
@@ -33,18 +35,32 @@ internal val expectedCoinWithMarketData = CoinWithMarketData(
     rank = 0
 )
 
-internal val expectedCoinWithMarketDataBtc = expectedCoinWithMarketData
-internal val expectedCoinWithMarketDataEth = expectedCoinWithMarketData.copy(id = "eth")
-internal val expectedCoinWithMarketDataUsdc = expectedCoinWithMarketData.copy(id = "usdc")
-internal val expectedCoinWithMarketDataUsdt = expectedCoinWithMarketData.copy(id = "usdt")
-internal val expectedCoinWithMarketDataSol = expectedCoinWithMarketData.copy(id = "sol")
+internal val expectedCoinWithMarketDataBtc = expectedCoinWithMarketData.toUiModel()
+internal val expectedCoinWithMarketDataEth = expectedCoinWithMarketData.copy(id = "eth").toUiModel()
+internal val expectedCoinWithMarketDataUsdc = expectedCoinWithMarketData.copy(id = "usdc").toUiModel()
+internal val expectedCoinWithMarketDataUsdt = expectedCoinWithMarketData.copy(id = "usdt").toUiModel()
+internal val expectedCoinWithMarketDataSol = expectedCoinWithMarketData.copy(id = "sol").toUiModel()
 
-internal fun getCoinsWithMarketDataList() = listOf(
+internal fun getCoinsWithMarketDataUiList() = listOf(
     expectedCoinWithMarketDataBtc,
     expectedCoinWithMarketDataEth,
     expectedCoinWithMarketDataUsdc,
     expectedCoinWithMarketDataUsdt,
     expectedCoinWithMarketDataSol,
 )
+
+internal fun CoinWithMarketData.toUiModel() = CoinWithMarketDataUiItem(
+    id = this.id,
+    name = this.name,
+    symbol = this.symbol,
+    imageUrl = "",
+    price = "",
+    marketCapRank = "",
+    priceChangePercentage = "",
+    trendColor = Color.Black,
+    sparklineData = null,
+    lastUpdate = ""
+)
+
 
 internal val expectedException = TestException("Test Exception")
