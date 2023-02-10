@@ -1,11 +1,11 @@
-package com.cointrend.data.features.mocks
+package com.cointrend.presentation.ui.mocks
 
 import com.cointrend.domain.models.CoinMarketData
 import com.cointrend.domain.models.CoinWithMarketData
 import com.github.davidepanidev.kotlinextensions.utils.test.TestException
 import java.time.LocalDateTime
 
-val expectedCoinWithMarketData = CoinWithMarketData(
+internal val expectedCoinWithMarketData = CoinWithMarketData(
     id = "btc",
     name = "",
     symbol = "",
@@ -33,13 +33,13 @@ val expectedCoinWithMarketData = CoinWithMarketData(
     rank = 0
 )
 
-val expectedCoinWithMarketDataBtc = expectedCoinWithMarketData
-val expectedCoinWithMarketDataEth = expectedCoinWithMarketData.copy(id = "eth")
-val expectedCoinWithMarketDataUsdc = expectedCoinWithMarketData.copy(id = "usdc")
-val expectedCoinWithMarketDataUsdt = expectedCoinWithMarketData.copy(id = "usdt")
-val expectedCoinWithMarketDataSol = expectedCoinWithMarketData.copy(id = "sol")
+internal val expectedCoinWithMarketDataBtc = expectedCoinWithMarketData
+internal val expectedCoinWithMarketDataEth = expectedCoinWithMarketData.copy(id = "eth")
+internal val expectedCoinWithMarketDataUsdc = expectedCoinWithMarketData.copy(id = "usdc")
+internal val expectedCoinWithMarketDataUsdt = expectedCoinWithMarketData.copy(id = "usdt")
+internal val expectedCoinWithMarketDataSol = expectedCoinWithMarketData.copy(id = "sol")
 
-fun getCoinsWithMarketDataList() = listOf(
+internal fun getCoinsWithMarketDataList() = listOf(
     expectedCoinWithMarketDataBtc,
     expectedCoinWithMarketDataEth,
     expectedCoinWithMarketDataUsdc,
@@ -47,4 +47,4 @@ fun getCoinsWithMarketDataList() = listOf(
     expectedCoinWithMarketDataSol,
 )
 
-val expectedException = TestException("Test Exception")
+internal val expectedException = TestException("Test Exception")
