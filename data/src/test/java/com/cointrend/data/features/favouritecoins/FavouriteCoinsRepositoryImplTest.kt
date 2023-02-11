@@ -64,7 +64,8 @@ class FavouriteCoinsRepositoryImplTest : BaseCoroutineTestWithTestDispatcherProv
         )
 
         expectThat(result).isSuccess()
-        coVerify {
+        verify(exactly = 1) { localDataSource.getAllCoinsFlow() }
+        coVerify(exactly = 1) {
             localDataSource.insertCoins(
                 coins = listOf(
                     expectedCoinWithMarketDataUsdc.toCoin(),
@@ -75,6 +76,7 @@ class FavouriteCoinsRepositoryImplTest : BaseCoroutineTestWithTestDispatcherProv
                 )
             )
         }
+        confirmVerified(localDataSource)
     }
 
     @Test
@@ -92,7 +94,8 @@ class FavouriteCoinsRepositoryImplTest : BaseCoroutineTestWithTestDispatcherProv
         )
 
         expectThat(result).isSuccess()
-        coVerify {
+        verify(exactly = 1) { localDataSource.getAllCoinsFlow() }
+        coVerify(exactly = 1) {
             localDataSource.insertCoins(
                 coins = listOf(
                     expectedCoinWithMarketDataBtc.toCoin(),
@@ -103,6 +106,7 @@ class FavouriteCoinsRepositoryImplTest : BaseCoroutineTestWithTestDispatcherProv
                 )
             )
         }
+        confirmVerified(localDataSource)
     }
 
     @Test
@@ -121,7 +125,8 @@ class FavouriteCoinsRepositoryImplTest : BaseCoroutineTestWithTestDispatcherProv
             this.isA<IndexOutOfBoundsException>()
         }
 
-        coVerify(exactly = 0) { localDataSource.insertCoins(any()) }
+        verify(exactly = 1) { localDataSource.getAllCoinsFlow() }
+        confirmVerified(localDataSource)
     }
 
     @Test
@@ -140,7 +145,8 @@ class FavouriteCoinsRepositoryImplTest : BaseCoroutineTestWithTestDispatcherProv
             this.isA<IndexOutOfBoundsException>()
         }
 
-        coVerify(exactly = 0) { localDataSource.insertCoins(any()) }
+        verify(exactly = 1) { localDataSource.getAllCoinsFlow() }
+        confirmVerified(localDataSource)
     }
 
 }
