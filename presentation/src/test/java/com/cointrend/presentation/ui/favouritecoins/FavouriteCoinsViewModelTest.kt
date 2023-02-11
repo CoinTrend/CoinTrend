@@ -10,16 +10,13 @@ import com.cointrend.presentation.models.FavouriteCoinUiData
 import com.cointrend.presentation.ui.mocks.*
 import com.github.davidepanidev.androidextensions.tests.BaseCoroutineTestWithTestDispatcherProviderAndInstantTaskExecutorRule
 import fr.haan.resultat.Resultat
-import io.mockk.MockKAnnotations
-import io.mockk.coEvery
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.*
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -29,7 +26,7 @@ import java.time.LocalDateTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class FavouriteCoinsViewModelTest : BaseCoroutineTestWithTestDispatcherProviderAndInstantTaskExecutorRule(
-    dispatcher = UnconfinedTestDispatcher()
+    dispatcher = StandardTestDispatcher()
 ) {
 
     private lateinit var cut: FavouriteCoinsViewModel
@@ -64,6 +61,12 @@ class FavouriteCoinsViewModelTest : BaseCoroutineTestWithTestDispatcherProviderA
             reorderFavouriteCoinUseCase = reorderFavouriteCoinUseCase,
             mapper = mapper
         )
+
+        initFavouriteCoinsViewModelStateByConsumingFirstFlowValue()
+    }
+
+    private fun initFavouriteCoinsViewModelStateByConsumingFirstFlowValue() = runTest {
+        advanceUntilIdle()
     }
 
 
@@ -77,7 +80,7 @@ class FavouriteCoinsViewModelTest : BaseCoroutineTestWithTestDispatcherProviderA
             toIndex = 1
         )
 
-        expectThat(cut.state.state).isEqualTo(CoinsListUiState.Idle)
+
         expectThat(cut.state.favouriteCoinsList).isEqualTo(
             persistentListOf(
                 expectedCoinWithMarketDataEth,
@@ -87,6 +90,32 @@ class FavouriteCoinsViewModelTest : BaseCoroutineTestWithTestDispatcherProviderA
                 expectedCoinWithMarketDataSol
             )
         )
+        expectThat(cut.state.state).isEqualTo(CoinsListUiState.Idle)
+    }
+
+    @Test
+    fun `onCoinPositionReordered calls reorderFavouriteCoinUseCase with correct parameters`() = runTest {
+        val expectedId = "btc"
+        val expectedToIndex = 1
+
+        coEvery { reorderFavouriteCoinUseCase(expectedId, expectedToIndex) } returns Result.success(Unit)
+
+
+        cut.onCoinPositionReordered(
+            coinId = expectedId,
+            fromIndex = 0,
+            toIndex = expectedToIndex
+        )
+
+        advanceUntilIdle()
+
+        coVerify(exactly = 1) {
+            reorderFavouriteCoinUseCase(
+                coinId = any(),
+                toIndex = any()
+            )
+        }
+        expectThat(cut.state.state).isEqualTo(CoinsListUiState.Idle)
     }
 
 
