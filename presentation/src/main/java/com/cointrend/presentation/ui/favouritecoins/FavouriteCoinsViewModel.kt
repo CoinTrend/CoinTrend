@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cointrend.domain.features.favouritecoins.GetFavouriteCoinsFlowUseCase
 import com.cointrend.domain.features.favouritecoins.RefreshFavouriteCoinsUseCase
+import com.cointrend.domain.features.favouritecoins.ReorderFavouriteCoinUseCase
 import com.cointrend.domain.features.favouritecoins.models.FavouriteCoinsData
 import com.cointrend.presentation.mappers.UiMapper
 import com.cointrend.presentation.models.CoinsListUiState
@@ -15,10 +16,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.haan.resultat.*
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -26,6 +31,7 @@ import javax.inject.Inject
 class FavouriteCoinsViewModel @Inject constructor(
     private val getFavouriteCoinsFlowUseCase: GetFavouriteCoinsFlowUseCase,
     private val refreshFavouriteCoinsUseCase: RefreshFavouriteCoinsUseCase,
+    private val reorderFavouriteCoinUseCase: ReorderFavouriteCoinUseCase,
     private val mapper: UiMapper
 ) : ViewModel() {
 
@@ -39,6 +45,8 @@ class FavouriteCoinsViewModel @Inject constructor(
     private set
 
     private var isFavouriteCoinsFlowInterrupted = false
+
+    private var reorderCoinJob: Job? = null
 
 
     init {
@@ -133,15 +141,48 @@ class FavouriteCoinsViewModel @Inject constructor(
     fun onCoinPositionReordered(coinId: String, fromIndex: Int, toIndex: Int) {
         Timber.d("onCoinPositionReordered -> coinId: $coinId, fromIndex: $fromIndex, toIndex: $toIndex")
 
-        //TODO: move logic to use cases and repository to modify actual the data source order
-        val list = state.favouriteCoinsList.toMutableList()
+        // The list is first reordered directly in this ViewModel to
+        // ensure a smooth drag and drop animation, as updating the local data source
+        // requires a latency period.
+        val reorderedList = try {
+             state.favouriteCoinsList.toMutableList().apply {
+                this.add(toIndex, removeAt(fromIndex))
+            }.toImmutableList()
+        } catch (e: Exception) {
+            Timber.e("onCoinPositionReordered ERROR: $e")
+            return
+        }
 
-        val coin = list.indexOfFirst { it.id == coinId }
-        list.add(index = toIndex, list.removeAt(coin))
 
         state = state.copy(
-            favouriteCoinsList = list.toImmutableList()
+            favouriteCoinsList = reorderedList
         )
+
+
+        val oldJob = reorderCoinJob
+
+        reorderCoinJob = viewModelScope.launch {
+            // The old job is canceled to avoid multiple reorder operations
+            // happening simultaneously.
+            oldJob?.cancelAndJoin()
+            // The delay is applied so that if many reorder operations are
+            // performed quickly, only the last one actually modifies the local data source.
+            // This prevents that an 'outdated' reorder event interferes with the current
+            // list in the ViewModel state.
+            delay(delayBeforeCallingReorderFavouriteCoinUseCase)
+
+            reorderFavouriteCoinUseCase(
+                coinId = coinId,
+                toIndex = toIndex
+            )
+
+            reorderCoinJob = null
+        }
+    }
+
+
+    companion object {
+        const val delayBeforeCallingReorderFavouriteCoinUseCase = 500L
     }
 
 }

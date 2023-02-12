@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.cointrend.presentation.commoncomposables.CoinWithMarketDataItem
 import com.cointrend.presentation.models.COINS_LIST_SCREEN_KEY
@@ -27,6 +28,7 @@ import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress
 import org.burnoutcrew.reorderable.rememberReorderableLazyListState
 import org.burnoutcrew.reorderable.reorderable
+import timber.log.Timber
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,13 +62,22 @@ fun FavouriteCoinsScreen(
 
     val listState = rememberReorderableLazyListState(
         onMove = { from, to ->
-            viewModel.onCoinPositionReordered(
-                coinId = (from.key as String),
-                fromIndex = from.index,
-                toIndex = to.index
-            )
+            (from.key as? String)?.let { coinId ->
+                viewModel.onCoinPositionReordered(
+                    coinId = coinId,
+                    fromIndex = from.index,
+                    toIndex = to.index
+                )
+            }
         }
     )
+
+    val isDraggingHappening = remember {
+        derivedStateOf {
+            Timber.d("isDraggingHappening ${listState.draggingItemKey != null}")
+            listState.draggingItemKey != null
+        }
+    }
 
 
     Scaffold(
@@ -90,6 +101,7 @@ fun FavouriteCoinsScreen(
             state = rememberSwipeRefreshState(isRefreshing = swipeRefreshState.value),
             onRefresh = { viewModel.onSwipeRefresh() },
             modifier = Modifier.fillMaxSize(),
+            swipeEnabled = !isDraggingHappening.value,
             indicatorPadding = innerPadding,
         ) {
 
@@ -99,7 +111,12 @@ fun FavouriteCoinsScreen(
                     .detectReorderAfterLongPress(listState)
                     .fillMaxHeight(),
                 state = listState.listState,
-                contentPadding = innerPadding,
+                contentPadding = PaddingValues(
+                    top = innerPadding.calculateTopPadding(),
+                    start = innerPadding.calculateStartPadding(LayoutDirection.Ltr),
+                    end = innerPadding.calculateEndPadding(LayoutDirection.Ltr),
+                    bottom = 32.dp
+                ),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
 
@@ -107,8 +124,7 @@ fun FavouriteCoinsScreen(
 
                     ReorderableItem(listState, key = item.id) { isDragging ->
                         val elevation = animateDpAsState(if (isDragging) 32.dp else 0.dp)
-                        val padding =
-                            animateDpAsState(if (isDragging) 16.dp else MainHorizontalPadding)
+                        val padding = animateDpAsState(if (isDragging) 16.dp else MainHorizontalPadding)
 
                         CoinWithMarketDataItem(
                             modifier = Modifier
@@ -117,17 +133,19 @@ fun FavouriteCoinsScreen(
                             item = { item },
                             sharedElementScreenKey = { COINS_LIST_SCREEN_KEY },
                             onCoinItemClick = {
-                                goToCoinDetail(
-                                    with(item) {
-                                        CoinUiItem(
-                                            id = id,
-                                            name = name,
-                                            symbol = symbol,
-                                            imageUrl = imageUrl,
-                                            marketCapRank = marketCapRank,
-                                        )
-                                    }
-                                )
+                                if (!isDraggingHappening.value) {
+                                    goToCoinDetail(
+                                        with(item) {
+                                            CoinUiItem(
+                                                id = id,
+                                                name = name,
+                                                symbol = symbol,
+                                                imageUrl = imageUrl,
+                                                marketCapRank = marketCapRank,
+                                            )
+                                        }
+                                    )
+                                }
                             }
                         )
                     }
