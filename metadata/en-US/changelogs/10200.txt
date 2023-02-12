@@ -1,0 +1,2 @@
+Updated features:
+- Favourite Coins can now be reordered by long pressing and dragging them.

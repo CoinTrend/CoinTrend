@@ -1,0 +1,2 @@
+Funzionalità aggiornate:
+- Le Favourite Coins possono ora essere riordinate tenendole premute e trascinandole.
