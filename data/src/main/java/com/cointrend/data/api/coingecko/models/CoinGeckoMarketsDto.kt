@@ -12,7 +12,7 @@ data class CoinGeckoMarketsDto(
     @SerializedName("market_cap")
     val marketCap: Double,
     @SerializedName("market_cap_rank")
-    val marketCapRank: Int,
+    val marketCapRank: Int? = null,
     @SerializedName("fully_diluted_valuation")
     val fullyDilutedValuation: Double?,
     @SerializedName("total_volume")

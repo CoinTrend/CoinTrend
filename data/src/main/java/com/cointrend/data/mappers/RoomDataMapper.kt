@@ -93,6 +93,7 @@ class RoomDataMapper @Inject constructor(
         return with(coinMarketDataEntity) {
             CoinMarketData(
                 price = currentPrice,
+                marketCapRank = marketCapRank,
                 marketCap = marketCap,
                 marketCapChangePercentage24h = marketCapChangePercentage24h,
                 totalVolume = totalVolume,
@@ -119,6 +120,7 @@ class RoomDataMapper @Inject constructor(
             CoinMarketDataEntity(
                 coinId = coinId,
                 currentPrice = price,
+                marketCapRank = marketCapRank,
                 marketCap = marketCap,
                 marketCapChangePercentage24h = marketCapChangePercentage24h,
                 totalVolume = totalVolume,

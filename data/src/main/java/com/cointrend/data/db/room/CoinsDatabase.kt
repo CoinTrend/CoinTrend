@@ -1,5 +1,6 @@
 package com.cointrend.data.db.room
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.cointrend.data.db.room.models.CoinMarketDataEntity
@@ -18,8 +19,11 @@ import com.cointrend.data.features.trendingcoins.local.models.TrendingCoinEntity
         TrendingCoinEntity::class,
         FavouriteCoinEntity::class
     ],
-    version = 1,
-    exportSchema = true
+    version = 2,
+    exportSchema = true,
+    autoMigrations = [
+        AutoMigration (from = 1, to = 2)
+    ]
 )
 abstract class CoinsDatabase : RoomDatabase() {
 

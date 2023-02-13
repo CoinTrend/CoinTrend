@@ -8,6 +8,7 @@ data class CoinMarketDataEntity(
     @PrimaryKey val coinId: String,
 
     val currentPrice: Double,
+    val marketCapRank: Int?,
     val marketCap: Double,
     val marketCapChangePercentage24h: Double,
     val totalVolume: Double,

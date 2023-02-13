@@ -60,7 +60,7 @@ class CoinGeckoDataMapper @Inject constructor(
             symbol = coinResponse.symbol,
             image = coinResponse.image,
             marketData = mapCoinMarketData(coinResponse),
-            rank = coinResponse.marketCapRank
+            rank = coinResponse.marketCapRank ?: 0
         )
     }
 
@@ -68,6 +68,7 @@ class CoinGeckoDataMapper @Inject constructor(
         return with(coinResponse) {
             CoinMarketData(
                 price = currentPrice,
+                marketCapRank = marketCapRank,
                 marketCap = marketCap,
                 marketCapChangePercentage24h = marketCapChangePercentage24h,
                 totalVolume = totalVolume,

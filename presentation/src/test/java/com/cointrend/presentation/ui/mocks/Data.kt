@@ -13,7 +13,8 @@ internal val expectedCoinWithMarketData = CoinWithMarketData(
     symbol = "",
     image = "",
     marketData = CoinMarketData(
-        0.0,
+        price = 0.0,
+        marketCapRank = 0,
         marketCap = 0.0,
         marketCapChangePercentage24h = 0.0,
         totalVolume = 0.0,

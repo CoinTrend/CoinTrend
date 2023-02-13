@@ -25,6 +25,7 @@ abstract class BaseCoinWithMarketData(
 
 data class CoinMarketData(
     val price: Double,
+    val marketCapRank: Int?,
     val marketCap: Double,
     val marketCapChangePercentage24h: Double,
     val totalVolume: Double,
