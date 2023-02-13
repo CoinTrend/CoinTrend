@@ -1,0 +1,312 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "b4c1f2b4819a3613605136c53a678f36",
+    "entities": [
+      {
+        "tableName": "top_coins",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sortedPosition` INTEGER NOT NULL, `id` TEXT NOT NULL, `name` TEXT NOT NULL, `symbol` TEXT NOT NULL, `image` TEXT NOT NULL, `rank` INTEGER NOT NULL, PRIMARY KEY(`sortedPosition`))",
+        "fields": [
+          {
+            "fieldPath": "sortedPosition",
+            "columnName": "sortedPosition",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "symbol",
+            "columnName": "symbol",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "image",
+            "columnName": "image",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rank",
+            "columnName": "rank",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "sortedPosition"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_top_coins_id",
+            "unique": true,
+            "columnNames": [
+              "id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_top_coins_id` ON `${TABLE_NAME}` (`id`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "coins_market_data",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`coinId` TEXT NOT NULL, `currentPrice` REAL NOT NULL, `marketCap` REAL NOT NULL, `marketCapChangePercentage24h` REAL NOT NULL, `totalVolume` REAL NOT NULL, `high24h` REAL NOT NULL, `low24h` REAL NOT NULL, `circulatingSupply` REAL NOT NULL, `totalSupply` REAL, `maxSupply` REAL, `ath` REAL NOT NULL, `athChangePercentage` REAL NOT NULL, `athDate` INTEGER, `atl` REAL NOT NULL, `atlChangePercentage` REAL NOT NULL, `atlDate` INTEGER, `priceChangePercentage` REAL NOT NULL, `sparklineData` TEXT, `lastUpdate` INTEGER NOT NULL, PRIMARY KEY(`coinId`))",
+        "fields": [
+          {
+            "fieldPath": "coinId",
+            "columnName": "coinId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currentPrice",
+            "columnName": "currentPrice",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "marketCap",
+            "columnName": "marketCap",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "marketCapChangePercentage24h",
+            "columnName": "marketCapChangePercentage24h",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalVolume",
+            "columnName": "totalVolume",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "high24h",
+            "columnName": "high24h",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "low24h",
+            "columnName": "low24h",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "circulatingSupply",
+            "columnName": "circulatingSupply",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalSupply",
+            "columnName": "totalSupply",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "maxSupply",
+            "columnName": "maxSupply",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ath",
+            "columnName": "ath",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "athChangePercentage",
+            "columnName": "athChangePercentage",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "athDate",
+            "columnName": "athDate",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "atl",
+            "columnName": "atl",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "atlChangePercentage",
+            "columnName": "atlChangePercentage",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "atlDate",
+            "columnName": "atlDate",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "priceChangePercentage",
+            "columnName": "priceChangePercentage",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sparklineData",
+            "columnName": "sparklineData",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lastUpdate",
+            "columnName": "lastUpdate",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "coinId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "trending_coins",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sortedPosition` INTEGER NOT NULL, `id` TEXT NOT NULL, `name` TEXT NOT NULL, `symbol` TEXT NOT NULL, `image` TEXT NOT NULL, `rank` INTEGER NOT NULL, `insertionDate` INTEGER NOT NULL, PRIMARY KEY(`sortedPosition`))",
+        "fields": [
+          {
+            "fieldPath": "sortedPosition",
+            "columnName": "sortedPosition",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "symbol",
+            "columnName": "symbol",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "image",
+            "columnName": "image",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rank",
+            "columnName": "rank",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "insertionDate",
+            "columnName": "insertionDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "sortedPosition"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_trending_coins_id",
+            "unique": true,
+            "columnNames": [
+              "id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_trending_coins_id` ON `${TABLE_NAME}` (`id`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "favourite_coins",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `symbol` TEXT NOT NULL, `image` TEXT NOT NULL, `rank` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "symbol",
+            "columnName": "symbol",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "image",
+            "columnName": "image",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rank",
+            "columnName": "rank",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b4c1f2b4819a3613605136c53a678f36')"
+    ]
+  }
+}

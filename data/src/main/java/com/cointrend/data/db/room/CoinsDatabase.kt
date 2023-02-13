@@ -19,7 +19,7 @@ import com.cointrend.data.features.trendingcoins.local.models.TrendingCoinEntity
         FavouriteCoinEntity::class
     ],
     version = 1,
-    exportSchema = false
+    exportSchema = true
 )
 abstract class CoinsDatabase : RoomDatabase() {
 
