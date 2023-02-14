@@ -52,7 +52,7 @@ data class Coin(
     override val name: String,
     override val symbol: String,
     override val image: String,
-    val rank: Int
+    val rank: Int // Currently corresponding to marketCapRank of CoinMarketData. //TODO: set to nullable as it is not always available for less popular coins.
 ) : BaseCoin(
     id = id,
     name = name,
@@ -66,7 +66,7 @@ data class CoinWithMarketData(
     override val symbol: String,
     override val image: String,
     override val marketData: CoinMarketData,
-    val rank: Int,
+    val rank: Int, // Currently redundant as it corresponds to marketCapRank of CoinMarketData. //TODO: set to nullable as it is not always available for less popular coins.
 ) : BaseCoinWithMarketData(
     id = id,
     name = name,

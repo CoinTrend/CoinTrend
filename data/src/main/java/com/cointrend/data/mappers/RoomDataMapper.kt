@@ -84,7 +84,7 @@ class RoomDataMapper @Inject constructor(
                 symbol = coin.symbol,
                 image = coin.image,
                 marketData = mapCoinMarketData(marketData),
-                rank = coin.rank
+                rank = marketData.marketCapRank ?: coin.rank
             )
         }
     }
@@ -158,7 +158,7 @@ class RoomDataMapper @Inject constructor(
                 symbol = coin.symbol,
                 image = coin.image,
                 marketData = mapCoinMarketData(marketData),
-                rank = coin.rank
+                rank = marketData.marketCapRank ?: coin.rank
             )
         }
     }

@@ -46,12 +46,14 @@ class TopCoinsRepositoryImpl @Inject constructor(
                     ordering = Ordering.MarketCapDesc,
                 ).getOrElse { throw it }
 
+                /* Commented as the sorting functionality is not available yet.
                 val sortedCoinsList = sortCoins(
                     coinsList = coinsList,
                     ordering = params.ordering
                 )
+                */
 
-                localSource.insertCoins(sortedCoinsList)
+                localSource.insertCoins(coinsList = coinsList)
             }
         }
     }
@@ -61,11 +63,12 @@ class TopCoinsRepositoryImpl @Inject constructor(
         return coinsList.maxOf { it.marketData.lastUpdate }
     }
 
+    /* Commented as the sorting functionality is not available yet.
     private fun sortCoins(coinsList: List<CoinWithMarketData>, ordering: Ordering): List<CoinWithMarketData> {
         val itemsList = coinsList.toMutableList()
 
         when (ordering) {
-            Ordering.MarketCapAsc -> itemsList.sortByDescending { it.rank }
+            Ordering.MarketCapAsc -> itemsList.sortByDescending { it.rank } // should be used rank or marketData.marketCapRank?
             Ordering.MarketCapDesc -> itemsList.sortBy { it.rank }
             Ordering.PriceAsc -> itemsList.sortBy { it.marketData.price }
             Ordering.PriceDesc -> itemsList.sortByDescending { it.marketData.price }
@@ -77,6 +80,7 @@ class TopCoinsRepositoryImpl @Inject constructor(
 
         return itemsList
     }
+    */
 
 }
 

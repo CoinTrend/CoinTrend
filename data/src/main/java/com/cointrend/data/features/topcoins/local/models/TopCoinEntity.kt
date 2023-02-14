@@ -15,5 +15,5 @@ data class TopCoinEntity(
     val name: String,
     val symbol: String,
     val image: String,
-    val rank: Int
+    val rank: Int // Currently redundant as it corresponds to marketCapRank of CoinMarketData. //TODO: set to nullable as it is not always available for less popular coins.
 )
