@@ -34,7 +34,7 @@ Lightweight, fast and open-source cryptocurrencies market monitor for Android ðŸ
 ## Features
 
 - **Market**: real-time updates of the Trending Coins (the most searched coins in the last 24h) and the Top Coins (the top 250 cryptocurrencies by market cap).
-- **Favourites**: track your favourite coins at a glance by adding them to the favourite list.
+- **Favourites**: track your favourite coins at a glance by adding them to the favourite list and dragging them as you wish.
 - **Search**: search over 10.000 coins by name or symbol.
 
 <br>
@@ -88,6 +88,8 @@ The User Interface has been designed by following the latest Google's Material D
 - [olshevski](https://github.com/olshevski): for the [Compose Navigation Reimagined](https://github.com/olshevski/compose-navigation-reimagined) library.
 
 - [mxalbert1996](https://github.com/mxalbert1996): for the [Compose Shared Element](https://github.com/mxalbert1996/compose-shared-elements) library.
+
+- [aclassen](https://github.com/aclassen): for the [ComposeReorderable](https://github.com/aclassen/ComposeReorderable) library.
 
 
 ## License
