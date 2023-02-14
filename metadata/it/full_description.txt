@@ -2,7 +2,7 @@ Monitor di criptovalute essenziale, veloce e a codice aperto. Nessuna pubblicit�
 
 <b>Funzionalità</b>
 ・ Market: traccia in tempo reale Trending Coins (le crypto più ricercate nelle ultime 24 ore) e Top Coins (le 250 crypto più capitalizzate sul mercato).
-・ Favourites: tieni traccia a colpo d'occhio delle tue criptovalute preferite aggiungendole alla lista delle preferite.
+・ Favourites: tieni traccia a colpo d'occhio delle tue criptovalute preferite aggiungendole alla lista delle preferite e trascindole nell'ordine che preferisci.
 ・ Search: ricerca oltre 10.000 criptovalute per nome o simbolo.
 
 <b>10.000+ criptovalute in tempo reale</b>

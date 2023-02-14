@@ -2,7 +2,7 @@ Lightweight, fast and open-source cryptocurrencies monitor. No ads, no subscript
 
 <b>Features</b>
 • Market: real-time updates of the Trending Coins (the most searched coins in the last 24h) and the Top Coins (the top 250 cryptocurrencies by market cap).
-• Favourites: track your favourite coins at a glance by adding them to the favourite list.
+• Favourites: track your favourite coins at a glance by adding them to the favourite list and dragging them as you wish.
 • Search: search over 10.000 coins by name or symbol.
 
 <b>10.000+ real-time cryptocurrencies</b>
