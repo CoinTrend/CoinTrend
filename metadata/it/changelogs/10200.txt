@@ -1,2 +1,5 @@
 Funzionalità aggiornate:
 - Le Favourite Coins possono ora essere riordinate tenendole premute e trascinandole.
+
+Correzioni:
+- Risolto un problema che impediva l'aggiornamento del valore di classifica delle Favourite Coins.
