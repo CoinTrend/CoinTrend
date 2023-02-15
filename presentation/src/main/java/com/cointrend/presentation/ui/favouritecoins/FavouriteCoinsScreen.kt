@@ -1,5 +1,7 @@
 package com.cointrend.presentation.ui.favouritecoins
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,10 +11,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.cointrend.presentation.R
 import com.cointrend.presentation.commoncomposables.CoinWithMarketDataItem
 import com.cointrend.presentation.models.COINS_LIST_SCREEN_KEY
 import com.cointrend.presentation.models.CoinUiItem
@@ -87,6 +92,16 @@ fun FavouriteCoinsScreen(
             TopAppBar(
                 title = { Text("Favourites") },
                 actions = {
+
+                    val context = LocalContext.current
+                    val intent = remember { Intent(Intent.ACTION_VIEW, Uri.parse("https://lightningaddress.com")) }
+                    IconButton(
+                        onClick = {  context.startActivity(intent)
+                        }){ Icon(painter = painterResource(id = R.drawable.ic_donate),
+                        contentDescription = "Open lightningaddress.com ",
+                        modifier = Modifier.padding(start = 12.dp))
+                    }
+
                     LastUpdateDateText(
                         modifier = Modifier.padding(end = 16.dp),
                         lastUpdateDate = viewModel.state.lastUpdateDate,
