@@ -34,7 +34,7 @@ Lightweight, fast and open-source cryptocurrencies market monitor for Android ðŸ
 ## Features
 
 - **Market**: real-time updates of the Trending Coins (the most searched coins in the last 24h) and the Top Coins (the top 250 cryptocurrencies by market cap).
-- **Favourites**: track your favourite coins at a glance by adding them to the favourite list and dragging them as you wish.
+- **Favourites**: track your favourite coins at a glance by adding them to the favourite list and sorting them as you wish.
 - **Search**: search over 10.000 coins by name or symbol.
 
 <br>
@@ -94,7 +94,7 @@ The User Interface has been designed by following the latest Google's Material D
 
 ## Support
 
-Developing and maintaining CoinTrend requires much time and effort and as an FOSS project we don't get any revenue by the App itself. If the App is useful and you wish to support the project you can donate some sats using the Bitcoin address below:
+CoinTrend as a FOSS project does not generate any revenue. If you wish to support the developers you can donate some sats at the Bitcoin address below:
 
 ### Bitcoin
 
