@@ -92,6 +92,19 @@ The User Interface has been designed by following the latest Google's Material D
 - [aclassen](https://github.com/aclassen): for the [ComposeReorderable](https://github.com/aclassen/ComposeReorderable) library.
 
 
+## Support
+
+Developing and maintaining CoinTrend requires much time and effort and as an FOSS project we don't get any revenue by the App itself. If the App is useful and you wish to support the project you can donate some sats using the Bitcoin address below:
+
+### Bitcoin
+
+```
+bc1qszr4jv77n737569vhsdwgq3zc2x47n39mlq82f
+```  
+
+<p><img src="https://raw.githubusercontent.com/CoinTrend/.github/main/support/bitcoin.png" width="200"></p>
+
+
 ## License
 
 CoinTrend is released under the [GPL-3.0 License](./LICENSE). Unless explicitly 
