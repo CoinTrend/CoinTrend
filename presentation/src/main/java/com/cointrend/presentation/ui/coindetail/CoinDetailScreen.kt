@@ -57,7 +57,8 @@ fun CoinDetailScreen(
             TopAppBar(
                 title = {},
                 navigationIcon = {
-                    IconButton(onClick = { navController.pop() }) {
+                    IconButton(onClick = {
+                        navController.pop() }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_arrow_back_ios),
                             contentDescription = "Return to previous screen",
@@ -66,17 +67,6 @@ fun CoinDetailScreen(
                     }
                 },
                 actions = {
-                    /*
-                    IconButton(onClick = {}) {
-                        Icon(
-                            imageVector = Icons.Filled.Notifications,
-                            contentDescription = "Localized description",
-                            tint = Favourite
-                        )
-                    }
-
-                     */
-
                     IconButton(
                         onClick = {
                             viewModel.onFavouriteButtonClick()
