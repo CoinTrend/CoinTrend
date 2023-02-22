@@ -24,8 +24,8 @@ import com.cointrend.presentation.models.BottomNavigationItem
 import com.cointrend.presentation.models.CoinsListUiState
 import com.cointrend.presentation.models.Screen
 import com.cointrend.presentation.theme.*
-import com.cointrend.presentation.ui.about.AboutScreen
 import com.cointrend.presentation.ui.coindetail.CoinDetailScreen
+import com.cointrend.presentation.ui.coinslist.AboutScreen
 import com.cointrend.presentation.ui.coinslist.CoinsListScreen
 import com.cointrend.presentation.ui.coinslist.CoinsListViewModel
 import com.cointrend.presentation.ui.favouritecoins.FavouriteCoinsScreen
@@ -83,7 +83,6 @@ class MainActivity : ComponentActivity() {
                 val currentDestination by remember {
                     derivedStateOf {
                         navController.backstack.entries.first().destination
-
                     }
                 }
 
