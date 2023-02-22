@@ -37,17 +37,19 @@ import dev.olshevski.navigation.reimagined.popAll
 @Composable
 fun AboutScreen(
     navController: NavController<Screen>,
+
+
 ) {
     val focusManager = LocalFocusManager.current
 
-   // val snackbarHostState = remember { SnackbarHostState() }
+    // val snackbarHostState = remember { SnackbarHostState() }
     Scaffold(
         modifier = Modifier,
-     //   snackbarHost = { SnackbarHost(snackbarHostState) },
+        //   snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {IconButton(onClick = {
-                    navController.popAll()}) {
+                    navController.navigate(Screen.CoinsList)}) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_arrow_back_ios),
                         contentDescription = "Return to previous screen",
