@@ -40,19 +40,15 @@ private val defaultHorizontalPadding = 16.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AboutScreen(
-    // navController: NavController<Screen>,
 ) {
     val focusManager = LocalFocusManager.current
 
-    // val snackbarHostState = remember { SnackbarHostState() }
     Scaffold(
         modifier = Modifier,
-        //   snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {IconButton(onClick = {
                     System.out.println("Go Back")
-                    //navController.navigate(Screen.CoinsList)
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_arrow_back_ios),
@@ -238,59 +234,3 @@ fun SectionInfoItemTest(
     }
 }
 
-
-
-
-
-
-
-
-// sauvegarde teste
-/*
-
-
-
-
-@Composable
-fun SectionInfoItemTest(
-    name: String,
-    value: String,
-    showDivider: Boolean
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = name,
-            color = StocksDarkSecondaryText,
-            style = MaterialTheme.typography.bodyMedium
-        )
-
-        Spacer(modifier = Modifier.size(8.dp))
-
-        Text(
-            text = value,
-            fontWeight = FontWeight.SemiBold,
-            color = StocksDarkPrimaryText,
-            style = MaterialTheme.typography.bodyMedium
-        )
-    }
-
-    if (showDivider) {
-        Divider(
-            modifier = Modifier
-                .padding(horizontal = 8.dp)
-                .alpha(.2f),
-            color = StocksDarkSecondaryText
-        )
-    }
-}
-
-
-
-
- */
