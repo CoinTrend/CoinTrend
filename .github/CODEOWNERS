@@ -6,3 +6,4 @@
 *.bat @davidepanidev
 /gradlew @davidepanidev
 /metadata/ @davidepanidev
+/** @davidepanidev
