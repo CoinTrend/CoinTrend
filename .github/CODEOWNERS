@@ -4,6 +4,7 @@
 *.md @davidepanidev
 /LICENSE @davidepanidev
 *.bat @davidepanidev
+*.pro @davidepanidev
 /gradlew @davidepanidev
 /metadata/ @davidepanidev
 /* @davidepanidev
