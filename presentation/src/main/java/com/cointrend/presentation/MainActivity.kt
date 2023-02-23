@@ -126,7 +126,7 @@ class MainActivity : ComponentActivity() {
                                     is Screen.FavouriteCoinsList -> { FavouriteCoinsScreen(navController = navController, viewModel = hiltViewModel(viewModelStoreOwner = this@MainActivity)) }
                                     is Screen.CoinDetail -> { CoinDetailScreen(coinDetailMainUiData = route.coinDetailMainData, navController = navController) }
                                     is Screen.Search -> { SearchScreen(navController = navController, viewModel = hiltViewModel(viewModelStoreOwner = this@MainActivity)) }
-                                    is Screen.About -> { AboutScreen(navController = navController)}
+                                    is Screen.About -> { AboutScreen()}
                                 }
                             }
                         }
