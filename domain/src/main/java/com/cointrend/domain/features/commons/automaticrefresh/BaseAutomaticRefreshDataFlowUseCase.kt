@@ -22,7 +22,7 @@ abstract class BaseAutomaticRefreshDataFlowUseCase<OutputData : BaseDataWithLast
     private val minutesRequiredToRefreshData: Long
 ) {
 
-    open operator fun invoke(inputParams: InputParams): Flow<Resultat<OutputData>> {
+    operator fun invoke(inputParams: InputParams): Flow<Resultat<OutputData>> {
         // The entire flow collection is surrounded by a try catch block so that every exception
         // will always be rethrown inside the flow
         return try {
@@ -45,7 +45,7 @@ abstract class BaseAutomaticRefreshDataFlowUseCase<OutputData : BaseDataWithLast
     }
 
 
-    private fun getDataFlow(inputParams: InputParams): Flow<Resultat<OutputData>> {
+    protected open fun getDataFlow(inputParams: InputParams): Flow<Resultat<OutputData>> {
         val flow = repository.getDataFlow(inputParams)
 
         return flow.map {
@@ -68,7 +68,7 @@ abstract class BaseAutomaticRefreshDataFlowUseCase<OutputData : BaseDataWithLast
         return minutesFromLastUpdate > minutesRequiredToRefreshData
     }
 
-    private fun refreshData(inputParams: InputParams): Flow<Resultat<OutputData>> {
+    protected fun refreshData(inputParams: InputParams): Flow<Resultat<OutputData>> {
         return flow {
             emit(Resultat.loading())
             refreshDataUseCase(inputParams).onFailure {

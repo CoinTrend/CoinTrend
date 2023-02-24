@@ -8,6 +8,7 @@ import fr.haan.resultat.Resultat
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.confirmVerified
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -61,6 +62,7 @@ class GetTopCoinsFlowUseCaseTest : BaseCoroutineTestWithTestDispatcherProvider(
             }
 
         coVerify(exactly = 1) { refreshTopCoinsUseCase.invoke(Unit) }
+        confirmVerified(refreshTopCoinsUseCase)
     }
 
     @Test
@@ -95,6 +97,7 @@ class GetTopCoinsFlowUseCaseTest : BaseCoroutineTestWithTestDispatcherProvider(
         }
 
         coVerify(exactly = 1) { refreshTopCoinsUseCase.invoke(Unit) }
+        confirmVerified(refreshTopCoinsUseCase)
     }
 
     @Test
@@ -111,6 +114,7 @@ class GetTopCoinsFlowUseCaseTest : BaseCoroutineTestWithTestDispatcherProvider(
         }
 
         coVerify(exactly = 0) { refreshTopCoinsUseCase.invoke(Unit) }
+        confirmVerified(refreshTopCoinsUseCase)
     }
 
     @Test
@@ -135,6 +139,7 @@ class GetTopCoinsFlowUseCaseTest : BaseCoroutineTestWithTestDispatcherProvider(
         }
 
         coVerify(exactly = 1) { refreshTopCoinsUseCase.invoke(Unit) }
+        confirmVerified(refreshTopCoinsUseCase)
     }
 
     @Test
@@ -168,6 +173,61 @@ class GetTopCoinsFlowUseCaseTest : BaseCoroutineTestWithTestDispatcherProvider(
         }
 
         coVerify(exactly = 1) { refreshTopCoinsUseCase.invoke(Unit) }
+        confirmVerified(refreshTopCoinsUseCase)
+    }
+
+
+    @Test
+    fun `when topCoinsRepository emits data that are updated but with missing market data that should so be refreshed, CUT emits old data, emits Loading and calls refreshTopCoins`() = runTest {
+        val repository = TopCoinsRepositoryWithManualEmitOfData()
+        val cut = getCut(repository)
+
+        coEvery { refreshTopCoinsUseCase.invoke(Unit) } returns Result.success(Unit)
+
+        cut.invoke(Unit).test {
+            repository.emit(expectedTopCoinDataUpdatedButWithMissingMarketDataThatShouldBeRefreshed)
+
+            val firstItem = awaitItem()
+            expectThat(firstItem).isEqualTo(
+                Resultat.success(
+                    expectedTopCoinDataUpdatedButWithMissingMarketDataThatShouldBeRefreshed
+                )
+            )
+
+            val secondItem = awaitItem()
+            expectThat(secondItem).isA<Resultat.Loading>()
+        }
+
+        coVerify(exactly = 1) { refreshTopCoinsUseCase.invoke(Unit) }
+        confirmVerified(refreshTopCoinsUseCase)
+    }
+
+    @Test
+    fun `when topCoinsRepository emits data that should be refreshed and with missing market data, CUT emits old data, emits Loading and calls refreshTopCoins 2 times`() = runTest {
+        val repository = TopCoinsRepositoryWithManualEmitOfData()
+        val cut = getCut(repository)
+
+        coEvery { refreshTopCoinsUseCase.invoke(Unit) } returns Result.success(Unit)
+
+        cut.invoke(Unit).test {
+            repository.emit(expectedTopCoinDataThatShouldBeRefreshedAndWithMissingMarketData)
+
+            val firstItem = awaitItem()
+            expectThat(firstItem).isEqualTo(
+                Resultat.success(
+                    expectedTopCoinDataThatShouldBeRefreshedAndWithMissingMarketData
+                )
+            )
+
+            val firstRefreshLoading = awaitItem()
+            expectThat(firstRefreshLoading).isA<Resultat.Loading>()
+
+            val secondRefreshLoading = awaitItem()
+            expectThat(secondRefreshLoading).isA<Resultat.Loading>()
+        }
+
+        coVerify(exactly = 2) { refreshTopCoinsUseCase.invoke(Unit) }
+        confirmVerified(refreshTopCoinsUseCase)
     }
 
 }

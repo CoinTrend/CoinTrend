@@ -7,6 +7,7 @@ import com.cointrend.domain.features.topcoins.models.TopCoinsRefreshParams
 import com.cointrend.domain.models.CoinWithMarketData
 import com.cointrend.domain.models.Currency
 import com.cointrend.domain.models.Ordering
+import com.cointrend.domain.models.lastUpdateOrNow
 import com.github.davidepanidev.kotlinextensions.utils.dispatchers.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -60,7 +61,7 @@ class TopCoinsRepositoryImpl @Inject constructor(
 
     // Gets the most recent last update date among the coins
     private fun getLastUpdateDate(coinsList: List<CoinWithMarketData>): LocalDateTime {
-        return coinsList.maxOf { it.marketData.lastUpdate }
+        return coinsList.maxOf { it.lastUpdateOrNow() }
     }
 
     /* Commented as the sorting functionality is not available yet.

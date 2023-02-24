@@ -10,5 +10,5 @@ data class FavouriteCoinWithMarketDataEntity(
         parentColumn = "id",
         entityColumn = "coinId"
     )
-    val marketData: CoinMarketDataEntity
+    val marketData: CoinMarketDataEntity?
 )

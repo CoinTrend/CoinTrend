@@ -45,23 +45,13 @@ class RoomDataMapper @Inject constructor(
         }
     }
 
-    fun mapFavouriteCoinEntity(coinWithMarketData: CoinWithMarketData): FavouriteCoinEntity {
-        return with(coinWithMarketData) {
-            FavouriteCoinEntity(
-                id = id,
-                name = name,
-                symbol = symbol,
-                image = image,
-                rank = rank
+    private fun mapCoinMarketDataEntity(coinWithMarketData: CoinWithMarketData): CoinMarketDataEntity? {
+        return coinWithMarketData.marketData?.let {
+            mapCoinMarketDataEntity(
+                coinId = coinWithMarketData.id,
+                coinMarketData = it
             )
         }
-    }
-
-    fun mapCoinMarketDataEntity(coinWithMarketData: CoinWithMarketData): CoinMarketDataEntity {
-        return mapCoinMarketDataEntity(
-            coinId = coinWithMarketData.id,
-            coinMarketData = coinWithMarketData.marketData
-        )
     }
 
     fun mapTopCoinEntityList(coinsList: List<CoinWithMarketData>): List<TopCoinEntity> {
@@ -71,7 +61,7 @@ class RoomDataMapper @Inject constructor(
     }
 
     fun mapCoinMarketDataEntityList(coinsList: List<CoinWithMarketData>): List<CoinMarketDataEntity> {
-        return coinsList.map {
+        return coinsList.mapNotNull {
             mapCoinMarketDataEntity(it)
         }
     }
@@ -83,8 +73,8 @@ class RoomDataMapper @Inject constructor(
                 name = coin.name,
                 symbol = coin.symbol,
                 image = coin.image,
-                marketData = mapCoinMarketData(marketData),
-                rank = marketData.marketCapRank ?: coin.rank
+                marketData = marketData?.let { mapCoinMarketData(coinMarketDataEntity = it) },
+                rank = marketData?.marketCapRank ?: coin.rank
             )
         }
     }
@@ -157,8 +147,8 @@ class RoomDataMapper @Inject constructor(
                 name = coin.name,
                 symbol = coin.symbol,
                 image = coin.image,
-                marketData = mapCoinMarketData(marketData),
-                rank = marketData.marketCapRank ?: coin.rank
+                marketData = marketData?.let { mapCoinMarketData(coinMarketDataEntity = it) },
+                rank = marketData?.marketCapRank ?: coin.rank
             )
         }
     }

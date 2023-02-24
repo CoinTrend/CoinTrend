@@ -124,13 +124,13 @@ fun CoinWithMarketDataItemCompact(
                         .padding(top = 8.dp)
                         .fillMaxWidth()
                         .height(30.dp),
-                    data = it, graphColor = item().trendColor, showDashedLine = true)
+                    data = it, graphColor = item().trendColor ?: PositiveTrend, showDashedLine = true)
             }
 
 
             Text(
                 modifier = Modifier.padding(top = 8.dp),
-                text = item().price,
+                text = item().price.orEmpty(), // TODO: handle shimmer if market data is missing
                 fontWeight = FontWeight.Medium,
                 maxLines = 1
             )
@@ -139,12 +139,12 @@ fun CoinWithMarketDataItemCompact(
                 modifier = Modifier.sizeIn(minWidth = 72.dp),
                 shape = MaterialTheme.shapes.small,
                 colors = CardDefaults.cardColors(
-                    containerColor = item().trendColor,
+                    containerColor = item().trendColor ?: PositiveTrend, // TODO: handle shimmer if market data is missing
                     contentColor = Color.White
                 )
             ) {
                 Text(
-                    text = item().priceChangePercentage,
+                    text = item().priceChangePercentage.orEmpty(), // TODO: handle shimmer if market data is missing
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                         .padding(horizontal = 8.dp, vertical = 1.dp)

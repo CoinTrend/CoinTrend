@@ -22,6 +22,9 @@ import com.cointrend.presentation.models.DataPoint
 import com.cointrend.presentation.theme.CoinTrendTheme
 import com.cointrend.presentation.theme.PositiveTrend
 import com.cointrend.presentation.theme.StocksDarkPrimaryText
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.placeholder
+import com.google.accompanist.placeholder.shimmer
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -140,19 +143,21 @@ fun CoinWithMarketDataItem(
                 if (showChart.value) {
                     androidx.compose.animation.AnimatedVisibility(visible = animateChart.value) {
 
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            LineChart(
-                                modifier = Modifier.size(width = 48.dp, height = 29.dp),
-                                data = item().sparklineData ?: persistentListOf(),
-                                graphColor = item().trendColor,
-                                showDashedLine = true
-                            )
+                        item().trendColor?.let { trendColor ->
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                LineChart(
+                                    modifier = Modifier.size(width = 48.dp, height = 29.dp),
+                                    data = item().sparklineData ?: persistentListOf(),
+                                    graphColor = trendColor,
+                                    showDashedLine = true
+                                )
 
-                            // Invisible text with max price size to determine the max possible size of this column
-                            Text(
-                                text = "$100,000.00",
-                                modifier = Modifier.alpha(0f)
-                            )
+                                // Invisible text with max price size to determine the max possible size of this column
+                                Text(
+                                    text = "$100,000.00",
+                                    modifier = Modifier.alpha(0f)
+                                )
+                            }
                         }
 
                     }
@@ -164,24 +169,49 @@ fun CoinWithMarketDataItem(
                     horizontalAlignment = Alignment.End
                 ) {
 
+                    val price = item().price
 
                     Text(
-                        modifier = Modifier.width(IntrinsicSize.Max),
-                        text = item().price,
+                        modifier = Modifier
+                            .width(IntrinsicSize.Max)
+                            .placeholder(
+                                visible = price == null,
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                shape = MaterialTheme.shapes.small,
+                                highlight = PlaceholderHighlight.shimmer(
+                                    highlightColor = StocksDarkPrimaryText
+                                )
+                            ),
+                        text = price ?: "$10,000.00",
                         fontWeight = FontWeight.Medium,
                         maxLines = 1
                     )
 
+                    val priceChangePercentage = item().priceChangePercentage
+                    
+                    if (priceChangePercentage == null) {
+                        Spacer(modifier = Modifier.padding(1.dp))
+                    }
+
                     Card(
-                        modifier = Modifier.requiredWidth(72.dp),
+                        modifier = Modifier
+                            .requiredWidth(72.dp)
+                            .placeholder(
+                                visible = priceChangePercentage == null,
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                shape = MaterialTheme.shapes.small,
+                                highlight = PlaceholderHighlight.shimmer(
+                                    highlightColor = StocksDarkPrimaryText
+                                )
+                            ),
                         shape = MaterialTheme.shapes.small,
                         colors = CardDefaults.cardColors(
-                            containerColor = item().trendColor,
+                            containerColor = item().trendColor ?: PositiveTrend,
                             contentColor = Color.White
                         )
                     ) {
                         Text(
-                            text = item().priceChangePercentage,
+                            text = priceChangePercentage.orEmpty(),
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier
                                 .padding(horizontal = 8.dp, vertical = 1.dp)

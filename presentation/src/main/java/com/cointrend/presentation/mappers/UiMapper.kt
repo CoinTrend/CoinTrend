@@ -8,10 +8,7 @@ import com.cointrend.domain.features.marketchart.models.MarketChartDataPoint
 import com.cointrend.domain.features.settings.models.SettingsConfiguration
 import com.cointrend.domain.features.topcoins.models.TopCoinsData
 import com.cointrend.domain.features.trendingcoins.models.TrendingCoinsData
-import com.cointrend.domain.models.Coin
-import com.cointrend.domain.models.CoinMarketData
-import com.cointrend.domain.models.CoinWithMarketData
-import com.cointrend.domain.models.Currency
+import com.cointrend.domain.models.*
 import com.cointrend.presentation.BuildConfig
 import com.cointrend.presentation.di.DateAndTimeFormatter
 import com.cointrend.presentation.di.DateOnlyFormatter
@@ -95,7 +92,7 @@ class UiMapper @Inject constructor(
         // The last update date presented is the most recent one to show the most
         // recent update date to the user, differently from the lastUpdate
         // considered at domain layer which is the least recent one.
-        val lastUpdate = coinsData.coins.maxOfOrNull { it.marketData.lastUpdate } ?: LocalDateTime.now()
+        val lastUpdate = coinsData.coins.maxOfOrNull { it.lastUpdateOrNow() } ?: LocalDateTime.now()
 
         return FavouriteCoinUiData(
             coins = mapCoinWithMarketDataUiItemsList(coinsData.coins),
@@ -115,16 +112,16 @@ class UiMapper @Inject constructor(
             name = coin.name,
             symbol = coin.symbol.uppercase(),
             imageUrl = coin.image,
-            price = coin.marketData.price.toFormattedCurrency(),
+            price = coin.marketData?.price?.toFormattedCurrency(),
             marketCapRank = coin.rank.toString(),
-            priceChangePercentage = coin.marketData.priceChangePercentage.formatToPercentage(
+            priceChangePercentage = coin.marketData?.priceChangePercentage?.formatToPercentage(
                 numberFormatter
             ),
-            trendColor = coin.marketData.priceChangePercentage.correspondingTrendColor(),
-            sparklineData = coin.marketData.sparklineData?.mapIndexed { _, d ->
+            trendColor = coin.marketData?.priceChangePercentage?.correspondingTrendColor(),
+            sparklineData = coin.marketData?.sparklineData?.mapIndexed { _, d ->
                 DataPoint(y = d, xLabel = null, yLabel = null)
             }?.toImmutableList(),
-            lastUpdate = coin.marketData.lastUpdate.toFormattedString(formatter = dateTimeFormatter)
+            lastUpdate = coin.marketData?.lastUpdate?.toFormattedString(formatter = dateTimeFormatter)
         )
     }
 

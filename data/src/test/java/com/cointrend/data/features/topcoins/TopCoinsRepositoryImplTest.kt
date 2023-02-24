@@ -79,7 +79,7 @@ class TopCoinsRepositoryImplTest : BaseCoroutineTestWithTestDispatcherProvider(
             expectThat(item).isEqualTo(
                 TopCoinsData(
                     topCoins = list,
-                    lastUpdate = list.first().marketData.lastUpdate
+                    lastUpdate = list.first().marketData!!.lastUpdate
                 )
             )
 

@@ -15,7 +15,7 @@ abstract class BaseCoinWithMarketData(
     name: String,
     symbol: String,
     image: String,
-    open val marketData: CoinMarketData
+    open val marketData: CoinMarketData?
 ) : BaseCoin(
     id = id,
     name = name,
@@ -65,7 +65,7 @@ data class CoinWithMarketData(
     override val name: String,
     override val symbol: String,
     override val image: String,
-    override val marketData: CoinMarketData,
+    override val marketData: CoinMarketData?,
     val rank: Int, // Currently redundant as it corresponds to marketCapRank of CoinMarketData. //TODO: set to nullable as it is not always available for less popular coins.
 ) : BaseCoinWithMarketData(
     id = id,
@@ -85,4 +85,8 @@ fun CoinWithMarketData.toCoin(): Coin {
             rank = rank
         )
     }
+}
+
+fun CoinWithMarketData.lastUpdateOrNow(): LocalDateTime {
+    return this.marketData?.lastUpdate ?: LocalDateTime.now()
 }

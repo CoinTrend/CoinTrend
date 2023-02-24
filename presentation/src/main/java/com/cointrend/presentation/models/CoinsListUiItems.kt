@@ -8,12 +8,12 @@ data class CoinWithMarketDataUiItem(
     val name: String,
     val symbol: String,
     val imageUrl: String,
-    val price: String,
+    val price: String?,
     val marketCapRank: String,
-    val priceChangePercentage: String,
-    val trendColor: Color,
+    val priceChangePercentage: String?,
+    val trendColor: Color?,
     val sparklineData: ImmutableList<DataPoint>?,
-    val lastUpdate: String
+    val lastUpdate: String?
 )
 
 data class TopCoinUiData(

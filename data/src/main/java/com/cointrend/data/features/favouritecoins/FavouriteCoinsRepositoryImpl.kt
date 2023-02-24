@@ -8,6 +8,7 @@ import com.cointrend.domain.features.favouritecoins.models.FavouriteCoinsData
 import com.cointrend.domain.features.favouritecoins.models.FavouriteCoinsRefreshParams
 import com.cointrend.domain.models.Coin
 import com.cointrend.domain.models.CoinWithMarketData
+import com.cointrend.domain.models.lastUpdateOrNow
 import com.cointrend.domain.models.toCoin
 import com.github.davidepanidev.kotlinextensions.utils.dispatchers.DispatcherProvider
 import kotlinx.coroutines.flow.*
@@ -29,6 +30,7 @@ class FavouriteCoinsRepositoryImpl @Inject constructor(
                     // NullPointerException is thrown when the market data of some coins
                     // is missing. An EmptyDatabaseException is thrown instead so that the domain layer
                     // triggers a data refresh.
+                    // This is no more used after the introduction of the 'BaseAutomaticRefreshCoinIfMissingMarketDataFlowUseCase'
                     EmptyDatabaseException()
                 } else it
             }
@@ -104,7 +106,7 @@ class FavouriteCoinsRepositoryImpl @Inject constructor(
 
     // Gets the least recent last update date among the coins
     private fun getLastUpdateDate(coinsList: List<CoinWithMarketData>): LocalDateTime {
-        return coinsList.minOf { it.marketData.lastUpdate }
+        return coinsList.minOf { it.lastUpdateOrNow() }
     }
 
 }
