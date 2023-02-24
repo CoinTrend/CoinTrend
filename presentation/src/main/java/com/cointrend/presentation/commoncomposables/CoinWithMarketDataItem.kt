@@ -187,11 +187,9 @@ fun CoinWithMarketDataItem(
                         maxLines = 1
                     )
 
+                    Spacer(modifier = Modifier.padding(1.dp))
+
                     val priceChangePercentage = item().priceChangePercentage
-                    
-                    if (priceChangePercentage == null) {
-                        Spacer(modifier = Modifier.padding(1.dp))
-                    }
 
                     Card(
                         modifier = Modifier
