@@ -1,0 +1,2 @@
+-keep class java.util.concurrent.** { *; }
+-keep class java.time.format.** { *; }
