@@ -44,30 +44,43 @@ class FavouriteCoinsViewModel @Inject constructor(
     )
     private set
 
-    private var isFavouriteCoinsFlowInterrupted = false
+    private var favouriteCoinsFlowJob: Job? = null
+    private val isFavouriteCoinsFlowInterrupted: Boolean get() {
+        return favouriteCoinsFlowJob == null
+    }
 
     private var reorderCoinJob: Job? = null
 
 
-    init {
+    fun init() {
+        Timber.d("init()")
         initFavouriteCoinsFlowCollection()
     }
 
-    /**
-     * Top Coins
-     */
+    fun onDispose() {
+        Timber.d("onDispose()")
+        cancelFavouriteCoinsFlowCollection()
+    }
+
     private fun initFavouriteCoinsFlowCollection() {
+        cancelFavouriteCoinsFlowCollection()
+
         // Single source of truth of the top coins list
-        getFavouriteCoinsFlowUseCase(Unit)
+        favouriteCoinsFlowJob = getFavouriteCoinsFlowUseCase(Unit)
             .onEach {
-                isFavouriteCoinsFlowInterrupted = false
                 handleGetFavouriteCoinsState(it)
             }.catch {
+                handleGetFavouriteCoinsState(Resultat.failure(it))
+
                 // After this catch the flow is interrupted and it must be collected
                 // again to obtain new data. The handleRefresh() method handles this situation.
-                isFavouriteCoinsFlowInterrupted = true
-                handleGetFavouriteCoinsState(Resultat.failure(it))
+                cancelFavouriteCoinsFlowCollection()
             }.launchIn(viewModelScope)
+    }
+
+    private fun cancelFavouriteCoinsFlowCollection() {
+        favouriteCoinsFlowJob?.cancel()
+        favouriteCoinsFlowJob = null
     }
 
     private fun refreshFavouriteCoins() {

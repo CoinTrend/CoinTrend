@@ -78,6 +78,14 @@ fun FavouriteCoinsScreen(
             listState.draggingItemKey != null
         }
     }
+    
+    DisposableEffect(key1 = null) {
+        viewModel.init()
+
+        onDispose {
+            viewModel.onDispose()
+        }
+    }
 
 
     Scaffold(

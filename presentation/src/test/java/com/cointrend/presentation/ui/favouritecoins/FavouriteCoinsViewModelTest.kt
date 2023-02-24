@@ -66,6 +66,7 @@ class FavouriteCoinsViewModelTest : BaseCoroutineTestWithTestDispatcherProviderA
     }
 
     private fun initFavouriteCoinsViewModelStateByConsumingFirstFlowValue() = runTest {
+        cut.init()
         advanceUntilIdle()
     }
 
