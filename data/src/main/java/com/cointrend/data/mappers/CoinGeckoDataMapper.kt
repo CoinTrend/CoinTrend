@@ -121,7 +121,7 @@ class CoinGeckoDataMapper @Inject constructor(
                         }
                     }
                 },
-                lastUpdate = lastUpdated.toLocalDateTime(),
+                lastUpdate = lastUpdated?.toLocalDateTime() ?: LocalDateTime.now(),
             )
         }
     }

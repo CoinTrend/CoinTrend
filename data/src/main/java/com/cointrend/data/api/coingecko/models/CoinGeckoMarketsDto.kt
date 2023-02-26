@@ -49,7 +49,7 @@ data class CoinGeckoMarketsDto(
     @SerializedName("sparkline_in_7d")
     val sparklineIn7d: SparklineIn7d?,
     @SerializedName("last_updated")
-    val lastUpdated: String,
+    val lastUpdated: String?,
     @SerializedName("price_change_percentage_7d_in_currency")
     val priceChangePercentage7dInCurrency: Double?
 )
