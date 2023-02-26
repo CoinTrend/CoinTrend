@@ -1,4 +1,4 @@
-package com.cointrend.presentation.ui.coinslist
+package com.cointrend.presentation.ui.about
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -62,7 +62,9 @@ fun AboutScreen(
 
             item { Spacer(modifier = Modifier.size(16.dp)) }
 
-            item { SectionTitle(title = "Source Code", modifier = Modifier.padding(defaultHorizontalPadding)) }
+            item { SectionTitle(title = "Source Code", modifier = Modifier.padding(
+                defaultHorizontalPadding
+            )) }
 
             item {
                 Column(
@@ -80,7 +82,9 @@ fun AboutScreen(
 
             item { Spacer(modifier = Modifier.size(16.dp)) }
 
-            item { SectionTitle(title = "Contact", modifier = Modifier.padding(defaultHorizontalPadding)) }
+            item { SectionTitle(title = "Contact", modifier = Modifier.padding(
+                defaultHorizontalPadding
+            )) }
 
             item {
                 Column(
@@ -98,7 +102,9 @@ fun AboutScreen(
 
             item { Spacer(modifier = Modifier.size(16.dp)) }
 
-            item { SectionTitle(title = "Support", modifier = Modifier.padding(defaultHorizontalPadding)) }
+            item { SectionTitle(title = "Support", modifier = Modifier.padding(
+                defaultHorizontalPadding
+            )) }
 
             item {
                 Column(
