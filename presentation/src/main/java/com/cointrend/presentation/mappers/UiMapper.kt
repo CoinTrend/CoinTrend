@@ -106,23 +106,43 @@ class UiMapper @Inject constructor(
         )
     }
 
-    private fun mapCoinWithMarketDataUiItem(coin: CoinWithMarketData): CoinWithMarketDataUiItem {
-        return CoinWithMarketDataUiItem(
-            id = coin.id,
-            name = coin.name,
-            symbol = coin.symbol.uppercase(),
-            imageUrl = coin.image,
-            price = coin.marketData?.price?.toFormattedCurrency(),
-            marketCapRank = coin.rank.toString(),
-            priceChangePercentage = coin.marketData?.priceChangePercentage?.formatToPercentage(
-                numberFormatter
-            ),
-            trendColor = coin.marketData?.priceChangePercentage?.correspondingTrendColor(),
-            sparklineData = coin.marketData?.sparklineData?.mapIndexed { _, d ->
-                DataPoint(y = d, xLabel = null, yLabel = null)
-            }?.toImmutableList(),
-            lastUpdate = coin.marketData?.lastUpdate?.toFormattedString(formatter = dateTimeFormatter)
-        )
+    /**
+     * Returns the actual implementation of [BaseCoinWithMarketDataUiItem] depending if
+     * the the marketData field of the input [coin] is null or not.
+     * @return [CoinWithMarketDataUiItem] if marketData of the input [coin] is not null. [CoinWithShimmeringMarketDataUiItem] otherwise.
+     */
+    private fun mapCoinWithMarketDataUiItem(coin: CoinWithMarketData): BaseCoinWithMarketDataUiItem {
+        return coin.marketData?.let { marketData ->
+            CoinWithMarketDataUiItem(
+                id = coin.id,
+                name = coin.name,
+                symbol = coin.symbol.uppercase(),
+                imageUrl = coin.image,
+                price = marketData.price.toFormattedCurrency(),
+                marketCapRank = coin.rank.toString(),
+                priceChangePercentage = marketData.priceChangePercentage.formatToPercentage(
+                    numberFormatter
+                ),
+                trendColor = marketData.priceChangePercentage.correspondingTrendColor(),
+                sparklineData = coin.marketData?.sparklineData?.mapIndexed { _, d ->
+                    DataPoint(y = d, xLabel = null, yLabel = null)
+                }?.toImmutableList(),
+                lastUpdate = marketData.lastUpdate.toFormattedString(formatter = dateTimeFormatter)
+            )
+        } ?: kotlin.run {
+            CoinWithShimmeringMarketDataUiItem(
+                id = coin.id,
+                name = coin.name,
+                symbol = coin.symbol.uppercase(),
+                imageUrl = coin.image,
+                price = "1,000.00$",
+                marketCapRank = "N.A.",
+                priceChangePercentage = "+0.00%",
+                trendColor = Color.Gray,
+                sparklineData = null,
+                lastUpdate = "Not available"
+            )
+        }
     }
 
     fun mapCoinMarketUiData(coinMarketData: CoinMarketData): CoinMarketUiData {
@@ -146,7 +166,7 @@ class UiMapper @Inject constructor(
         }
     }
 
-    private fun mapCoinWithMarketDataUiItemsList(coinsList: List<CoinWithMarketData>): ImmutableList<CoinWithMarketDataUiItem> {
+    private fun mapCoinWithMarketDataUiItemsList(coinsList: List<CoinWithMarketData>): ImmutableList<BaseCoinWithMarketDataUiItem> {
         return coinsList.map { mapCoinWithMarketDataUiItem(it) }.toImmutableList()
     }
 

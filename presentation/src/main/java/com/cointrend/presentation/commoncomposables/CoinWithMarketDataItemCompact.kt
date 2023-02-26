@@ -2,9 +2,7 @@ package com.cointrend.presentation.commoncomposables
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.cointrend.presentation.customcomposables.LineChart
 import com.cointrend.presentation.customcomposables.sharedelements.SharedElement
 import com.cointrend.presentation.customcomposables.sharedelements.SharedElementsRoot
+import com.cointrend.presentation.models.BaseCoinWithMarketDataUiItem
 import com.cointrend.presentation.models.CoinWithMarketDataUiItem
 import com.cointrend.presentation.theme.CoinTrendTheme
 import com.cointrend.presentation.theme.PositiveTrend
@@ -29,7 +28,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CoinWithMarketDataItemCompact(
-    item: () -> CoinWithMarketDataUiItem,
+    item: () -> BaseCoinWithMarketDataUiItem,
     sharedElementScreenKey: () -> String,
     onCoinItemClick: () -> Unit,
 ) {
@@ -80,6 +79,14 @@ fun CoinWithMarketDataItemCompact(
                 CoinIcon(imageUrl = item().imageUrl)
             }
 
+            // TODO: handle shimmer if market data is missing
+            /*
+            val shouldShimmerMarketData by remember {
+                mutableStateOf(item() is CoinWithShimmeringMarketDataUiItem)
+            }
+
+             */
+
             Row(
                 modifier = Modifier.padding(top = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -124,13 +131,13 @@ fun CoinWithMarketDataItemCompact(
                         .padding(top = 8.dp)
                         .fillMaxWidth()
                         .height(30.dp),
-                    data = it, graphColor = item().trendColor ?: PositiveTrend, showDashedLine = true)
+                    data = it, graphColor = item().trendColor, showDashedLine = true)
             }
 
 
             Text(
                 modifier = Modifier.padding(top = 8.dp),
-                text = item().price.orEmpty(), // TODO: handle shimmer if market data is missing
+                text = item().price, // TODO: handle shimmer if market data is missing
                 fontWeight = FontWeight.Medium,
                 maxLines = 1
             )
@@ -139,12 +146,12 @@ fun CoinWithMarketDataItemCompact(
                 modifier = Modifier.sizeIn(minWidth = 72.dp),
                 shape = MaterialTheme.shapes.small,
                 colors = CardDefaults.cardColors(
-                    containerColor = item().trendColor ?: PositiveTrend, // TODO: handle shimmer if market data is missing
+                    containerColor = item().trendColor, // TODO: handle shimmer if market data is missing
                     contentColor = Color.White
                 )
             ) {
                 Text(
-                    text = item().priceChangePercentage.orEmpty(), // TODO: handle shimmer if market data is missing
+                    text = item().priceChangePercentage, // TODO: handle shimmer if market data is missing
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                         .padding(horizontal = 8.dp, vertical = 1.dp)

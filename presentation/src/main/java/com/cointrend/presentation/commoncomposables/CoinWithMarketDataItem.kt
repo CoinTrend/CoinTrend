@@ -17,14 +17,13 @@ import androidx.compose.ui.unit.dp
 import com.cointrend.presentation.customcomposables.LineChart
 import com.cointrend.presentation.customcomposables.sharedelements.SharedElement
 import com.cointrend.presentation.customcomposables.sharedelements.SharedElementsRoot
+import com.cointrend.presentation.models.BaseCoinWithMarketDataUiItem
 import com.cointrend.presentation.models.CoinWithMarketDataUiItem
+import com.cointrend.presentation.models.CoinWithShimmeringMarketDataUiItem
 import com.cointrend.presentation.models.DataPoint
 import com.cointrend.presentation.theme.CoinTrendTheme
 import com.cointrend.presentation.theme.PositiveTrend
 import com.cointrend.presentation.theme.StocksDarkPrimaryText
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material.placeholder
-import com.google.accompanist.placeholder.shimmer
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -34,7 +33,7 @@ import timber.log.Timber
 @Composable
 fun CoinWithMarketDataItem(
     modifier: Modifier = Modifier,
-    item: () -> CoinWithMarketDataUiItem,
+    item: () -> BaseCoinWithMarketDataUiItem,
     sharedElementScreenKey: () -> String,
     onCoinItemClick: () -> Unit,
 ) {
@@ -78,7 +77,6 @@ fun CoinWithMarketDataItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Timber.d("CoinItem card recomposition ${item().symbol} $sharedElementScreenKey")
-
             val showChart = remember(key1 = item().id) {
                 mutableStateOf(false)
             }
@@ -95,6 +93,10 @@ fun CoinWithMarketDataItem(
                 CoinIcon(imageUrl = item().imageUrl)
             }
 
+            val shouldShimmerMarketData by remember(key1 = item()) {
+                mutableStateOf(item() is CoinWithShimmeringMarketDataUiItem)
+            }
+
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.Center,
@@ -109,6 +111,7 @@ fun CoinWithMarketDataItem(
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Card(
+                        modifier = Modifier.shimmer(visible = shouldShimmerMarketData),
                         shape = MaterialTheme.shapes.extraSmall,
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -143,12 +146,12 @@ fun CoinWithMarketDataItem(
                 if (showChart.value) {
                     androidx.compose.animation.AnimatedVisibility(visible = animateChart.value) {
 
-                        item().trendColor?.let { trendColor ->
+                        item().sparklineData?.let { sparklineData ->
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 LineChart(
                                     modifier = Modifier.size(width = 48.dp, height = 29.dp),
-                                    data = item().sparklineData ?: persistentListOf(),
-                                    graphColor = trendColor,
+                                    data = sparklineData,
+                                    graphColor = item().trendColor,
                                     showDashedLine = true
                                 )
 
@@ -169,47 +172,29 @@ fun CoinWithMarketDataItem(
                     horizontalAlignment = Alignment.End
                 ) {
 
-                    val price = item().price
-
                     Text(
                         modifier = Modifier
                             .width(IntrinsicSize.Max)
-                            .placeholder(
-                                visible = price == null,
-                                color = MaterialTheme.colorScheme.primaryContainer,
-                                shape = MaterialTheme.shapes.small,
-                                highlight = PlaceholderHighlight.shimmer(
-                                    highlightColor = StocksDarkPrimaryText
-                                )
-                            ),
-                        text = price ?: "$10,000.00",
+                            .shimmer(visible = shouldShimmerMarketData),
+                        text = item().price,
                         fontWeight = FontWeight.Medium,
                         maxLines = 1
                     )
 
                     Spacer(modifier = Modifier.padding(1.dp))
 
-                    val priceChangePercentage = item().priceChangePercentage
-
                     Card(
                         modifier = Modifier
                             .requiredWidth(72.dp)
-                            .placeholder(
-                                visible = priceChangePercentage == null,
-                                color = MaterialTheme.colorScheme.primaryContainer,
-                                shape = MaterialTheme.shapes.small,
-                                highlight = PlaceholderHighlight.shimmer(
-                                    highlightColor = StocksDarkPrimaryText
-                                )
-                            ),
+                            .shimmer(visible = shouldShimmerMarketData),
                         shape = MaterialTheme.shapes.small,
                         colors = CardDefaults.cardColors(
-                            containerColor = item().trendColor ?: PositiveTrend,
+                            containerColor = item().trendColor,
                             contentColor = Color.White
                         )
                     ) {
                         Text(
-                            text = priceChangePercentage.orEmpty(),
+                            text = item().priceChangePercentage,
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier
                                 .padding(horizontal = 8.dp, vertical = 1.dp)
