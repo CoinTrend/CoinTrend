@@ -15,9 +15,6 @@ sealed class Screen : Parcelable {
     object Search : Screen()
 
     @Parcelize
-    object About : Screen()
-
-    @Parcelize
     data class CoinDetail(val coinDetailMainData: CoinUiItem) : Screen()
 
 }

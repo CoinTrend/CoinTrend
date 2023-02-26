@@ -1,7 +1,6 @@
 package com.cointrend.presentation.models
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.TrendingUp
@@ -36,12 +35,6 @@ enum class BottomNavigationItem(val route: Screen, val icon: ImageVector, val ti
         route = Screen.Search,
         icon = Icons.Default.Search,
         title = "Search"
-    ),
-
-    About(
-    route = Screen.About,
-    icon = Icons.Default.Info,
-    title = "About"
     )
 
 }
