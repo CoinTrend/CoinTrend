@@ -21,8 +21,8 @@ class CoinGeckoDataMapper @Inject constructor(
         return with(coinDto.item) {
             Coin(
                 id = id,
-                name = name,
-                symbol = symbol,
+                name = name.orEmpty(),
+                symbol = symbol.orEmpty(),
                 image = large.orEmpty(),
                 rank = marketCapRank
             )
@@ -45,8 +45,8 @@ class CoinGeckoDataMapper @Inject constructor(
         return with(coinDto) {
             Coin(
                 id = id,
-                name = name,
-                symbol = symbol,
+                name = name.orEmpty(),
+                symbol = symbol.orEmpty(),
                 image = large.orEmpty(),
                 rank = marketCapRank
             )
@@ -56,11 +56,11 @@ class CoinGeckoDataMapper @Inject constructor(
     private fun mapCoinWithMarketData(coinResponse: CoinGeckoMarketsDto): CoinWithMarketData {
         return CoinWithMarketData(
             id = coinResponse.id,
-            name = coinResponse.name,
-            symbol = coinResponse.symbol,
-            image = coinResponse.image,
+            name = coinResponse.name.orEmpty(),
+            symbol = coinResponse.symbol.orEmpty(),
+            image = coinResponse.image.orEmpty(),
             marketData = mapCoinMarketData(coinResponse),
-            rank = coinResponse.marketCapRank ?: 0
+            rank = coinResponse.marketCapRank
         )
     }
 
@@ -86,7 +86,7 @@ class CoinGeckoDataMapper @Inject constructor(
                 priceChangePercentage = if (settingsConfiguration.getDefaultTimeRange() == TimeRange.Day) {
                     priceChangePercentage24h
                 } else {
-                    priceChangePercentage7dInCurrency ?: 0.0
+                    priceChangePercentage7dInCurrency
                 },
                 sparklineData = sparklineIn7d?.price?.let {
                     if (settingsConfiguration.getDefaultTimeRange() == TimeRange.Day) {
@@ -102,7 +102,7 @@ class CoinGeckoDataMapper @Inject constructor(
 
                             val priceChangePercentage = ((lastPrice - startPrice) / startPrice) * 100
 
-                            if (priceChangePercentage.sign != priceChangePercentage24h.sign) {
+                            if (priceChangePercentage24h != null && priceChangePercentage.sign != priceChangePercentage24h.sign) {
                                 val lastPriceToAdd = ((priceChangePercentage24h * startPrice) / 100) + startPrice
                                 lastItems.add(lastPriceToAdd)
                             }
@@ -121,7 +121,8 @@ class CoinGeckoDataMapper @Inject constructor(
                         }
                     }
                 },
-                lastUpdate = lastUpdated?.toLocalDateTime() ?: LocalDateTime.now(),
+                remoteLastUpdate = lastUpdated?.toLocalDateTime(),
+                lastUpdate = LocalDateTime.now() // lastUpdate is LocalDateTime.now() so that the last update done by the App is considered
             )
         }
     }

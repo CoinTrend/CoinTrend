@@ -74,7 +74,7 @@ class RoomDataMapper @Inject constructor(
                 symbol = coin.symbol,
                 image = coin.image,
                 marketData = marketData?.let { mapCoinMarketData(coinMarketDataEntity = it) },
-                rank = marketData?.marketCapRank ?: coin.rank
+                rank = marketData?.marketCapRank
             )
         }
     }
@@ -100,6 +100,7 @@ class RoomDataMapper @Inject constructor(
                 atlDate = atlDate?.toLocalDateTime(),
                 priceChangePercentage = priceChangePercentage,
                 sparklineData = sparklineData?.deserializeAsJson(serializationManager),
+                remoteLastUpdate = remoteLastUpdate?.toLocalDateTime(),
                 lastUpdate = lastUpdate.toLocalDateTime(),
             )
         }
@@ -127,6 +128,7 @@ class RoomDataMapper @Inject constructor(
                 atlDate = atlDate?.toEpochSecond(ZoneOffset.UTC),
                 priceChangePercentage = priceChangePercentage,
                 sparklineData = sparklineData?.serializeToJsonString(serializationManager),
+                remoteLastUpdate = remoteLastUpdate?.toEpochSecond(ZoneOffset.UTC),
                 lastUpdate = lastUpdate.toEpochSecond(ZoneOffset.UTC)
             )
         }
@@ -148,7 +150,7 @@ class RoomDataMapper @Inject constructor(
                 symbol = coin.symbol,
                 image = coin.image,
                 marketData = marketData?.let { mapCoinMarketData(coinMarketDataEntity = it) },
-                rank = marketData?.marketCapRank ?: coin.rank
+                rank = marketData?.marketCapRank
             )
         }
     }

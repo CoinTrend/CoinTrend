@@ -24,24 +24,25 @@ abstract class BaseCoinWithMarketData(
 )
 
 data class CoinMarketData(
-    val price: Double,
+    val price: Double?,
     val marketCapRank: Int?,
-    val marketCap: Double,
-    val marketCapChangePercentage24h: Double,
-    val totalVolume: Double,
-    val high24h: Double,
-    val low24h: Double,
-    val circulatingSupply: Double,
+    val marketCap: Double?,
+    val marketCapChangePercentage24h: Double?,
+    val totalVolume: Double?,
+    val high24h: Double?,
+    val low24h: Double?,
+    val circulatingSupply: Double?,
     val totalSupply: Double?,
     val maxSupply: Double?,
-    val ath: Double,
-    val athChangePercentage: Double,
+    val ath: Double?,
+    val athChangePercentage: Double?,
     val athDate: LocalDateTime?,
-    val atl: Double,
-    val atlChangePercentage: Double,
+    val atl: Double?,
+    val atlChangePercentage: Double?,
     val atlDate: LocalDateTime?,
-    val priceChangePercentage: Double,
+    val priceChangePercentage: Double?,
     val sparklineData: List<Double>?,
+    val remoteLastUpdate: LocalDateTime?,
     override val lastUpdate: LocalDateTime
 ) : BaseDataWithLastUpdateDate(
     lastUpdate = lastUpdate
@@ -52,7 +53,7 @@ data class Coin(
     override val name: String,
     override val symbol: String,
     override val image: String,
-    val rank: Int // Currently corresponding to marketCapRank of CoinMarketData. //TODO: set to nullable as it is not always available for less popular coins.
+    val rank: Int? // Currently corresponding to marketCapRank of CoinMarketData.
 ) : BaseCoin(
     id = id,
     name = name,
@@ -66,7 +67,7 @@ data class CoinWithMarketData(
     override val symbol: String,
     override val image: String,
     override val marketData: CoinMarketData?,
-    val rank: Int, // Currently redundant as it corresponds to marketCapRank of CoinMarketData. //TODO: set to nullable as it is not always available for less popular coins.
+    val rank: Int?, // Currently redundant as it corresponds to marketCapRank of CoinMarketData.
 ) : BaseCoinWithMarketData(
     id = id,
     name = name,

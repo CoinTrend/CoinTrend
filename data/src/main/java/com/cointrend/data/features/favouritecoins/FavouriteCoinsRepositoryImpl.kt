@@ -36,17 +36,10 @@ class FavouriteCoinsRepositoryImpl @Inject constructor(
             }
             .distinctUntilChanged()
             .map {
-                if (it.isEmpty()) {
-                    FavouriteCoinsData(
-                        coins = it,
-                        lastUpdate = LocalDateTime.now()
-                    )
-                } else {
-                    FavouriteCoinsData(
-                        coins = it,
-                        lastUpdate = getLastUpdateDate(it)
-                    )
-                }
+                FavouriteCoinsData(
+                    coins = it,
+                    lastUpdate = getLastUpdateDate(it)
+                )
             }.flowOn(dispatchers.default)
     }
 
@@ -106,7 +99,9 @@ class FavouriteCoinsRepositoryImpl @Inject constructor(
 
     // Gets the least recent last update date among the coins
     private fun getLastUpdateDate(coinsList: List<CoinWithMarketData>): LocalDateTime {
-        return coinsList.minOf { it.lastUpdateOrNow() }
+        return coinsList.minOfOrNull {
+            it.lastUpdateOrNow()
+        } ?: LocalDateTime.now()
     }
 
 }

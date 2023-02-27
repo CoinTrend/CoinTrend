@@ -15,6 +15,6 @@ data class TrendingCoinEntity(
     val name: String,
     val symbol: String,
     val image: String,
-    val rank: Int, //TODO: set to nullable as it is not always available for less popular coins.
+    val rank: Int?,
     val insertionDate: Long
 )

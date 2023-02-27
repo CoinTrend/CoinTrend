@@ -9,10 +9,10 @@ data class CoinGeckoSearchDto(
 
     data class CoinDto(
         val id: String,
-        val name: String,
-        val symbol: String,
+        val name: String? = null,
+        val symbol: String? = null,
         @SerializedName("market_cap_rank")
-        val marketCapRank: Int, //TODO: set to nullable as it is not always available for less popular coins.
+        val marketCapRank: Int? = null,
         val large: String? = null
     )
 

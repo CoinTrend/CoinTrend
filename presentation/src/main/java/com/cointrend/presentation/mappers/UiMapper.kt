@@ -8,7 +8,10 @@ import com.cointrend.domain.features.marketchart.models.MarketChartDataPoint
 import com.cointrend.domain.features.settings.models.SettingsConfiguration
 import com.cointrend.domain.features.topcoins.models.TopCoinsData
 import com.cointrend.domain.features.trendingcoins.models.TrendingCoinsData
-import com.cointrend.domain.models.*
+import com.cointrend.domain.models.Coin
+import com.cointrend.domain.models.CoinMarketData
+import com.cointrend.domain.models.CoinWithMarketData
+import com.cointrend.domain.models.Currency
 import com.cointrend.presentation.BuildConfig
 import com.cointrend.presentation.di.DateAndTimeFormatter
 import com.cointrend.presentation.di.DateOnlyFormatter
@@ -50,7 +53,7 @@ class UiMapper @Inject constructor(
                 name = name,
                 symbol = symbol,
                 image = imageUrl,
-                rank = marketCapRank.toInt()
+                rank = marketCapRank.toIntOrNull()
             )
         }
     }
@@ -63,7 +66,7 @@ class UiMapper @Inject constructor(
                     name = name,
                     symbol = symbol,
                     imageUrl = image,
-                    marketCapRank = rank.toString(),
+                    marketCapRank = rank?.toString().orNA(),
                 )
             }
         }.toImmutableList()
@@ -89,14 +92,9 @@ class UiMapper @Inject constructor(
     }
 
     fun mapFavouriteCoinUiData(coinsData: FavouriteCoinsData): FavouriteCoinUiData {
-        // The last update date presented is the most recent one to show the most
-        // recent update date to the user, differently from the lastUpdate
-        // considered at domain layer which is the least recent one.
-        val lastUpdate = coinsData.coins.maxOfOrNull { it.lastUpdateOrNow() } ?: LocalDateTime.now()
-
         return FavouriteCoinUiData(
             coins = mapCoinWithMarketDataUiItemsList(coinsData.coins),
-            lastUpdate = with(lastUpdate) {
+            lastUpdate = with(coinsData.lastUpdate) {
                 if (isToday()) {
                     toFormattedString(timeOnlyFormatter)
                 } else {
@@ -118,49 +116,48 @@ class UiMapper @Inject constructor(
                 name = coin.name,
                 symbol = coin.symbol.uppercase(),
                 imageUrl = coin.image,
-                price = marketData.price.toFormattedCurrency(),
-                marketCapRank = coin.rank.toString(),
-                priceChangePercentage = marketData.priceChangePercentage.formatToPercentage(
+                price = marketData.price?.toFormattedCurrency().orNA(),
+                marketCapRank = coin.rank?.toString().orNA(),
+                priceChangePercentage = marketData.priceChangePercentage?.formatToPercentage(
                     numberFormatter
-                ),
-                trendColor = marketData.priceChangePercentage.correspondingTrendColor(),
+                ).orNA(),
+                trendColor = marketData.priceChangePercentage?.correspondingTrendColor().orNeutral(),
                 sparklineData = coin.marketData?.sparklineData?.mapIndexed { _, d ->
                     DataPoint(y = d, xLabel = null, yLabel = null)
                 }?.toImmutableList(),
                 lastUpdate = marketData.lastUpdate.toFormattedString(formatter = dateTimeFormatter)
             )
-        } ?: kotlin.run {
-            CoinWithShimmeringMarketDataUiItem(
-                id = coin.id,
-                name = coin.name,
-                symbol = coin.symbol.uppercase(),
-                imageUrl = coin.image,
-                price = "1,000.00$",
-                marketCapRank = "N.A.",
-                priceChangePercentage = "+0.00%",
-                trendColor = Color.Gray,
-                sparklineData = null,
-                lastUpdate = "Not available"
-            )
-        }
+        } ?: CoinWithShimmeringMarketDataUiItem(
+            id = coin.id,
+            name = coin.name,
+            symbol = coin.symbol.uppercase(),
+            imageUrl = coin.image,
+            price = "1,000.00$",
+            marketCapRank = NA,
+            priceChangePercentage = "+0.00%",
+            trendColor = Color.Gray,
+            sparklineData = null,
+            lastUpdate = NOT_AVAILABLE
+        )
     }
 
     fun mapCoinMarketUiData(coinMarketData: CoinMarketData): CoinMarketUiData {
         return with(coinMarketData) {
             CoinMarketUiData(
-                price = price.toFormattedCurrency(),
+                price = price?.toFormattedCurrency().orNA(),
                 marketDataList = persistentListOf(
-                    Pair("Market Cap", marketCap.toFormattedCurrency()),
-                    Pair("Trading Volume 24h", totalVolume.toFormattedCurrency()),
-                    Pair("Highest Price 24h", high24h.toFormattedCurrency()),
-                    Pair("Lowest Price 24h", low24h.toFormattedCurrency()),
-                    Pair("Available Supply", circulatingSupply.toFormattedCurrency(withoutSymbol = true)),
-                    Pair("Total Supply", totalSupply?.toFormattedCurrency(withoutSymbol = true) ?: "Not available"),
-                    Pair("Max Supply", totalSupply?.toFormattedCurrency(withoutSymbol = true) ?: "Not available"),
-                    Pair("All-Time High Price", ath.toFormattedCurrency()),
-                    Pair("All-Time High Date", athDate?.toFormattedString(dateOnlyFormatter) ?: "Not available"),
-                    Pair("All-Time Low Price", atl.toFormattedCurrency()),
-                    Pair("All-Time Low Date", atlDate?.toFormattedString(dateOnlyFormatter) ?: "Not available")
+                    Pair("Market Cap", marketCap?.toFormattedCurrency().orNotAvailable()),
+                    Pair("Trading Volume 24h", totalVolume?.toFormattedCurrency().orNotAvailable()),
+                    Pair("Highest Price 24h", high24h?.toFormattedCurrency().orNotAvailable()),
+                    Pair("Lowest Price 24h", low24h?.toFormattedCurrency().orNotAvailable()),
+                    Pair("Available Supply", circulatingSupply?.toFormattedCurrency(withoutSymbol = true).orNotAvailable()),
+                    Pair("Total Supply", totalSupply?.toFormattedCurrency(withoutSymbol = true).orNotAvailable()),
+                    Pair("Max Supply", totalSupply?.toFormattedCurrency(withoutSymbol = true).orNotAvailable()),
+                    Pair("All-Time High Price", ath?.toFormattedCurrency().orNotAvailable()),
+                    Pair("All-Time High Date", athDate?.toFormattedString(dateOnlyFormatter).orNotAvailable()),
+                    Pair("All-Time Low Price", atl?.toFormattedCurrency().orNotAvailable()),
+                    Pair("All-Time Low Date", atlDate?.toFormattedString(dateOnlyFormatter).orNotAvailable()),
+                    Pair("Last updated", remoteLastUpdate?.toFormattedString(dateTimeFormatter).orNotAvailable())
                 )
             )
         }
@@ -281,5 +278,22 @@ class UiMapper @Inject constructor(
         }
     }
 
+    private fun String?.orNotAvailable(): String {
+        return this ?: NOT_AVAILABLE
+    }
+
+    private fun String?.orNA(): String {
+        return this ?: NA
+    }
+
+    private fun Color?.orNeutral(): Color {
+        return this ?: Color.Gray
+    }
+
+
+    companion object {
+        const val NOT_AVAILABLE = "Not available"
+        const val NA = "N.A."
+    }
 
 }

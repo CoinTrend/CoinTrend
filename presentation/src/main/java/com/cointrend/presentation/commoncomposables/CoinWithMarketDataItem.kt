@@ -47,6 +47,10 @@ fun CoinWithMarketDataItem(
         mutableStateOf(false)
     }
 
+    val shouldShimmerMarketData by remember(key1 = item()) {
+        mutableStateOf(item() is CoinWithShimmeringMarketDataUiItem)
+    }
+
     Card(
         modifier = modifier
             .wrapContentHeight()
@@ -91,10 +95,6 @@ fun CoinWithMarketDataItem(
                 }
             } else {
                 CoinIcon(imageUrl = item().imageUrl)
-            }
-
-            val shouldShimmerMarketData by remember(key1 = item()) {
-                mutableStateOf(item() is CoinWithShimmeringMarketDataUiItem)
             }
 
             Column(

@@ -29,6 +29,7 @@ val expectedCoinWithMarketData = CoinWithMarketData(
         atlDate = LocalDateTime.now(),
         priceChangePercentage = 0.0,
         sparklineData = null,
+        remoteLastUpdate = null,
         lastUpdate = LocalDateTime.now()
     ),
     rank = 0

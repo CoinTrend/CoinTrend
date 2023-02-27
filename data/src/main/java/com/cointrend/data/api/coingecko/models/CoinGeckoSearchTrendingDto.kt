@@ -15,10 +15,10 @@ data class CoinGeckoSearchTrendingDto(
         val id: String,
         @SerializedName("coin_id")
         val coinId: Int? = null,
-        val name: String,
-        val symbol: String,
+        val name: String? = null,
+        val symbol: String? = null,
         @SerializedName("market_cap_rank")
-        val marketCapRank: Int, //TODO: set to nullable as it is not always available for less popular coins.
+        val marketCapRank: Int? = null,
         val thumb: String? = null,
         val small: String? = null,
         val large: String? = null,
