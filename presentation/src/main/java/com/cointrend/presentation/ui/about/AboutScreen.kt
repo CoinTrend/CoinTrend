@@ -17,7 +17,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.cointrend.presentation.R
 import com.cointrend.presentation.commoncomposables.*
 import com.cointrend.presentation.models.Screen
@@ -32,7 +31,8 @@ private val defaultHorizontalPadding = 16.dp
 @Composable
 fun AboutScreen(
     navController: NavController<Screen>,
-    ) {
+) {
+
     Scaffold(
         modifier = Modifier,
         topBar = {
@@ -40,7 +40,8 @@ fun AboutScreen(
                 title = {},
                 navigationIcon = {
                     IconButton(onClick = {
-                        navController.pop() }) {
+                        navController.pop()
+                    }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_arrow_back_ios),
                             contentDescription = "Return to previous screen",
@@ -52,39 +53,28 @@ fun AboutScreen(
         }
     ) { padding ->
 
-        LazyColumn( Modifier
-            .fillMaxSize()
-            .padding(padding)){
+
+        LazyColumn(
+            Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
 
             item {
-                CoinTrend( modifier =  Modifier .padding( start =  115 .dp),)
+                CoinTrend(modifier = Modifier.fillMaxWidth())
             }
-
-            item { Spacer(modifier = Modifier.size(16.dp)) }
-
-            item { SectionTitle(title = "Source Code", modifier = Modifier.padding(
-                defaultHorizontalPadding
-            )) }
 
             item {
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .background(
-                            color = StocksDarkSelectedChip,
-                            shape = MaterialTheme.shapes.large
-                        ),
-                ) {
-                    SectionInfoItemTest(name = "GitHub", info = "https://github.com/CoinTrend/CoinTrend", image = R.drawable.ic_github, showDivider = true)
-                    SectionInfoItemTest(name = "Changelog", info = "https://github.com/CoinTrend/CoinTrend/releases", image = R.drawable.ic_github, showDivider = false)
-                }
+                Spacer(modifier = Modifier.size(16.dp))
             }
 
-            item { Spacer(modifier = Modifier.size(16.dp)) }
-
-            item { SectionTitle(title = "Contact", modifier = Modifier.padding(
-                defaultHorizontalPadding
-            )) }
+            item {
+                SectionTitle(
+                    title = "Source Code", modifier = Modifier.padding(
+                        defaultHorizontalPadding
+                    )
+                )
+            }
 
             item {
                 Column(
@@ -95,16 +85,32 @@ fun AboutScreen(
                             shape = MaterialTheme.shapes.large
                         ),
                 ) {
-                    SectionInfoItemTest(name = "Email", info = "cointrend.info@gmail.com", image = R.drawable.ic_mail, showDivider = true)
-                    SectionInfoItemTest(name = "GitHub Issues", info = "https://github.com/CoinTrend/CoinTrend/issues", image = R.drawable.ic_github, showDivider = false)
+                    SectionInfoItemAbout(
+                        name = "GitHub",
+                        info = "https://github.com/CoinTrend/CoinTrend",
+                        image = R.drawable.ic_github,
+                        showDivider = true
+                    )
+                    SectionInfoItemAbout(
+                        name = "Changelog",
+                        info = "https://github.com/CoinTrend/CoinTrend/releases",
+                        image = R.drawable.ic_github,
+                        showDivider = false
+                    )
                 }
             }
 
-            item { Spacer(modifier = Modifier.size(16.dp)) }
+            item {
+                Spacer(modifier = Modifier.size(16.dp))
+            }
 
-            item { SectionTitle(title = "Support", modifier = Modifier.padding(
-                defaultHorizontalPadding
-            )) }
+            item {
+                SectionTitle(
+                    title = "Contact", modifier = Modifier.padding(
+                        defaultHorizontalPadding
+                    )
+                )
+            }
 
             item {
                 Column(
@@ -115,12 +121,60 @@ fun AboutScreen(
                             shape = MaterialTheme.shapes.large
                         ),
                 ) {
-                    SectionInfoItemTest(name = "Donate", info = "https://github.com/CoinTrend#support", image = R.drawable.ic_donate, showDivider = true)
-                    SectionInfoItemTest(name = "Rate on Google Play", info = "", image = R.drawable.ic_google_play, showDivider = false)
+                    SectionInfoItemAbout(
+                        name = "Email",
+                        info = "cointrend.info@gmail.com",
+                        image = R.drawable.ic_mail,
+                        showDivider = true
+                    )
+                    SectionInfoItemAbout(
+                        name = "GitHub Issues",
+                        info = "https://github.com/CoinTrend/CoinTrend/issues",
+                        image = R.drawable.ic_github,
+                        showDivider = false
+                    )
                 }
             }
 
-            item { Spacer(modifier = Modifier.size(32.dp)) }
+            item {
+                Spacer(modifier = Modifier.size(16.dp))
+            }
+
+            item {
+                SectionTitle(
+                    title = "Support", modifier = Modifier.padding(
+                        defaultHorizontalPadding
+                    )
+                )
+            }
+
+            item {
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .background(
+                            color = StocksDarkSelectedChip,
+                            shape = MaterialTheme.shapes.large
+                        ),
+                ) {
+                    SectionInfoItemAbout(
+                        name = "Donate",
+                        info = "https://github.com/CoinTrend#support",
+                        image = R.drawable.ic_donate,
+                        showDivider = true
+                    )
+                    SectionInfoItemAbout(
+                        name = "Rate on Google Play",
+                        info = "",
+                        image = R.drawable.ic_google_play,
+                        showDivider = false
+                    )
+                }
+            }
+
+            item {
+                Spacer(modifier = Modifier.size(32.dp))
+            }
 
         }
     }
@@ -129,13 +183,12 @@ fun AboutScreen(
 @Composable
 private fun CoinTrend(
     modifier: Modifier = Modifier
-
 ) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
+    ) {
         Image(
             modifier = Modifier
                 .requiredHeight(120.dp)
@@ -147,7 +200,7 @@ private fun CoinTrend(
         Text(
             modifier = Modifier.padding(top = 2.dp),
             text = "CoinTrend",
-            fontSize = 38.sp,
+            fontSize = MaterialTheme.typography.bodyLarge.lineHeight,
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
@@ -157,18 +210,17 @@ private fun CoinTrend(
 }
 
 @Composable
-fun SectionInfoItemTest(
+fun SectionInfoItemAbout(
     name: String,
     info: String,
     image: Int,
     showDivider: Boolean,
-
-    ) {
+) {
     Row(
         modifier = Modifier
-            .padding(horizontal =  16.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
@@ -179,7 +231,7 @@ fun SectionInfoItemTest(
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
-        Column() {
+        Column {
             Text(
                 text = name,
                 fontWeight = FontWeight.Bold,
@@ -196,7 +248,6 @@ fun SectionInfoItemTest(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            Spacer(modifier = Modifier.size(4.dp))
         }
     }
     if (showDivider) {
