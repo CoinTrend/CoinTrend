@@ -11,12 +11,14 @@ import com.google.accompanist.placeholder.shimmer
 fun Modifier.shimmer(
     visible: Boolean
 ): Modifier = composed {
-    this.placeholder(
-        visible = visible,
-        color = MaterialTheme.colorScheme.primaryContainer,
-        shape = MaterialTheme.shapes.small,
-        highlight = PlaceholderHighlight.shimmer(
-            highlightColor = StocksDarkPrimaryText
+    if (visible) {
+        this.placeholder(
+            visible = true,
+            color = MaterialTheme.colorScheme.primaryContainer,
+            shape = MaterialTheme.shapes.small,
+            highlight = PlaceholderHighlight.shimmer(
+                highlightColor = StocksDarkPrimaryText
+            )
         )
-    )
+    } else this
 }
