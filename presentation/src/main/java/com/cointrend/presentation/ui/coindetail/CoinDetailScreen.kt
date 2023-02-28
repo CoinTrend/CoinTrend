@@ -430,7 +430,7 @@ fun Header(coinDetailMainUiData: CoinUiItem) {
 
 @Composable
 fun Price(state: CoinMarketDataState) {
-    when(state) {
+    when (state) {
         is CoinMarketDataState.Success -> PriceText(
             modifier = Modifier
                 .fillMaxWidth()
