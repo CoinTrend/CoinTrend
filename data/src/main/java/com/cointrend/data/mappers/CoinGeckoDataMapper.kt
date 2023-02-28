@@ -7,6 +7,7 @@ import com.cointrend.data.api.coingecko.models.CoinGeckoSearchTrendingDto
 import com.cointrend.domain.features.marketchart.models.MarketChartDataPoint
 import com.cointrend.domain.features.settings.models.SettingsConfiguration
 import com.cointrend.domain.models.*
+import java.math.RoundingMode
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -120,6 +121,8 @@ class CoinGeckoDataMapper @Inject constructor(
                             index % div == 0
                         }
                     }
+                }?.map {
+                    it.roundToNDecimals(decimals = 8)
                 },
                 remoteLastUpdate = lastUpdated?.toLocalDateTime(),
                 lastUpdate = LocalDateTime.now() // lastUpdate is LocalDateTime.now() so that the last update done by the App is considered
@@ -187,6 +190,10 @@ class CoinGeckoDataMapper @Inject constructor(
 
     private fun String.toLocalDateTime(): LocalDateTime {
         return Instant.parse(this).atZone(ZoneId.systemDefault()).toLocalDateTime()
+    }
+
+    private fun Double.roundToNDecimals(decimals: Int): Double {
+        return this.toBigDecimal().setScale(decimals, RoundingMode.UP).toDouble()
     }
 
 }
