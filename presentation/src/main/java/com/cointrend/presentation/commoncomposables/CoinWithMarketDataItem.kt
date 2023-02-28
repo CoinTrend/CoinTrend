@@ -47,10 +47,6 @@ fun CoinWithMarketDataItem(
         mutableStateOf(false)
     }
 
-    val shouldShimmerMarketData by remember(key1 = item()) {
-        mutableStateOf(item() is CoinWithShimmeringMarketDataUiItem)
-    }
-
     Card(
         modifier = modifier
             .wrapContentHeight()
@@ -81,6 +77,11 @@ fun CoinWithMarketDataItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Timber.d("CoinItem card recomposition ${item().symbol} $sharedElementScreenKey")
+
+            val shouldShimmerMarketData by remember(key1 = item()) {
+                mutableStateOf(item() is CoinWithShimmeringMarketDataUiItem)
+            }
+
             val showChart = remember(key1 = item().id) {
                 mutableStateOf(false)
             }
@@ -146,21 +147,19 @@ fun CoinWithMarketDataItem(
                 if (showChart.value) {
                     androidx.compose.animation.AnimatedVisibility(visible = animateChart.value) {
 
-                        item().sparklineData?.let { sparklineData ->
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                LineChart(
-                                    modifier = Modifier.size(width = 48.dp, height = 29.dp),
-                                    data = sparklineData,
-                                    graphColor = item().trendColor,
-                                    showDashedLine = true
-                                )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            LineChart(
+                                modifier = Modifier.size(width = 48.dp, height = 29.dp),
+                                data = item().sparklineData,
+                                graphColor = item().trendColor,
+                                showDashedLine = true
+                            )
 
-                                // Invisible text with max price size to determine the max possible size of this column
-                                Text(
-                                    text = "$100,000.00",
-                                    modifier = Modifier.alpha(0f)
-                                )
-                            }
+                            // Invisible text with max price size to determine the max possible size of this column
+                            Text(
+                                text = "$100,000.00",
+                                modifier = Modifier.alpha(0f)
+                            )
                         }
 
                     }

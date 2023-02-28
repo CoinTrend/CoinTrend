@@ -124,7 +124,7 @@ class UiMapper @Inject constructor(
                 trendColor = marketData.priceChangePercentage?.correspondingTrendColor().orNeutral(),
                 sparklineData = coin.marketData?.sparklineData?.mapIndexed { _, d ->
                     DataPoint(y = d, xLabel = null, yLabel = null)
-                }?.toImmutableList(),
+                }?.toImmutableList() ?: persistentListOf(),
                 lastUpdate = marketData.lastUpdate.toFormattedString(formatter = dateTimeFormatter)
             )
         } ?: CoinWithShimmeringMarketDataUiItem(
@@ -136,7 +136,7 @@ class UiMapper @Inject constructor(
             marketCapRank = NA,
             priceChangePercentage = "+0.00%",
             trendColor = Color.Gray,
-            sparklineData = null,
+            sparklineData = persistentListOf(),
             lastUpdate = NOT_AVAILABLE
         )
     }

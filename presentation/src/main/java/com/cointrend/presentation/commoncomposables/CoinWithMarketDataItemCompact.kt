@@ -22,6 +22,7 @@ import com.cointrend.presentation.theme.CoinTrendTheme
 import com.cointrend.presentation.theme.PositiveTrend
 import com.cointrend.presentation.theme.StocksDarkPrimaryText
 import com.cointrend.presentation.theme.StocksDarkSecondaryText
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -125,14 +126,15 @@ fun CoinWithMarketDataItemCompact(
                 style = MaterialTheme.typography.bodySmall
             )
 
-            item().sparklineData?.let {
-                LineChart(
-                    modifier = Modifier
-                        .padding(top = 8.dp)
-                        .fillMaxWidth()
-                        .height(30.dp),
-                    data = it, graphColor = item().trendColor, showDashedLine = true)
-            }
+            LineChart(
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .fillMaxWidth()
+                    .height(30.dp),
+                data = item().sparklineData,
+                graphColor = item().trendColor,
+                showDashedLine = true
+            )
 
 
             Text(
@@ -184,7 +186,7 @@ private fun CoinItemCompactPreview() {
                         price = "19.300,00 $",
                         priceChangePercentage = "+3.45%",
                         trendColor = PositiveTrend,
-                        sparklineData = null,
+                        sparklineData = persistentListOf(),
                         lastUpdate = ""
                     )
                 },

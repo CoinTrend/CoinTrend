@@ -12,7 +12,7 @@ abstract class BaseCoinWithMarketDataUiItem(
     open val marketCapRank: String,
     open val priceChangePercentage: String,
     open val trendColor: Color,
-    open val sparklineData: ImmutableList<DataPoint>?,
+    open val sparklineData: ImmutableList<DataPoint>,
     open val lastUpdate: String
 )
 
@@ -25,7 +25,7 @@ data class CoinWithMarketDataUiItem(
     override val marketCapRank: String,
     override val priceChangePercentage: String,
     override val trendColor: Color,
-    override val sparklineData: ImmutableList<DataPoint>?,
+    override val sparklineData: ImmutableList<DataPoint>,
     override val lastUpdate: String
 ) : BaseCoinWithMarketDataUiItem(
     id = id,
@@ -53,7 +53,7 @@ data class CoinWithShimmeringMarketDataUiItem(
     override val marketCapRank: String,
     override val priceChangePercentage: String,
     override val trendColor: Color,
-    override val sparklineData: ImmutableList<DataPoint>?,
+    override val sparklineData: ImmutableList<DataPoint>,
     override val lastUpdate: String
 ) : BaseCoinWithMarketDataUiItem(
     id = id,

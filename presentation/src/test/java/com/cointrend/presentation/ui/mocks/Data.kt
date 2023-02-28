@@ -5,6 +5,7 @@ import com.cointrend.domain.models.CoinMarketData
 import com.cointrend.domain.models.CoinWithMarketData
 import com.cointrend.presentation.models.CoinWithMarketDataUiItem
 import com.github.davidepanidev.kotlinextensions.utils.test.TestException
+import kotlinx.collections.immutable.persistentListOf
 import java.time.LocalDateTime
 
 internal val expectedCoinWithMarketData = CoinWithMarketData(
@@ -60,7 +61,7 @@ internal fun CoinWithMarketData.toUiModel() = CoinWithMarketDataUiItem(
     marketCapRank = "",
     priceChangePercentage = "",
     trendColor = Color.Black,
-    sparklineData = null,
+    sparklineData = persistentListOf(),
     lastUpdate = ""
 )
 
