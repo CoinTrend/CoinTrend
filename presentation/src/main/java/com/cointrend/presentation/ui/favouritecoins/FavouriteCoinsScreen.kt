@@ -9,15 +9,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.cointrend.presentation.commoncomposables.CoinWithMarketDataItem
-import com.cointrend.presentation.models.COINS_LIST_SCREEN_KEY
-import com.cointrend.presentation.models.CoinUiItem
-import com.cointrend.presentation.models.CoinsListUiState
-import com.cointrend.presentation.models.Screen
+import com.cointrend.presentation.models.*
 import com.cointrend.presentation.theme.MainHorizontalPadding
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -93,7 +91,7 @@ fun FavouriteCoinsScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = { Text("Favourites") },
+                title = { Text(stringResource(id = BottomNavigationItem.Favourites.title)) },
                 actions = {
                     LastUpdateDateText(
                         modifier = Modifier.padding(end = 16.dp),

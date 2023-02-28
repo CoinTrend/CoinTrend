@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:locale="en-US">
+
+    <string name="market">Market</string>
+    <string name="favorite">Favorites</string>
+    <string name="search">Search</string>
+
+</resources>

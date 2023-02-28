@@ -16,6 +16,7 @@ import androidx.compose.material.icons.outlined.TipsAndUpdates
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -96,8 +97,8 @@ class MainActivity : ComponentActivity() {
                         ) {
                             BottomNavigationItem.values().forEach { item ->
                                 NavigationBarItem(
-                                    icon = { Icon(item.icon, contentDescription = item.title) },
-                                    label = { Text(item.title) },
+                                    icon = { Icon(item.icon, contentDescription = stringResource(id = item.title)) },
+                                    label = { Text(stringResource(id = item.title)) },
                                     selected = item.route == currentDestination,
                                     colors = NavigationBarItemDefaults.colors(
                                         selectedIconColor = StocksDarkPrimaryText,

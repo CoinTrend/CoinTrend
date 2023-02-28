@@ -1,11 +1,13 @@
 package com.cointrend.presentation.models
 
+import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.cointrend.domain.models.TimeRange
+import com.cointrend.presentation.R
 
 enum class TimeRangeUi(
     val timeRange: TimeRange,
@@ -19,22 +21,22 @@ enum class TimeRangeUi(
     Max(TimeRange.Max, "MAX")
 }
 
-enum class BottomNavigationItem(val route: Screen, val icon: ImageVector, val title: String) {
+enum class BottomNavigationItem(val route: Screen, val icon: ImageVector, @StringRes val title: Int) {
 
     Market(
         route = Screen.CoinsList,
         icon = Icons.Default.TrendingUp,
-        title = "Market"
+        title = R.string.market
     ),
     Favourites(
         route = Screen.FavouriteCoinsList,
         icon = Icons.Default.Star,
-        title = "Favourites"
+        title = R.string.favorite
     ),
     Search(
         route = Screen.Search,
         icon = Icons.Default.Search,
-        title = "Search"
+        title = R.string.search
     )
 
 }
