@@ -66,6 +66,17 @@ fun CoinDetailScreen(
                     }
                 },
                 actions = {
+                    /*
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Filled.Notifications,
+                            contentDescription = "Localized description",
+                            tint = Favourite
+                        )
+                    }
+
+                     */
+
                     IconButton(
                         onClick = {
                             viewModel.onFavouriteButtonClick()
@@ -419,7 +430,7 @@ fun Header(coinDetailMainUiData: CoinUiItem) {
 
 @Composable
 fun Price(state: CoinMarketDataState) {
-    when(state) {
+    when (state) {
         is CoinMarketDataState.Success -> PriceText(
             modifier = Modifier
                 .fillMaxWidth()
