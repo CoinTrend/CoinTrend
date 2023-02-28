@@ -79,6 +79,14 @@ The User Interface has been designed by following the latest Google's Material D
 
 ## Credits
 
+
+### Contributors
+
+- [ZineeEddine](https://github.com/ZineeEddine) & [beastboym](https://github.com/beastboym): thanks for working on the AboutScreen.
+
+
+### Libraries
+
 - [Philipp Lackner](https://github.com/philipplackner): he inspired the LineChart with his [StockChart](https://github.com/philipplackner/StockMarketApp/blob/final/app/src/main/java/com/plcoding/stockmarketapp/presentation/company_info/StockChart.kt). Check out his YouTube channel for great videos about Android Development!
 
 - [Zach Klippenstein](https://github.com/zach-klippenstein): he inspired the SegmentedControl with his [Composable](https://gist.github.com/zach-klippenstein/7ae8874db304f957d6bb91263e292117).
@@ -103,6 +111,14 @@ bc1qszr4jv77n737569vhsdwgq3zc2x47n39mlq82f
 ```  
 
 <p><img src="https://raw.githubusercontent.com/CoinTrend/.github/main/support/bitcoin.png" width="200"></p>
+
+### Monero
+
+```
+47h4uVziTTNgWVmorhoJ5YAvC3pbjnLUb6t9v9BcRyWY4koyuFf8dQE41caPSVy5pcfh5WvMAwzSZ27omunS2AxHDhJbeeJ
+```
+
+<p><img src="https://raw.githubusercontent.com/CoinTrend/.github/main/support/monero.png" width="200"></p>
 
 
 ## License
