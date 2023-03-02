@@ -37,7 +37,7 @@ fun AboutScreen(
         modifier = Modifier,
         topBar = {
             TopAppBar(
-                title = {},
+                title = { Text(text = "About") },
                 navigationIcon = {
                     IconButton(onClick = {
                         navController.pop()

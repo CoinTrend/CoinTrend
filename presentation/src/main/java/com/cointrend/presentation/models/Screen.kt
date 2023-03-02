@@ -3,18 +3,24 @@ package com.cointrend.presentation.models
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-sealed class Screen : Parcelable {
+sealed interface Screen : Parcelable {
 
     @Parcelize
-    object CoinsList : Screen()
+    object CoinsList : Screen
 
     @Parcelize
-    object FavouriteCoinsList : Screen()
+    object FavouriteCoinsList : Screen
 
     @Parcelize
-    object Search : Screen()
+    object Search : Screen
 
     @Parcelize
-    data class CoinDetail(val coinDetailMainData: CoinUiItem) : Screen()
+    object Settings : Screen
+
+    @Parcelize
+    object About : Screen
+
+    @Parcelize
+    data class CoinDetail(val coinDetailMainData: CoinUiItem) : Screen
 
 }
