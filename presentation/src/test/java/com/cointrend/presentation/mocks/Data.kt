@@ -1,10 +1,9 @@
-package com.cointrend.presentation.ui.mocks
+package com.cointrend.presentation.mocks
 
 import androidx.compose.ui.graphics.Color
 import com.cointrend.domain.models.CoinMarketData
 import com.cointrend.domain.models.CoinWithMarketData
 import com.cointrend.presentation.models.CoinWithMarketDataUiItem
-import com.github.davidepanidev.kotlinextensions.utils.test.TestException
 import kotlinx.collections.immutable.persistentListOf
 import java.time.LocalDateTime
 
@@ -38,6 +37,10 @@ internal val expectedCoinWithMarketData = CoinWithMarketData(
     rank = 0
 )
 
+internal val expectedCoinWithMissingMarketData = expectedCoinWithMarketData.copy(
+    marketData = null
+)
+
 internal val expectedCoinWithMarketDataBtc = expectedCoinWithMarketData.toUiModel()
 internal val expectedCoinWithMarketDataEth = expectedCoinWithMarketData.copy(id = "eth").toUiModel()
 internal val expectedCoinWithMarketDataUsdc = expectedCoinWithMarketData.copy(id = "usdc").toUiModel()
@@ -64,6 +67,3 @@ internal fun CoinWithMarketData.toUiModel() = CoinWithMarketDataUiItem(
     sparklineData = persistentListOf(),
     lastUpdate = ""
 )
-
-
-internal val expectedException = TestException("Test Exception")

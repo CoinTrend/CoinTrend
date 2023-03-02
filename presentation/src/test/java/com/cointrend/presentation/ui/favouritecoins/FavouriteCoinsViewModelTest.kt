@@ -5,9 +5,9 @@ import com.cointrend.domain.features.favouritecoins.RefreshFavouriteCoinsUseCase
 import com.cointrend.domain.features.favouritecoins.ReorderFavouriteCoinUseCase
 import com.cointrend.domain.features.favouritecoins.models.FavouriteCoinsData
 import com.cointrend.presentation.mappers.UiMapper
+import com.cointrend.presentation.mocks.*
 import com.cointrend.presentation.models.CoinsListUiState
 import com.cointrend.presentation.models.FavouriteCoinUiData
-import com.cointrend.presentation.ui.mocks.*
 import com.github.davidepanidev.androidextensions.tests.BaseCoroutineTestWithTestDispatcherProviderAndInstantTaskExecutorRule
 import fr.haan.resultat.Resultat
 import io.mockk.*

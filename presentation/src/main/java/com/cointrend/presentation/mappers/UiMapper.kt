@@ -27,6 +27,7 @@ import com.github.davidepanidev.kotlinextensions.utils.numberformatter.NumberFor
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import org.jetbrains.annotations.VisibleForTesting
 import timber.log.Timber
 import java.io.IOException
 import java.math.RoundingMode
@@ -163,7 +164,8 @@ class UiMapper @Inject constructor(
         }
     }
 
-    private fun mapCoinWithMarketDataUiItemsList(coinsList: List<CoinWithMarketData>): ImmutableList<BaseCoinWithMarketDataUiItem> {
+    @VisibleForTesting
+    internal fun mapCoinWithMarketDataUiItemsList(coinsList: List<CoinWithMarketData>): ImmutableList<BaseCoinWithMarketDataUiItem> {
         return coinsList.map { mapCoinWithMarketDataUiItem(it) }.toImmutableList()
     }
 
