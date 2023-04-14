@@ -62,7 +62,9 @@ object ApiModule {
                         // are temporarily blocked by this interceptor before being forwarded to the server
                         // to avoid overcharging it.
                         setMaxRequestsLimitReached()
-                        response
+                        throw TemporarilyUnavailableNetworkServiceException(
+                            serviceName = "CoinGecko"
+                        )
                     }
                     else -> response
                 }

@@ -210,7 +210,7 @@ class UiMapper @Inject constructor(
         return when(error) {
             is SocketTimeoutException -> "The service is temporarily unavailable. Please try again later."
 
-            is TemporarilyUnavailableNetworkServiceException -> "The ${error.serviceName} service is temporarily unavailable. Please try again later."
+            is TemporarilyUnavailableNetworkServiceException -> "The ${error.serviceName} service is now at capacity. Please try again in a minute."
 
             is UnknownHostException,
             is SocketException,
