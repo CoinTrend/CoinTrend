@@ -1,0 +1,2 @@
+Fixes:
+- Fixed a problem that prevented Top Coins list to update.
