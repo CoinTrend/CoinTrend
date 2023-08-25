@@ -53,4 +53,8 @@ class RoomCoinsMarketDataLocalDataSource @Inject constructor(
         }
     }
 
+    override suspend fun deleteAllCoinsMarketData() {
+        coinsMarketDataDao.deleteAllCoinsMarketData()
+    }
+
 }

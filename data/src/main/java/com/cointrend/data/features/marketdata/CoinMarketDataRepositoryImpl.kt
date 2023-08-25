@@ -47,6 +47,7 @@ interface CoinMarketDataLocalDataSource {
     fun getCoinMarketDataFlow(coinId: String): Flow<CoinMarketData?>
     suspend fun insertCoinMarketData(coinId: String, coinMarketData: CoinMarketData)
     suspend fun insertCoinsMarketData(coinIdsList: List<String>, coinsMarketData: List<CoinMarketData>)
+    suspend fun deleteAllCoinsMarketData()
 
 }
 
