@@ -21,4 +21,3 @@ Add any other context or screenshots about the feature request here.
 
 **Will you support the developers through a donation (https://github.com/CoinTrend#support) if/when the feature is implemented?**
 - [ ] Yes
-- [ ] No

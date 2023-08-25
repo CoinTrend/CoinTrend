@@ -8,6 +8,7 @@ import com.cointrend.domain.features.marketchart.models.MarketChartDataPoint
 import com.cointrend.domain.features.settings.models.SettingsConfiguration
 import com.cointrend.domain.models.*
 import java.math.RoundingMode
+import timber.log.Timber
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -188,8 +189,13 @@ class CoinGeckoDataMapper @Inject constructor(
         }
     }
 
-    private fun String.toLocalDateTime(): LocalDateTime {
-        return Instant.parse(this).atZone(ZoneId.systemDefault()).toLocalDateTime()
+    private fun String.toLocalDateTime(): LocalDateTime? {
+        return try {
+            Instant.parse(this).atZone(ZoneId.systemDefault()).toLocalDateTime()
+        } catch (e: Exception) {
+            Timber.e(e)
+            null
+        }
     }
 
     private fun Double.roundToNDecimals(decimals: Int): Double {

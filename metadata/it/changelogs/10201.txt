@@ -1,0 +1,2 @@
+Correzioni:
+- Risolto un problema che impediva l'aggiornamento delle Top Coins.
