@@ -7,6 +7,8 @@ import com.cointrend.data.db.room.models.CoinMarketDataEntity
 import com.cointrend.data.features.favouritecoins.local.FavouriteCoinsDao
 import com.cointrend.data.features.favouritecoins.local.models.FavouriteCoinEntity
 import com.cointrend.data.features.marketdata.local.CoinsMarketDataDao
+import com.cointrend.data.features.settings.local.SettingsDao
+import com.cointrend.data.features.settings.local.models.SettingsEntity
 import com.cointrend.data.features.topcoins.local.TopCoinsDao
 import com.cointrend.data.features.topcoins.local.models.TopCoinEntity
 import com.cointrend.data.features.trendingcoins.local.TrendingCoinsDao
@@ -17,7 +19,8 @@ import com.cointrend.data.features.trendingcoins.local.models.TrendingCoinEntity
         TopCoinEntity::class,
         CoinMarketDataEntity::class,
         TrendingCoinEntity::class,
-        FavouriteCoinEntity::class
+        FavouriteCoinEntity::class,
+        SettingsEntity::class
     ],
     version = 3,
     exportSchema = true,
@@ -32,5 +35,6 @@ abstract class CoinsDatabase : RoomDatabase() {
     abstract fun coinsMarketDataDao(): CoinsMarketDataDao
     abstract fun trendingCoinsDao(): TrendingCoinsDao
     abstract fun favouriteCoinsDao(): FavouriteCoinsDao
+    abstract fun settingsDao(): SettingsDao
 
 }

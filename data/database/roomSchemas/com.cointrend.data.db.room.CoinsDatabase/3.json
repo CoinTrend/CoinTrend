@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "4de898071f786de602c78f3167103478",
+    "identityHash": "5015c12b4393b10a11403775d6114d3f",
     "entities": [
       {
         "tableName": "top_coins",
@@ -313,12 +313,50 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "settings",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `defaultTimeRange` TEXT NOT NULL, `currency` TEXT NOT NULL, `defaultOrdering` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultTimeRange",
+            "columnName": "defaultTimeRange",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currency",
+            "columnName": "currency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultOrdering",
+            "columnName": "defaultOrdering",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4de898071f786de602c78f3167103478')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5015c12b4393b10a11403775d6114d3f')"
     ]
   }
 }
