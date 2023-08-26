@@ -7,7 +7,7 @@ class SetDefaultTimeRangeUseCase @Inject constructor(
     private val settingsRepository: SettingsRepository
 ) {
 
-    operator fun invoke(timeRange: TimeRange): Result<Unit> {
+    suspend operator fun invoke(timeRange: TimeRange): Result<Unit> {
         return settingsRepository.setDefaultTimeRange(timeRange = timeRange)
     }
 

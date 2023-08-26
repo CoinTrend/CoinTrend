@@ -4,6 +4,6 @@ import com.cointrend.domain.models.TimeRange
 
 interface SettingsRepository {
 
-    fun setDefaultTimeRange(timeRange: TimeRange): Result<Unit>
+    suspend fun setDefaultTimeRange(timeRange: TimeRange): Result<Unit>
 
 }
