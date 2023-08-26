@@ -5,15 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cointrend.domain.features.settings.UpdateSettingsUseCase
 import com.cointrend.domain.features.topcoins.GetTopCoinsFlowUseCase
 import com.cointrend.domain.features.topcoins.RefreshTopCoinsUseCase
 import com.cointrend.domain.features.topcoins.models.TopCoinsData
 import com.cointrend.domain.features.trendingcoins.GetTrendingCoinsFlowUseCase
 import com.cointrend.domain.features.trendingcoins.RefreshTrendingCoinsUseCase
 import com.cointrend.domain.features.trendingcoins.models.TrendingCoinsData
-import com.cointrend.domain.models.Currency
-import com.cointrend.domain.models.Ordering
 import com.cointrend.presentation.mappers.UiMapper
 import com.cointrend.presentation.models.CoinsListState
 import com.cointrend.presentation.models.CoinsListUiState
@@ -35,7 +32,6 @@ class CoinsListViewModel @Inject constructor(
     private val refreshTopCoinsUseCase: RefreshTopCoinsUseCase,
     private val getTrendingCoinsFlowUseCase: GetTrendingCoinsFlowUseCase,
     private val refreshTrendingCoinsUseCase: RefreshTrendingCoinsUseCase,
-    private val updateSettingsUseCase: UpdateSettingsUseCase,
     private val mapper: UiMapper,
     private val dispatcherProvider: DispatcherProvider
 ) : ViewModel() {
@@ -214,11 +210,6 @@ class CoinsListViewModel @Inject constructor(
     fun onSwipeRefresh() {
         refreshTopCoins()
         refreshTrendingCoins()
-    }
-
-    fun updateSettings() {
-        updateSettingsUseCase(currency = Currency.BTC, ordering = Ordering.MarketCapDesc)
-        refreshTopCoins()
     }
 
 }
