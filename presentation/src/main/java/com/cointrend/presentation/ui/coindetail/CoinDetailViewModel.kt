@@ -12,7 +12,7 @@ import com.cointrend.domain.features.favouritecoins.RemoveFavouriteCoinUseCase
 import com.cointrend.domain.features.marketchart.GetMarketChartDataUseCase
 import com.cointrend.domain.features.marketdata.GetCoinMarketDataFlowUseCase
 import com.cointrend.domain.features.marketdata.models.CoinMarketDataInputParams
-import com.cointrend.domain.features.settings.models.SettingsConfiguration
+import com.cointrend.domain.features.settings.models.GlobalSettingsConfiguration
 import com.cointrend.domain.models.CoinMarketData
 import com.cointrend.presentation.mappers.UiMapper
 import com.cointrend.presentation.models.*
@@ -33,7 +33,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CoinDetailViewModel @Inject constructor(
-    settingsConfiguration: SettingsConfiguration,
+    settingsConfiguration: GlobalSettingsConfiguration,
     private val getCoinMarketDataFlowUseCase: GetCoinMarketDataFlowUseCase,
     private val getMarketChartDataUseCase: GetMarketChartDataUseCase,
     private val getFavouriteCoinsIdsUseCase: GetFavouriteCoinsIdsUseCase,

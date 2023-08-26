@@ -3,9 +3,11 @@ package com.cointrend.data.mappers
 import com.cointrend.data.db.room.models.CoinMarketDataEntity
 import com.cointrend.data.features.favouritecoins.local.models.FavouriteCoinEntity
 import com.cointrend.data.features.favouritecoins.local.models.FavouriteCoinWithMarketDataEntity
+import com.cointrend.data.features.settings.local.models.SettingsEntity
 import com.cointrend.data.features.topcoins.local.models.TopCoinEntity
 import com.cointrend.data.features.topcoins.local.models.TopCoinWithMarketDataEntity
 import com.cointrend.data.features.trendingcoins.local.models.TrendingCoinEntity
+import com.cointrend.domain.features.settings.models.SettingsConfiguration
 import com.cointrend.domain.models.Coin
 import com.cointrend.domain.models.CoinMarketData
 import com.cointrend.domain.models.CoinWithMarketData
@@ -185,6 +187,26 @@ class RoomDataMapper @Inject constructor(
                 image = image,
                 rank = rank,
                 insertionDate = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
+            )
+        }
+    }
+
+    fun mapSettingsEntity(settingsConfiguration: SettingsConfiguration): SettingsEntity {
+        return with(settingsConfiguration) {
+            SettingsEntity(
+                defaultTimeRange = defaultTimeRange,
+                currency = currency,
+                defaultOrdering = ordering
+            )
+        }
+    }
+
+    fun mapSettingsConfiguration(settingsEntity: SettingsEntity): SettingsConfiguration {
+        return with(settingsEntity) {
+            SettingsConfiguration(
+                currency = currency,
+                ordering = defaultOrdering,
+                defaultTimeRange = defaultTimeRange
             )
         }
     }

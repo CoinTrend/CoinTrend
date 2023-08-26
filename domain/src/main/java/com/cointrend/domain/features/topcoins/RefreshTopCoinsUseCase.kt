@@ -1,7 +1,7 @@
 package com.cointrend.domain.features.topcoins
 
 import com.cointrend.domain.features.commons.automaticrefresh.BaseRefreshDataUseCase
-import com.cointrend.domain.features.settings.models.SettingsConfiguration
+import com.cointrend.domain.features.settings.models.GlobalSettingsConfiguration
 import com.cointrend.domain.features.topcoins.models.TopCoinsData
 import com.cointrend.domain.features.topcoins.models.TopCoinsRefreshParams
 import com.cointrend.domain.models.NUM_TOP_COINS_TO_SHOW
@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class RefreshTopCoinsUseCase @Inject constructor(
     topCoinsRepository: TopCoinsRepository,
-    private val settingsConfiguration: SettingsConfiguration
+    private val settingsConfiguration: GlobalSettingsConfiguration
 ) : BaseRefreshDataUseCase<TopCoinsData, Unit, TopCoinsRefreshParams>(
     repository = topCoinsRepository
 ) {

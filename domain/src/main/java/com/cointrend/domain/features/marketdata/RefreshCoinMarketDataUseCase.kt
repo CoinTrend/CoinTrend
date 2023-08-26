@@ -3,7 +3,7 @@ package com.cointrend.domain.features.marketdata
 import com.cointrend.domain.features.commons.automaticrefresh.BaseRefreshDataUseCase
 import com.cointrend.domain.features.marketdata.models.CoinMarketDataInputParams
 import com.cointrend.domain.features.marketdata.models.CoinMarketDataRefreshParams
-import com.cointrend.domain.features.settings.models.SettingsConfiguration
+import com.cointrend.domain.features.settings.models.GlobalSettingsConfiguration
 import com.cointrend.domain.models.CoinMarketData
 import javax.inject.Inject
 
@@ -14,7 +14,7 @@ import javax.inject.Inject
  */
 class RefreshCoinMarketDataUseCase @Inject constructor(
     topCoinsRepository: CoinMarketDataRepository,
-    private val settingsConfiguration: SettingsConfiguration
+    private val settingsConfiguration: GlobalSettingsConfiguration
 ) : BaseRefreshDataUseCase<CoinMarketData, CoinMarketDataInputParams, CoinMarketDataRefreshParams>(
     repository = topCoinsRepository
 ) {

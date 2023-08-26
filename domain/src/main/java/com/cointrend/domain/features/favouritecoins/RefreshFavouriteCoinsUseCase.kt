@@ -3,12 +3,12 @@ package com.cointrend.domain.features.favouritecoins
 import com.cointrend.domain.features.commons.automaticrefresh.BaseRefreshDataUseCase
 import com.cointrend.domain.features.favouritecoins.models.FavouriteCoinsData
 import com.cointrend.domain.features.favouritecoins.models.FavouriteCoinsRefreshParams
-import com.cointrend.domain.features.settings.models.SettingsConfiguration
+import com.cointrend.domain.features.settings.models.GlobalSettingsConfiguration
 import javax.inject.Inject
 
 class RefreshFavouriteCoinsUseCase @Inject constructor(
     favouriteCoinsRepository: FavouriteCoinsRepository,
-    private val settingsConfiguration: SettingsConfiguration
+    private val settingsConfiguration: GlobalSettingsConfiguration
 ) : BaseRefreshDataUseCase<FavouriteCoinsData, Unit, FavouriteCoinsRefreshParams>(
     repository = favouriteCoinsRepository
 ) {

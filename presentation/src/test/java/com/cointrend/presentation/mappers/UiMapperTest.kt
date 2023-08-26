@@ -1,6 +1,6 @@
 package com.cointrend.presentation.mappers
 
-import com.cointrend.domain.features.settings.models.SettingsConfiguration
+import com.cointrend.domain.features.settings.models.GlobalSettingsConfiguration
 import com.cointrend.domain.models.Currency
 import com.cointrend.domain.models.Ordering
 import com.cointrend.domain.models.TimeRange
@@ -41,7 +41,7 @@ class UiMapperTest {
             dateTimeFormatter = dateTimeFormatter,
             dateOnlyFormatter = dateTimeFormatter,
             timeOnlyFormatter = dateTimeFormatter,
-            settingsConfiguration = SettingsConfiguration(
+            settingsConfiguration = GlobalSettingsConfiguration(
                 currency = Currency.USD,
                 ordering = Ordering.MarketCapDesc,
                 defaultTimeRange = TimeRange.Week

@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 import com.cointrend.domain.exceptions.TemporarilyUnavailableNetworkServiceException
 import com.cointrend.domain.features.favouritecoins.models.FavouriteCoinsData
 import com.cointrend.domain.features.marketchart.models.MarketChartDataPoint
-import com.cointrend.domain.features.settings.models.SettingsConfiguration
+import com.cointrend.domain.features.settings.models.GlobalSettingsConfiguration
 import com.cointrend.domain.features.topcoins.models.TopCoinsData
 import com.cointrend.domain.features.trendingcoins.models.TrendingCoinsData
 import com.cointrend.domain.models.Coin
@@ -44,7 +44,7 @@ class UiMapper @Inject constructor(
     @DateAndTimeFormatter private val dateTimeFormatter: DateTimeFormatter,
     @DateOnlyFormatter private val dateOnlyFormatter: DateTimeFormatter,
     @TimeOnlyFormatter private val timeOnlyFormatter: DateTimeFormatter,
-    private val settingsConfiguration: SettingsConfiguration
+    private val settingsConfiguration: GlobalSettingsConfiguration
 ) {
 
     fun mapCoin(coinUiItem: CoinUiItem): Coin {

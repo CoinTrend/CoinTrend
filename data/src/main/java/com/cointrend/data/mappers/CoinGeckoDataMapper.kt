@@ -5,10 +5,10 @@ import com.cointrend.data.api.coingecko.models.CoinGeckoMarketsDto
 import com.cointrend.data.api.coingecko.models.CoinGeckoSearchDto
 import com.cointrend.data.api.coingecko.models.CoinGeckoSearchTrendingDto
 import com.cointrend.domain.features.marketchart.models.MarketChartDataPoint
-import com.cointrend.domain.features.settings.models.SettingsConfiguration
+import com.cointrend.domain.features.settings.models.GlobalSettingsConfiguration
 import com.cointrend.domain.models.*
-import java.math.RoundingMode
 import timber.log.Timber
+import java.math.RoundingMode
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -16,7 +16,7 @@ import javax.inject.Inject
 import kotlin.math.sign
 
 class CoinGeckoDataMapper @Inject constructor(
-    private val settingsConfiguration: SettingsConfiguration
+    private val settingsConfiguration: GlobalSettingsConfiguration
 ) {
 
     private fun mapCoin(coinDto: CoinGeckoSearchTrendingDto.CoinDto): Coin {

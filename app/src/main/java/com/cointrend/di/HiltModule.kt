@@ -1,6 +1,6 @@
 package com.cointrend.di
 
-import com.cointrend.domain.features.settings.models.SettingsConfiguration
+import com.cointrend.domain.features.settings.models.GlobalSettingsConfiguration
 import com.cointrend.domain.models.Currency
 import com.cointrend.domain.models.Ordering
 import com.cointrend.domain.models.TimeRange
@@ -20,8 +20,8 @@ object HiltModule {
 
     @Provides
     @Singleton
-    fun provideSettingsConfiguration(): SettingsConfiguration {
-        return SettingsConfiguration(
+    fun provideGlobalSettingsConfiguration(): GlobalSettingsConfiguration {
+        return GlobalSettingsConfiguration(
             currency = Currency.USD,
             ordering = Ordering.MarketCapDesc,
             defaultTimeRange = TimeRange.Week
