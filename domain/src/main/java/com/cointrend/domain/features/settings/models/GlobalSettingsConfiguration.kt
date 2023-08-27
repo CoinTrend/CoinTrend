@@ -21,8 +21,8 @@ class GlobalSettingsConfiguration @Inject constructor(
 
 fun GlobalSettingsConfiguration.toSettingsConfiguration(): SettingsConfiguration {
     return SettingsConfiguration(
-        currency = currency,
-        ordering = ordering,
-        defaultTimeRange = defaultTimeRange
+        currency = getCurrency(),
+        ordering = getOrdering(),
+        defaultTimeRange = getDefaultTimeRange()
     )
 }

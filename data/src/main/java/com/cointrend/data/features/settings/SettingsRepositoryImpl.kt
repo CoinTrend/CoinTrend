@@ -10,6 +10,10 @@ class SettingsRepositoryImpl @Inject constructor(
     private val localDataSource: SettingsLocalDataSource
 ): SettingsRepository {
 
+    override fun getSettingsConfigurationFlow(): Flow<SettingsConfiguration?> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun setDefaultTimeRange(timeRange: TimeRange): Result<Unit> {
         return Result.runCatching {
             localDataSource.setDefaultTimeRange(timeRange = timeRange)
