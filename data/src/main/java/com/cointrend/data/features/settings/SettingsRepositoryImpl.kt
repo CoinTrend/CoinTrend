@@ -4,6 +4,7 @@ import com.cointrend.domain.features.settings.SettingsRepository
 import com.cointrend.domain.features.settings.models.SettingsConfiguration
 import com.cointrend.domain.models.TimeRange
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 
 class SettingsRepositoryImpl @Inject constructor(
@@ -11,7 +12,7 @@ class SettingsRepositoryImpl @Inject constructor(
 ): SettingsRepository {
 
     override fun getSettingsConfigurationFlow(): Flow<SettingsConfiguration?> {
-        TODO("Not yet implemented")
+        return localDataSource.getSettingsFlow().distinctUntilChanged()
     }
 
     override suspend fun setDefaultTimeRange(timeRange: TimeRange): Result<Unit> {
