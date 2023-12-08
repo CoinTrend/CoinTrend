@@ -13,6 +13,9 @@ import com.cointrend.data.features.marketdata.remote.CoinGeckoCoinMarketDataRemo
 import com.cointrend.data.features.search.SearchRemoteDataSource
 import com.cointrend.data.features.search.SearchRepositoryImpl
 import com.cointrend.data.features.search.remote.CoinGeckoSearchRemoteDataSource
+import com.cointrend.data.features.settings.SettingsLocalDataSource
+import com.cointrend.data.features.settings.SettingsRepositoryImpl
+import com.cointrend.data.features.settings.local.RoomSettingsLocalDataSource
 import com.cointrend.data.features.topcoins.TopCoinsLocalDataSource
 import com.cointrend.data.features.topcoins.TopCoinsRemoteDataSource
 import com.cointrend.data.features.topcoins.TopCoinsRepositoryImpl
@@ -28,6 +31,7 @@ import com.cointrend.domain.features.favouritecoins.FavouriteCoinsRepository
 import com.cointrend.domain.features.marketchart.MarketChartRepository
 import com.cointrend.domain.features.marketdata.CoinMarketDataRepository
 import com.cointrend.domain.features.search.SearchRepository
+import com.cointrend.domain.features.settings.SettingsRepository
 import com.cointrend.domain.features.topcoins.TopCoinsRepository
 import com.cointrend.domain.features.trendingcoins.TrendingCoinsRepository
 import dagger.Binds
@@ -97,5 +101,12 @@ abstract class DataModule {
     @Binds
     abstract fun bindSearchRemoteDataSource(coinGeckoSearchRemoteDataSource: CoinGeckoSearchRemoteDataSource): SearchRemoteDataSource
 
+
+    // Settings
+    @Binds
+    abstract fun bindSettingsRepository(settingsRepositoryImpl: SettingsRepositoryImpl): SettingsRepository
+
+    @Binds
+    abstract fun bindSettingsLocalDataSource(roomSettingsLocalDataSource: RoomSettingsLocalDataSource): SettingsLocalDataSource
 
 }

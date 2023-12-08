@@ -8,6 +8,7 @@ import androidx.room.Room
 import com.cointrend.data.db.room.CoinsDatabase
 import com.cointrend.data.features.favouritecoins.local.FavouriteCoinsDao
 import com.cointrend.data.features.marketdata.local.CoinsMarketDataDao
+import com.cointrend.data.features.settings.local.SettingsDao
 import com.cointrend.data.features.topcoins.local.TopCoinsDao
 import com.cointrend.data.features.trendingcoins.local.TrendingCoinsDao
 import dagger.Module
@@ -63,5 +64,11 @@ object LocalModule {
     fun provideFavouriteCoinsDao(
         coinsDatabase: CoinsDatabase
     ): FavouriteCoinsDao = coinsDatabase.favouriteCoinsDao()
+
+    @Provides
+    @Singleton
+    fun provideSettingsDao(
+        coinsDatabase: CoinsDatabase
+    ): SettingsDao = coinsDatabase.settingsDao()
 
 }
