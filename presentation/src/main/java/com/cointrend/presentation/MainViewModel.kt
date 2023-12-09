@@ -20,7 +20,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val isPlayStoreReviewAlertAlreadyShownUseCase: IsPlayStoreReviewAlertAlreadyShownUseCase,
     private val setPlayStoreReviewAlertShownUseCase: SetPlayStoreReviewAlertShownUseCase,
-    private val getSettingsConfigurationFlowUseCase: GetSettingsConfigurationFlowUseCase,
+    private val getSettingsConfigurationFlowUseCase: GetSettingsConfigurationFlowUseCase
 ) : ViewModel() {
 
     var shouldShowPlayStoreReviewAlert by mutableStateOf(false)
@@ -30,7 +30,7 @@ class MainViewModel @Inject constructor(
         // The GetSettingsConfigurationFlowUseCase is called in a blocking way so that the
         // GlobalSettingsConfiguration used throughout the App is initialised with the stored settings,
         // and the initial network calls are made with the correct settings.
-        // TODO: check if there are better ways to enrsure the settings initialization without the runBlocking call.
+        // TODO: check if there are better ways to ensure the settings initialization without the runBlocking call.
         runBlocking {
             val initialSettings = getSettingsConfigurationFlowUseCase().catch {
                 Timber.e("Initial SettingsConfiguration ERROR: $it")
