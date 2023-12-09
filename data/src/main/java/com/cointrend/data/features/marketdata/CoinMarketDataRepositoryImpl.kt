@@ -38,6 +38,12 @@ class CoinMarketDataRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteAllData(): Result<Unit> {
+        return Result.runCatching {
+            localSource.deleteAllCoinsMarketData()
+        }
+    }
+
 }
 
 

@@ -8,15 +8,15 @@ import com.cointrend.domain.models.CoinMarketData
 import javax.inject.Inject
 
 /**
- * This UseCase refreshes the top coins list. The Result is of Unit type as
- * the coins list must be retrieved from the single source of truth provided by the
+ * This UseCase refreshes market data of a given coin. The Result is of Unit type as
+ * the coin data must be retrieved from the single source of truth provided by the
  * [GetCoinMarketDataFlowUseCase].
  */
 class RefreshCoinMarketDataUseCase @Inject constructor(
-    topCoinsRepository: CoinMarketDataRepository,
+    coinMarketDataRepository: CoinMarketDataRepository,
     private val settingsConfiguration: GlobalSettingsConfiguration
 ) : BaseRefreshDataUseCase<CoinMarketData, CoinMarketDataInputParams, CoinMarketDataRefreshParams>(
-    repository = topCoinsRepository
+    repository = coinMarketDataRepository
 ) {
 
     override fun getRefreshParams(inputParams: CoinMarketDataInputParams): CoinMarketDataRefreshParams {

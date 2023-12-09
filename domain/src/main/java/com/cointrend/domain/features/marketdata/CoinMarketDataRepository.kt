@@ -12,4 +12,6 @@ interface CoinMarketDataRepository : BaseAutomaticRefreshDataFlowRepository<Coin
 
     override suspend fun refreshData(params: CoinMarketDataRefreshParams): Result<Unit>
 
+    suspend fun deleteAllData(): Result<Unit>
+
 }
