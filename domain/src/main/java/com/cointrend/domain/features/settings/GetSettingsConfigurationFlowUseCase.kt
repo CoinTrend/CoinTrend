@@ -24,9 +24,9 @@ class GetSettingsConfigurationFlowUseCase @Inject constructor(
 
                 it?.let {
                     updateGlobalSettingsConfigurationUseCase(settingsConfiguration = it)
-                    globalSettingsConfiguration.toSettingsConfiguration()
+                }
 
-                } ?: globalSettingsConfiguration.toSettingsConfiguration()
+                globalSettingsConfiguration.toSettingsConfiguration()
             }
         } catch (e: Exception) {
             flow {
