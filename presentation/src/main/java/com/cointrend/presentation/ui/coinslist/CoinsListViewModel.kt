@@ -18,6 +18,7 @@ import com.github.davidepanidev.kotlinextensions.utils.dispatchers.DispatcherPro
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.haan.resultat.*
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
@@ -46,7 +47,9 @@ class CoinsListViewModel @Inject constructor(
     )
     private set
 
-    private var isTopCoinsFlowInterrupted = false
+    private var topCoinsFlowJob: Job? = null
+
+    private val isTopCoinsFlowInterrupted get() = topCoinsFlowJob == null
     private var isTrendingCoinsFlowInterrupted = false
 
 
@@ -55,20 +58,30 @@ class CoinsListViewModel @Inject constructor(
         initTopCoinsFlowCollection()
     }
 
+    fun init() {
+        initTopCoinsFlowCollection()
+    }
+
+    fun onDispose() {
+        cancelTopCoinsFlowCollection()
+    }
+
     /**
      * Top Coins
      */
     private fun initTopCoinsFlowCollection() {
+        cancelTopCoinsFlowCollection()
+
         // Single source of truth of the top coins list
-        getTopCoinsFlowUseCase(Unit)
+        topCoinsFlowJob = getTopCoinsFlowUseCase(Unit)
             .onEach {
-                isTopCoinsFlowInterrupted = false
                 handleGetTopCoinsState(it)
             }.catch {
+                handleGetTopCoinsState(Resultat.failure(it))
+
                 // After this catch the flow is interrupted and it must be collected
                 // again to obtain new data. The handleRefresh() method handles this situation.
-                isTopCoinsFlowInterrupted = true
-                handleGetTopCoinsState(Resultat.failure(it))
+                cancelTopCoinsFlowCollection()
             }.launchIn(viewModelScope)
     }
 
@@ -210,6 +223,11 @@ class CoinsListViewModel @Inject constructor(
     fun onSwipeRefresh() {
         refreshTopCoins()
         refreshTrendingCoins()
+    }
+
+    private fun cancelTopCoinsFlowCollection() {
+        topCoinsFlowJob?.cancel()
+        topCoinsFlowJob = null
     }
 
 }

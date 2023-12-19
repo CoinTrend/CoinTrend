@@ -85,6 +85,14 @@ fun CoinsListScreen(
         }
     ) { innerPadding ->
 
+        DisposableEffect(key1 = null) {
+            viewModel.init()
+
+            onDispose {
+                viewModel.onDispose()
+            }
+        }
+
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing = swipeRefreshState.value),
             onRefresh = { viewModel.onSwipeRefresh() },
