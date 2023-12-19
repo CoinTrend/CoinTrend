@@ -1,13 +1,21 @@
 package com.cointrend.presentation.ui.settings
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.cointrend.presentation.commoncomposables.*
 import com.cointrend.presentation.models.BottomNavigationItem
 import com.cointrend.presentation.models.Screen
@@ -15,7 +23,8 @@ import com.cointrend.presentation.theme.*
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
 import dev.olshevski.navigation.reimagined.navigate
-import timber.log.Timber
+
+private val defaultHorizontalPadding = 16.dp
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,6 +33,14 @@ fun SettingsScreen(
     navController: NavController<Screen>,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
+
+    DisposableEffect(key1 = null) {
+        viewModel.init()
+
+        onDispose {
+            viewModel.onDispose()
+        }
+    }
 
     Scaffold(
         modifier = Modifier,
@@ -50,10 +67,90 @@ fun SettingsScreen(
 
         LazyColumn(
             Modifier
-                .fillMaxSize()
-                .padding(padding)
+                .fillMaxSize(),
+                //.padding(padding),
+            contentPadding = padding
         ) {
-            Timber.d("$viewModel")
+            item {
+                SectionTitle(
+                    title = "Default Time Range",
+                    modifier = Modifier.padding(horizontal = defaultHorizontalPadding, vertical = 8.dp)
+                )
+            }
+
+            item {
+
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp, vertical = 8.dp)
+                        .background(
+                            color = StocksDarkBackgroundTranslucent,
+                            shape = MaterialTheme.shapes.large
+                        )
+                        .selectableGroup(),
+                ) {
+
+                    val timeRangeOptions = viewModel.state.timeRangeOptions
+
+                    timeRangeOptions.forEachIndexed { index, item ->
+                        SectionSettingItem(
+                            modifier = Modifier.selectable(
+                                selected = item == viewModel.state.selectedTimeRange,
+                                onClick = { viewModel.onTimeRangeSelected(timeRangeUi = item) },
+                                role = Role.RadioButton
+                            ),
+                            name = item.uiString,
+                            selected = item == viewModel.state.selectedTimeRange,
+                            showDivider = index != timeRangeOptions.lastIndex
+                        )
+                    }
+                }
+            }
         }
     }
 }
+
+@Composable
+fun SectionSettingItem(
+    modifier: Modifier = Modifier,
+    name: String,
+    selected: Boolean,
+    showDivider: Boolean
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(defaultHorizontalPadding),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = name,
+            fontWeight = FontWeight.SemiBold,
+            color = StocksDarkPrimaryText,
+            style = MaterialTheme.typography.bodyMedium
+        )
+
+        Spacer(modifier = Modifier.size(8.dp))
+
+        RadioButton(
+            selected = selected,
+            colors = RadioButtonDefaults.colors(
+                unselectedColor = StocksDarkSecondaryText,
+                selectedColor = StocksDarkPrimaryText
+            ),
+            onClick = null // null recommended for accessibility with screenreaders
+        )
+
+    }
+
+    if (showDivider) {
+        Divider(
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .alpha(.2f),
+            color = StocksDarkSecondaryText
+        )
+    }
+}
+
