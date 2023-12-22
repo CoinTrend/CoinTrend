@@ -176,7 +176,7 @@ class CoinGeckoDataMapper @Inject constructor(
             TimeRange.Day -> "1"
             TimeRange.Week -> "7"
             TimeRange.Month -> "30"
-            TimeRange.ThreeMonths -> "90"
+            TimeRange.SixMonths -> "200" //200 instead of 180 to being consistent with the coins/markets API used for the top coins list which supports only 200d
             TimeRange.Year -> "365"
             TimeRange.Max -> "max"
         }

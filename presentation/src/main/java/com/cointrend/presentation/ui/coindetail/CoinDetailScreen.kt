@@ -241,8 +241,8 @@ fun CoinDetailScreen(
                 Spacer(modifier = Modifier.size(16.dp))
 
                 SegmentedControl(
-                    viewModel.state.timeRangeOptions,
-                    viewModel.state.timeRangeSelected,
+                    viewModel.state.marketChartTimeRangeOptions,
+                    viewModel.state.marketChartTimeRangeSelected,
                     onSegmentSelected = {
                         viewModel.onTimeRangeSelected(it)
                     },

@@ -58,8 +58,8 @@ class CoinDetailViewModel @Inject constructor(
             ),
             coinMarketChartState = CoinMarketChartState.Loading,
             isMarketChartVisible = false,
-            timeRangeOptions = TimeRangeUi.values().toList().toImmutableList(),
-            timeRangeSelected = TimeRangeUi.values().first(),
+            marketChartTimeRangeOptions = MarketChartTimeRangeUi.values().toList().toImmutableList(),
+            marketChartTimeRangeSelected = MarketChartTimeRangeUi.values().first(),
             isFavourite = false
         )
     )
@@ -74,7 +74,7 @@ class CoinDetailViewModel @Inject constructor(
 
         val defaultTimeRange = settingsConfiguration.getDefaultTimeRange()
         state = state.copy(
-            timeRangeSelected = TimeRangeUi.values().first { it.timeRange == defaultTimeRange }
+            marketChartTimeRangeSelected = MarketChartTimeRangeUi.values().first { it.timeRange == defaultTimeRange }
         )
 
         getMarketChartData()
@@ -110,17 +110,17 @@ class CoinDetailViewModel @Inject constructor(
         )
     }
 
-    fun onTimeRangeSelected(timeRangeUi: TimeRangeUi) {
-        if (timeRangeUi != state.timeRangeSelected) {
+    fun onTimeRangeSelected(marketChartTimeRangeUi: MarketChartTimeRangeUi) {
+        if (marketChartTimeRangeUi != state.marketChartTimeRangeSelected) {
             state = state.copy(
-                timeRangeSelected = timeRangeUi
+                marketChartTimeRangeSelected = marketChartTimeRangeUi
             )
             getMarketChartData()
         }
     }
 
     private fun getMarketChartData() {
-        val timeRange = state.timeRangeSelected.timeRange
+        val timeRange = state.marketChartTimeRangeSelected.timeRange
 
         // Old job to cancel to avoid illegal concurrent states
         val oldJob = getMatketChartJob

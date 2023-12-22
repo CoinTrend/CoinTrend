@@ -9,8 +9,8 @@ import com.cointrend.domain.features.settings.GetSettingsConfigurationFlowUseCas
 import com.cointrend.domain.features.settings.SetDefaultTimeRangeUseCase
 import com.cointrend.domain.features.settings.models.SettingsConfiguration
 import com.cointrend.presentation.mappers.SettingsUiMapper
+import com.cointrend.presentation.models.SettingsPriceChangePeriodUi
 import com.cointrend.presentation.models.SettingsState
-import com.cointrend.presentation.models.TimeRangeUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
@@ -30,8 +30,8 @@ class SettingsViewModel @Inject constructor(
 
     var state by mutableStateOf(
         SettingsState(
-            timeRangeOptions = TimeRangeUi.values().toList().toImmutableList(),
-            selectedTimeRange = null
+            priceChangePeriodOptions = SettingsPriceChangePeriodUi.values().toList().toImmutableList(),
+            selectedPriceChangePeriod = null
         )
     )
     private set
@@ -67,10 +67,10 @@ class SettingsViewModel @Inject constructor(
         result.onSuccess {
             Timber.d("getSettingsConfigurationFlowUseCase SUCCESS: $it")
 
-            val timeRangeUi = mapper.mapTimeRangeUi(timeRange = it.defaultTimeRange)
+            val priceChangePeriodUi = mapper.mapPriceChangePeriodUi(timeRange = it.defaultTimeRange)
 
             state = state.copy(
-                selectedTimeRange = timeRangeUi
+                selectedPriceChangePeriod = priceChangePeriodUi
             )
         }.onFailure {
             Timber.e("getSettingsConfigurationFlowUseCase ERROR: $it")
@@ -79,15 +79,15 @@ class SettingsViewModel @Inject constructor(
     }
 
 
-    fun onTimeRangeSelected(timeRangeUi: TimeRangeUi) {
-        if (timeRangeUi != state.selectedTimeRange) {
+    fun onPriceChangePeriodSelected(priceChangePeriodUi: SettingsPriceChangePeriodUi) {
+        if (priceChangePeriodUi != state.selectedPriceChangePeriod) {
             viewModelScope.launch {
-                val result = setDefaultTimeRangeUseCase(timeRange = timeRangeUi.timeRange)
+                val result = setDefaultTimeRangeUseCase(timeRange = priceChangePeriodUi.timeRange)
 
                 result.onSuccess {
-                    Timber.d("setDefaultTimeRangeUseCase() to ${timeRangeUi.timeRange} SUCCESS")
+                    Timber.d("setDefaultTimeRangeUseCase() to ${priceChangePeriodUi.timeRange} SUCCESS")
                 }.onFailure {
-                    Timber.e("setDefaultTimeRangeUseCase() to ${timeRangeUi.timeRange} ERROR: $it")
+                    Timber.e("setDefaultTimeRangeUseCase() to ${priceChangePeriodUi.timeRange} ERROR: $it")
                 }
             }
         }

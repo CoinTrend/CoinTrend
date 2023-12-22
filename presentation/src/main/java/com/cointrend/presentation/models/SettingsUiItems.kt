@@ -4,6 +4,6 @@ import kotlinx.collections.immutable.ImmutableList
 
 
 data class SettingsState(
-    val timeRangeOptions: ImmutableList<TimeRangeUi>,
-    val selectedTimeRange: TimeRangeUi?
+    val priceChangePeriodOptions: ImmutableList<SettingsPriceChangePeriodUi>,
+    val selectedPriceChangePeriod: SettingsPriceChangePeriodUi?
 )

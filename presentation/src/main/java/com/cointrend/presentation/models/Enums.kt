@@ -10,16 +10,31 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.cointrend.domain.models.TimeRange
 import com.cointrend.presentation.R
 
-enum class TimeRangeUi(
+enum class MarketChartTimeRangeUi(
     val timeRange: TimeRange,
     val uiString: String
 ) {
     Day(TimeRange.Day, "24H"),
     Week(TimeRange.Week, "1W"),
     Month(TimeRange.Month, "1M"),
-    ThreeMonths(TimeRange.ThreeMonths, "3M"),
+    SixMonths(TimeRange.SixMonths, "6M"),
     Year(TimeRange.Year, "1Y"),
     Max(TimeRange.Max, "MAX")
+}
+
+// Enum used in SettingsScreen to allow the user to choose the default price change period
+// to be displayed in the coins lists.
+// It contains less options than TimeRange because the CoinGecko API coins/markets doesn't support
+// the other values when retrieving the coins lists. The other values are supported by the market_chart API instead.
+enum class SettingsPriceChangePeriodUi(
+    val timeRange: TimeRange,
+    val uiString: String
+) {
+    Day(TimeRange.Day, "24 Hours"),
+    Week(TimeRange.Week, "1 Week"),
+    Month(TimeRange.Month, "1 Month"),
+    SixMonths(TimeRange.SixMonths, "6 Months"),
+    Year(TimeRange.Year, "1 Year")
 }
 
 enum class BottomNavigationItem(val route: Screen, val icon: ImageVector, @StringRes val title: Int) {

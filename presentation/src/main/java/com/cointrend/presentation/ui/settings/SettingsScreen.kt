@@ -73,7 +73,7 @@ fun SettingsScreen(
         ) {
             item {
                 SectionTitle(
-                    title = "Default Time Range",
+                    title = "Default Price Change Period",
                     modifier = Modifier.padding(horizontal = defaultHorizontalPadding, vertical = 8.dp)
                 )
             }
@@ -90,18 +90,18 @@ fun SettingsScreen(
                         .selectableGroup(),
                 ) {
 
-                    val timeRangeOptions = viewModel.state.timeRangeOptions
+                    val priceChangePeriodOptions = viewModel.state.priceChangePeriodOptions
 
-                    timeRangeOptions.forEachIndexed { index, item ->
+                    priceChangePeriodOptions.forEachIndexed { index, item ->
                         SectionSettingItem(
                             modifier = Modifier.selectable(
-                                selected = item == viewModel.state.selectedTimeRange,
-                                onClick = { viewModel.onTimeRangeSelected(timeRangeUi = item) },
+                                selected = item == viewModel.state.selectedPriceChangePeriod,
+                                onClick = { viewModel.onPriceChangePeriodSelected(priceChangePeriodUi = item) },
                                 role = Role.RadioButton
                             ),
                             name = item.uiString,
-                            selected = item == viewModel.state.selectedTimeRange,
-                            showDivider = index != timeRangeOptions.lastIndex
+                            selected = item == viewModel.state.selectedPriceChangePeriod,
+                            showDivider = index != priceChangePeriodOptions.lastIndex
                         )
                     }
                 }

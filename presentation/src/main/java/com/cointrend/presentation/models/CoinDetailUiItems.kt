@@ -35,8 +35,8 @@ data class CoinDetailState(
     val coinMarketDataState: CoinMarketDataState,
     val coinMarketChartState: CoinMarketChartState,
     val isMarketChartVisible: Boolean,
-    val timeRangeOptions: ImmutableList<TimeRangeUi>,
-    val timeRangeSelected: TimeRangeUi,
+    val marketChartTimeRangeOptions: ImmutableList<MarketChartTimeRangeUi>,
+    val marketChartTimeRangeSelected: MarketChartTimeRangeUi,
     val isFavourite: Boolean
 )
 

@@ -21,7 +21,7 @@ enum class TimeRange {
     Day,
     Week,
     Month,
-    ThreeMonths,
+    SixMonths,
     Year,
     Max
 }
