@@ -14,11 +14,9 @@ class RefreshFavouriteCoinsUseCase @Inject constructor(
 ) {
 
     override fun getRefreshParams(inputParams: Unit): FavouriteCoinsRefreshParams {
-        //val settings = settingsRepository.getSettingsFlow().last()
-        val settings = settingsConfiguration
-
         return FavouriteCoinsRefreshParams(
-            currency = settings.currency
+            currency = settingsConfiguration.currency,
+            timeRange = settingsConfiguration.defaultTimeRange
         )
     }
 

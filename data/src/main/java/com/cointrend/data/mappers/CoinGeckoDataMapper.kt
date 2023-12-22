@@ -1,5 +1,6 @@
 package com.cointrend.data.mappers
 
+import com.cointrend.data.BuildConfig
 import com.cointrend.data.api.coingecko.models.CoinGeckoMarketChartDto
 import com.cointrend.data.api.coingecko.models.CoinGeckoMarketsDto
 import com.cointrend.data.api.coingecko.models.CoinGeckoSearchDto
@@ -85,10 +86,18 @@ class CoinGeckoDataMapper @Inject constructor(
                 atl = atl,
                 atlChangePercentage = atlChangePercentage,
                 atlDate = atlDate?.toLocalDateTime(),
-                priceChangePercentage = if (settingsConfiguration.getDefaultTimeRange() == TimeRange.Day) {
-                    priceChangePercentage24h
-                } else {
-                    priceChangePercentage7dInCurrency
+                priceChangePercentage = when (settingsConfiguration.getDefaultTimeRange()) {
+                    TimeRange.Day -> priceChangePercentage24h
+                    TimeRange.Week -> priceChangePercentage7dInCurrency
+                    TimeRange.Month -> priceChangePercentage30dInCurrency
+                    TimeRange.SixMonths -> priceChangePercentage200dInCurrency
+                    TimeRange.Year -> priceChangePercentage1yInCurrency
+                    TimeRange.Max -> if (BuildConfig.DEBUG) {
+                        throw IllegalStateException("mapCoinMarketData ERROR: Max value is not supported by coins/markets API. This values should never be reached anyway.")
+                    } else {
+                        Timber.e("mapCoinMarketData ERROR: defaulting to null as the Max value is not supported by coins/markets API. This value should never be reached anyway.")
+                        null
+                    }
                 },
                 sparklineData = sparklineIn7d?.price?.let {
                     if (settingsConfiguration.getDefaultTimeRange() == TimeRange.Day) {
@@ -111,7 +120,7 @@ class CoinGeckoDataMapper @Inject constructor(
                         }
 
                         lastItems.toList()
-                    } else {
+                    } else if (settingsConfiguration.getDefaultTimeRange() == TimeRange.Week) {
                         val div = when(it.size) {
                             in 0..100 -> 5
                             in 100..200 -> 10
@@ -121,6 +130,8 @@ class CoinGeckoDataMapper @Inject constructor(
                         it.filterIndexed { index, _ ->
                             index % div == 0
                         }
+                    } else {
+                        null
                     }
                 }?.map {
                     it.roundToNDecimals(decimals = 8)
@@ -179,6 +190,31 @@ class CoinGeckoDataMapper @Inject constructor(
             TimeRange.SixMonths -> "200" //200 instead of 180 to being consistent with the coins/markets API used for the top coins list which supports only 200d
             TimeRange.Year -> "365"
             TimeRange.Max -> "max"
+        }
+    }
+
+    fun mapTimeRangeToPriceChangeCoinGeckoApiValue(timeRange: TimeRange): String {
+        return when (timeRange) {
+            TimeRange.Day -> "24h"
+            TimeRange.Week -> "7d"
+            TimeRange.Month -> "30d"
+            TimeRange.SixMonths -> "200d" // 200d as coins/markets API supports only this value.
+            TimeRange.Year -> "1y"
+            TimeRange.Max -> {
+                if (BuildConfig.DEBUG) {
+                    throw IllegalStateException("mapTimeRangeToPriceChangeCoinGeckoApiValue ERROR: MAX is not available for coins/markets API. This value should never be reached.")
+                } else {
+                    Timber.e("mapTimeRangeToPriceChangeCoinGeckoApiValue ERROR: defaulting to 1y as MAX is not available for coins/markets API. This value should never be reached anyway.")
+                    "1y"
+                }
+            }
+        }
+    }
+
+    fun mapTimeRangeToIncludeSparkline7dData(timeRange: TimeRange): Boolean {
+        return when (timeRange) {
+            TimeRange.Day, TimeRange.Week -> true
+            else -> false // As the sparkline data provided by CoinGecko are only for 7 days, does not make sense to show that data the time ranges greater than 7 days.
         }
     }
 

@@ -6,6 +6,7 @@ import com.cointrend.domain.features.marketdata.models.CoinMarketDataInputParams
 import com.cointrend.domain.features.marketdata.models.CoinMarketDataRefreshParams
 import com.cointrend.domain.models.CoinMarketData
 import com.cointrend.domain.models.Currency
+import com.cointrend.domain.models.TimeRange
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -67,6 +68,7 @@ interface CoinMarketDataRemoteDataSource {
     suspend fun retrieveCoinsMarketData(
         coinIdsList: List<String>,
         currency: Currency,
+        timeRange: TimeRange
     ): Result<List<CoinMarketData>>
 
 }

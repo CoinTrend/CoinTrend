@@ -4,10 +4,7 @@ import com.cointrend.domain.exceptions.EmptyDatabaseException
 import com.cointrend.domain.features.topcoins.TopCoinsRepository
 import com.cointrend.domain.features.topcoins.models.TopCoinsData
 import com.cointrend.domain.features.topcoins.models.TopCoinsRefreshParams
-import com.cointrend.domain.models.CoinWithMarketData
-import com.cointrend.domain.models.Currency
-import com.cointrend.domain.models.Ordering
-import com.cointrend.domain.models.lastUpdateOrNow
+import com.cointrend.domain.models.*
 import com.github.davidepanidev.kotlinextensions.utils.dispatchers.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -42,9 +39,10 @@ class TopCoinsRepositoryImpl @Inject constructor(
         return Result.runCatching {
             withContext(dispatchers.default) {
                 val coinsList = remoteSource.retrieveTopCoinsWithMarketData(
-                    currency = params.currency,
                     numCoins = params.numCoins,
-                    ordering = Ordering.MarketCapDesc,
+                    currency = params.currency,
+                    ordering = Ordering.MarketCapDesc, // The order is not taken from params as the sorting functionality is implemented locally in this class.
+                    timeRange = params.timeRange
                 ).getOrElse { throw it }
 
                 /* Commented as the sorting functionality is not available yet.
@@ -101,6 +99,7 @@ interface TopCoinsRemoteDataSource {
         numCoins: Int,
         currency: Currency,
         ordering: Ordering,
+        timeRange: TimeRange
     ): Result<List<CoinWithMarketData>>
 
 }

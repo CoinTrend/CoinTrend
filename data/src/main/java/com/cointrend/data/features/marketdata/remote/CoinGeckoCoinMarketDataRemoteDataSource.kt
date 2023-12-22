@@ -5,6 +5,7 @@ import com.cointrend.data.features.marketdata.CoinMarketDataRemoteDataSource
 import com.cointrend.data.mappers.CoinGeckoDataMapper
 import com.cointrend.domain.models.CoinMarketData
 import com.cointrend.domain.models.Currency
+import com.cointrend.domain.models.TimeRange
 import com.github.davidepanidev.kotlinextensions.utils.dispatchers.DispatcherProvider
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -35,14 +36,15 @@ class CoinGeckoCoinMarketDataRemoteDataSource @Inject constructor(
 
     override suspend fun retrieveCoinsMarketData(
         coinIdsList: List<String>,
-        currency: Currency
+        currency: Currency,
+        timeRange: TimeRange
     ): Result<List<CoinMarketData>> {
         return Result.runCatching {
             val coinsMarketData = withContext(dispatchers.io) {
                 coinGeckoApiService.getCoinsMarkets(
                     currency = mapper.mapCurrencyToCoinGeckoApiValue(currency),
-                    includeSparkline7dData = true,
-                    priceChangePercentageIntervals = "7d",
+                    includeSparkline7dData = mapper.mapTimeRangeToIncludeSparkline7dData(timeRange = timeRange),
+                    priceChangePercentageIntervals = mapper.mapTimeRangeToPriceChangeCoinGeckoApiValue(timeRange = timeRange),
                     coinIds = coinIdsList.joinToString(",")
                 )
             }

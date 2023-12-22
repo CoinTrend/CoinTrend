@@ -8,6 +8,7 @@ import com.cointrend.domain.features.topcoins.models.TopCoinsData
 import com.cointrend.domain.features.topcoins.models.TopCoinsRefreshParams
 import com.cointrend.domain.models.Currency
 import com.cointrend.domain.models.Ordering
+import com.cointrend.domain.models.TimeRange
 import com.github.davidepanidev.kotlinextensions.utils.test.BaseCoroutineTestWithTestDispatcherProvider
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -39,7 +40,8 @@ class TopCoinsRepositoryImplTest : BaseCoroutineTestWithTestDispatcherProvider(
     private val refreshParams = TopCoinsRefreshParams(
         numCoins = 10,
         currency = Currency.BTC,
-        ordering = Ordering.MarketCapAsc
+        ordering = Ordering.MarketCapAsc,
+        timeRange = TimeRange.Week
     )
 
 
@@ -89,7 +91,7 @@ class TopCoinsRepositoryImplTest : BaseCoroutineTestWithTestDispatcherProvider(
 
     @Test
     fun `refreshData return Failure when remote source returns exception`() = runTest {
-        coEvery { remoteDataSource.retrieveTopCoinsWithMarketData(any(), any(), any()) } throws(
+        coEvery { remoteDataSource.retrieveTopCoinsWithMarketData(any(), any(), any(), any()) } throws(
             expectedException
         )
 

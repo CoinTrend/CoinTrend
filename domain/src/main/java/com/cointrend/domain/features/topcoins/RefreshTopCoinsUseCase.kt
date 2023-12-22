@@ -15,13 +15,11 @@ class RefreshTopCoinsUseCase @Inject constructor(
 ) {
 
     override fun getRefreshParams(inputParams: Unit): TopCoinsRefreshParams {
-        //val settings = settingsRepository.getSettingsFlow().last()
-        val settings = settingsConfiguration
-
         return TopCoinsRefreshParams(
             numCoins = NUM_TOP_COINS_TO_SHOW,
-            currency = settings.currency,
-            ordering = settings.ordering
+            currency = settingsConfiguration.currency,
+            ordering = settingsConfiguration.ordering,
+            timeRange = settingsConfiguration.defaultTimeRange
         )
     }
 

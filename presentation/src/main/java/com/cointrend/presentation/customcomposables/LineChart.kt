@@ -28,7 +28,7 @@ fun LineChart(
     Timber.d("LineChart recomposition")
 
     if (data.isEmpty()) {
-        Timber.w("LineChart invoked with empty data list.")
+        Timber.i("LineChart invoked with empty data list.")
         return
     }
 

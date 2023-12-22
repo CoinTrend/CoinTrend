@@ -6,6 +6,7 @@ import com.cointrend.data.mappers.CoinGeckoDataMapper
 import com.cointrend.domain.models.CoinWithMarketData
 import com.cointrend.domain.models.Currency
 import com.cointrend.domain.models.Ordering
+import com.cointrend.domain.models.TimeRange
 import com.github.davidepanidev.kotlinextensions.utils.dispatchers.DispatcherProvider
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -19,7 +20,8 @@ class CoinGeckoTopCoinsRemoteDataSource @Inject constructor(
     override suspend fun retrieveTopCoinsWithMarketData(
         numCoins: Int,
         currency: Currency,
-        ordering: Ordering
+        ordering: Ordering,
+        timeRange: TimeRange
     ): Result<List<CoinWithMarketData>> {
         return Result.runCatching {
             val coinsList = withContext(dispatchers.io) {
@@ -27,9 +29,9 @@ class CoinGeckoTopCoinsRemoteDataSource @Inject constructor(
                     currency = mapper.mapCurrencyToCoinGeckoApiValue(currency),
                     page = 1,
                     numCoinsPerPage = numCoins,
-                    order = mapper.mapOrderingToCoinGeckoApiValue(ordering),
-                    includeSparkline7dData = true,
-                    priceChangePercentageIntervals = "7d"
+                    order = mapper.mapOrderingToCoinGeckoApiValue(ordering = ordering),
+                    includeSparkline7dData = mapper.mapTimeRangeToIncludeSparkline7dData(timeRange = timeRange),
+                    priceChangePercentageIntervals = mapper.mapTimeRangeToPriceChangeCoinGeckoApiValue(timeRange = timeRange)
                 )
             }
 

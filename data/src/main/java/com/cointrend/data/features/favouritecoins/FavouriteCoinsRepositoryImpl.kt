@@ -52,6 +52,7 @@ class FavouriteCoinsRepositoryImpl @Inject constructor(
                     val coinsMarketData = marketDataRemoteDataSource.retrieveCoinsMarketData(
                         coinIdsList = coinsIdsList,
                         currency = params.currency,
+                        timeRange = params.timeRange
                     ).getOrElse { throw it }
 
                     marketDataLocalDataSource.insertCoinsMarketData(

@@ -49,8 +49,16 @@ data class CoinGeckoMarketsDto(
     val sparklineIn7d: SparklineIn7d? = null,
     @SerializedName("last_updated")
     val lastUpdated: String? = null,
+    @SerializedName("price_change_percentage_24h_in_currency")
+    val priceChangePercentage24hInCurrency: Double? = null,
     @SerializedName("price_change_percentage_7d_in_currency")
-    val priceChangePercentage7dInCurrency: Double? = null
+    val priceChangePercentage7dInCurrency: Double? = null,
+    @SerializedName("price_change_percentage_30d_in_currency")
+    val priceChangePercentage30dInCurrency: Double? = null,
+    @SerializedName("price_change_percentage_200d_in_currency")
+    val priceChangePercentage200dInCurrency: Double? = null,
+    @SerializedName("price_change_percentage_1y_in_currency")
+    val priceChangePercentage1yInCurrency: Double? = null
 )
 
 

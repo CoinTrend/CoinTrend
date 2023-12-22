@@ -73,7 +73,7 @@ fun SettingsScreen(
         ) {
             item {
                 SectionTitle(
-                    title = "Default Price Change Period",
+                    title = "Price Change Percentage Period",
                     modifier = Modifier.padding(horizontal = defaultHorizontalPadding, vertical = 8.dp)
                 )
             }
