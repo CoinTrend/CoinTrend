@@ -18,6 +18,7 @@
   <a href='https://play.google.com/store/apps/details?id=com.cointrend&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
     <img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' height=75/>
   </a>
+  &nbsp;
   <a href='https://f-droid.org/packages/com.cointrend/'>
     <img alt='Get it on F-Droid' src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="75"/>
   </a>
@@ -28,7 +29,7 @@
  
  ----
  
-Lightweight, fast and open-source cryptocurrencies market monitor for Android 📱📈 No Ads, no trackers, just coins 💎
+Lightweight, fast and private cryptocurrencies monitor for Android 📱📈 No Ads, no trackers, just coins 💎
 
 ## Features
 
