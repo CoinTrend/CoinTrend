@@ -34,7 +34,7 @@ Lightweight, fast and private cryptocurrencies monitor for Android 📱📈 No A
 - **Market**: real-time updates of the Trending Coins (the most searched coins in the last 24h) and the Top Coins (the top 250 cryptocurrencies by market cap).
 - **Favourites**: track your favourite coins at a glance by adding them to the favourite list and sorting them as you wish.
 - **Search**: search over 10.000 coins by name or symbol.
-- **Settings**: choose the price change percentage period you need.
+- **Settings**: choose the tracking configuration you need.
 
 <br>
 
