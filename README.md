@@ -18,7 +18,6 @@
   <a href='https://play.google.com/store/apps/details?id=com.cointrend&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
     <img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' height=75/>
   </a>
-
   <a href='https://f-droid.org/packages/com.cointrend/'>
     <img alt='Get it on F-Droid' src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="75"/>
   </a>
@@ -36,6 +35,7 @@ Lightweight, fast and open-source cryptocurrencies market monitor for Android ðŸ
 - **Market**: real-time updates of the Trending Coins (the most searched coins in the last 24h) and the Top Coins (the top 250 cryptocurrencies by market cap).
 - **Favourites**: track your favourite coins at a glance by adding them to the favourite list and sorting them as you wish.
 - **Search**: search over 10.000 coins by name or symbol.
+- **Settings**: choose the price change percentage period you need.
 
 <br>
 
