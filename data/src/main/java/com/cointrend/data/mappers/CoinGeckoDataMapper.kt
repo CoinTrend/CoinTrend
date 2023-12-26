@@ -8,8 +8,8 @@ import com.cointrend.data.api.coingecko.models.CoinGeckoSearchTrendingDto
 import com.cointrend.domain.features.marketchart.models.MarketChartDataPoint
 import com.cointrend.domain.features.settings.models.GlobalSettingsConfiguration
 import com.cointrend.domain.models.*
+import com.github.davidepanidev.kotlinextensions.roundToNDecimals
 import timber.log.Timber
-import java.math.RoundingMode
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -232,10 +232,6 @@ class CoinGeckoDataMapper @Inject constructor(
             Timber.e(e)
             null
         }
-    }
-
-    private fun Double.roundToNDecimals(decimals: Int): Double {
-        return this.toBigDecimal().setScale(decimals, RoundingMode.UP).toDouble()
     }
 
 }

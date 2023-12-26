@@ -13,6 +13,7 @@ import com.cointrend.domain.models.CoinMarketData
 import com.cointrend.domain.models.CoinWithMarketData
 import com.github.davidepanidev.kotlinextensions.deserializeAsJson
 import com.github.davidepanidev.kotlinextensions.serializeToJsonString
+import com.github.davidepanidev.kotlinextensions.toLocalDateTime
 import com.github.davidepanidev.kotlinextensions.utils.serialization.SerializationManager
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -213,10 +214,6 @@ class RoomDataMapper @Inject constructor(
 
     fun mapLocalDateTime(millis: Long): LocalDateTime {
         return millis.toLocalDateTime()
-    }
-
-    private fun Long.toLocalDateTime(): LocalDateTime {
-        return LocalDateTime.ofEpochSecond(this, 0, ZoneOffset.UTC)
     }
 
 }

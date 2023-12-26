@@ -19,9 +19,7 @@ import com.cointrend.presentation.di.TimeOnlyFormatter
 import com.cointrend.presentation.models.*
 import com.cointrend.presentation.theme.NegativeTrend
 import com.cointrend.presentation.theme.PositiveTrend
-import com.github.davidepanidev.kotlinextensions.formatToCurrency
-import com.github.davidepanidev.kotlinextensions.formatToPercentage
-import com.github.davidepanidev.kotlinextensions.toFormattedString
+import com.github.davidepanidev.kotlinextensions.*
 import com.github.davidepanidev.kotlinextensions.utils.currencyformatter.CurrencyFormatter
 import com.github.davidepanidev.kotlinextensions.utils.numberformatter.NumberFormatter
 import kotlinx.collections.immutable.ImmutableList
@@ -30,11 +28,9 @@ import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.annotations.VisibleForTesting
 import timber.log.Timber
 import java.io.IOException
-import java.math.RoundingMode
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
@@ -238,13 +234,6 @@ class UiMapper @Inject constructor(
         }
     }
 
-
-    private fun LocalDateTime.isToday(): Boolean {
-        val now = LocalDateTime.now()
-
-        return this.year == now.year && this.dayOfYear == now.dayOfYear
-    }
-
     private fun Double.correspondingTrendColor(): Color {
         return if (this >= 0) PositiveTrend else NegativeTrend
     }
@@ -274,7 +263,7 @@ class UiMapper @Inject constructor(
 
     private fun Double.roundTo2DecimalsIfTooLong(): Double {
         return if (this >= 1.1) {
-            this.toBigDecimal().setScale(2, RoundingMode.UP).toDouble()
+            this.roundToNDecimals(decimals = 2)
         } else {
             this
         }
