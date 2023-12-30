@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep, includedescriptorclasses class java.util.concurrent.** { *; }
+-keep, includedescriptorclasses class java.time.format.** { *; }
+-keepnames class java.util.concurrent.**
+-keepnames class java.time.format.**
