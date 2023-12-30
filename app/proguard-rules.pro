@@ -30,3 +30,8 @@
 -dontwarn org.openjsse.javax.net.ssl.SSLParameters
 -dontwarn org.openjsse.javax.net.ssl.SSLSocket
 -dontwarn org.openjsse.net.ssl.OpenJSSE
+
+-keep, includedescriptorclasses class java.util.concurrent.** { *; }
+-keep, includedescriptorclasses class java.time.format.** { *; }
+-keepnames class java.util.concurrent.**
+-keepnames class java.time.format.**
