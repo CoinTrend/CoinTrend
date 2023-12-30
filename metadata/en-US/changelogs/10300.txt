@@ -1,0 +1,3 @@
+New features:
+- Settings: set the tracking configuration you need for your cryptocurrencies. The price change percentage shown in the coins' lists can now be set to track several different time frames, even the larger ones.
+- About: check all the CoinTrend's information in one place: quickly access the source code repository and the changelog one click away; request new features and improvements directly from your smartphone through our email or by opening a detailed GitHub Issue; support the developers through the donation addresses and by leaving a review on the store.

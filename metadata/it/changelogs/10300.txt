@@ -1,0 +1,3 @@
+Nuove funzionalità:
+- Settings: seleziona la tua configurazione preferita per tracciare le criptovalute. La percentuale di variazione del prezzo mostrata nelle liste di criptovalute può essere ora configurata per tracciare molti range temporali, anche quelli molto estesi.
+- About: visualizza tutte le informazioni su CoinTrend in un unico posto: accedi rapidamente al codice sorgente e al changelog con un click; richiedi nuove funzionalità e miglioramenti direttamente dallo smartphone mandandoci un'email o aprendo un "Issue" dettagliato su GitHub; supporta gli sviluppatori attraverso gli indirizzi di donazione e lasciando una recensione sullo store.
