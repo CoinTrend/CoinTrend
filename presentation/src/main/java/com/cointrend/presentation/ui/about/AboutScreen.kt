@@ -2,6 +2,7 @@ package com.cointrend.presentation.ui.about
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
@@ -19,7 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.cointrend.presentation.R
 import com.cointrend.presentation.commoncomposables.*
-import com.cointrend.presentation.models.Screen
+import com.cointrend.presentation.models.*
 import com.cointrend.presentation.theme.*
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
@@ -31,6 +32,10 @@ private val defaultHorizontalPadding = 16.dp
 @Composable
 fun AboutScreen(
     navController: NavController<Screen>,
+    playStoreCoinTrendPackageName: String,
+    onLinkClick: (String) -> Unit,
+    onEmailClick: (String, String) -> Unit,
+    onPlayStoreClick: () -> Unit
 ) {
 
     Scaffold(
@@ -61,6 +66,10 @@ fun AboutScreen(
         ) {
 
             item {
+                Spacer(modifier = Modifier.size(32.dp))
+            }
+
+            item {
                 CoinTrend(modifier = Modifier.fillMaxWidth())
             }
 
@@ -87,15 +96,21 @@ fun AboutScreen(
                 ) {
                     SectionInfoItemAbout(
                         name = "GitHub",
-                        info = "https://github.com/CoinTrend/CoinTrend",
+                        info = REPOSITORY_URL,
                         image = R.drawable.ic_github,
-                        showDivider = true
+                        showDivider = true,
+                        onClick = {
+                            onLinkClick(REPOSITORY_URL)
+                        }
                     )
                     SectionInfoItemAbout(
                         name = "Changelog",
-                        info = "https://github.com/CoinTrend/CoinTrend/releases",
+                        info = REPOSITORY_RELEASES_URL,
                         image = R.drawable.ic_github,
-                        showDivider = false
+                        showDivider = false,
+                        onClick = {
+                            onLinkClick(REPOSITORY_RELEASES_URL)
+                        }
                     )
                 }
             }
@@ -123,15 +138,24 @@ fun AboutScreen(
                 ) {
                     SectionInfoItemAbout(
                         name = "Email",
-                        info = "cointrend.info@gmail.com",
+                        info = SUPPORT_EMAIL,
                         image = R.drawable.ic_mail,
-                        showDivider = true
+                        showDivider = true,
+                        onClick = {
+                            onEmailClick(
+                                SUPPORT_EMAIL,
+                                "[CoinTrend App Support]"
+                            )
+                        }
                     )
                     SectionInfoItemAbout(
                         name = "GitHub Issues",
-                        info = "https://github.com/CoinTrend/CoinTrend/issues",
+                        info = REPOSITORY_ISSUES_URL,
                         image = R.drawable.ic_github,
-                        showDivider = false
+                        showDivider = false,
+                        onClick = {
+                            onLinkClick(REPOSITORY_ISSUES_URL)
+                        }
                     )
                 }
             }
@@ -159,15 +183,21 @@ fun AboutScreen(
                 ) {
                     SectionInfoItemAbout(
                         name = "Donate",
-                        info = "https://github.com/CoinTrend#support",
+                        info = REPOSITORY_DONATE_URL,
                         image = R.drawable.ic_donate,
-                        showDivider = true
+                        showDivider = true,
+                        onClick = {
+                            onLinkClick(REPOSITORY_DONATE_URL)
+                        }
                     )
                     SectionInfoItemAbout(
                         name = "Rate on Google Play",
-                        info = "",
+                        info = "https://play.google.com/store/apps/details?id=$playStoreCoinTrendPackageName",
                         image = R.drawable.ic_google_play,
-                        showDivider = false
+                        showDivider = false,
+                        onClick = {
+                            onPlayStoreClick()
+                        }
                     )
                 }
             }
@@ -191,8 +221,7 @@ private fun CoinTrend(
     ) {
         Image(
             modifier = Modifier
-                .requiredHeight(120.dp)
-                .padding(top = 2.dp),
+                .requiredHeight(120.dp),
             contentDescription = "CoinTrend logo icon",
             contentScale = ContentScale.Fit,
             painter = painterResource(id = R.drawable.ic_launcher),
@@ -212,24 +241,32 @@ private fun CoinTrend(
 @Composable
 fun SectionInfoItemAbout(
     name: String,
-    info: String,
+    info: String?,
     image: Int,
     showDivider: Boolean,
+    onClick: () -> Unit
 ) {
+    val showInfo by remember {
+        derivedStateOf {
+            info?.isNotBlank() ?: false
+        }
+    }
+
     Row(
         modifier = Modifier
+            .clickable { onClick.invoke() }
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
+
         Image(
             modifier = Modifier
                 .size(size = 30.dp)
-                .clip(shape = MaterialTheme.shapes.medium),
+                .clip(shape = MaterialTheme.shapes.small),
             painter = painterResource(id = image),
-            contentDescription = null,
-            contentScale = ContentScale.Crop
+            contentDescription = null
         )
         Column {
             Text(
@@ -239,15 +276,18 @@ fun SectionInfoItemAbout(
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 maxLines = 1
             )
-            Spacer(modifier = Modifier.size(2.dp))
-            Text(
-                text = info,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                fontWeight = FontWeight.Medium,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+
+            if (showInfo) {
+                Spacer(modifier = Modifier.size(2.dp))
+                Text(
+                    text = info.orEmpty(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    fontWeight = FontWeight.Medium,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
     }
     if (showDivider) {

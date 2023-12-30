@@ -33,6 +33,8 @@ import com.cointrend.presentation.ui.favouritecoins.FavouriteCoinsScreen
 import com.cointrend.presentation.ui.search.SearchScreen
 import com.cointrend.presentation.ui.settings.SettingsScreen
 import com.github.davidepanidev.androidextensions.views.openAppInPlayStore
+import com.github.davidepanidev.androidextensions.views.openEmailInExternalApp
+import com.github.davidepanidev.androidextensions.views.openUrlInExternalBrowser
 import dagger.hilt.android.AndroidEntryPoint
 import dev.olshevski.navigation.reimagined.*
 import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
@@ -129,7 +131,24 @@ class MainActivity : ComponentActivity() {
                                     is Screen.CoinDetail -> { CoinDetailScreen(coinDetailMainUiData = route.coinDetailMainData, navController = navController) }
                                     is Screen.Search -> { SearchScreen(navController = navController, viewModel = hiltViewModel(viewModelStoreOwner = this@MainActivity)) }
                                     is Screen.Settings -> { SettingsScreen(navController = navController, viewModel = hiltViewModel(viewModelStoreOwner = this@MainActivity)) }
-                                    is Screen.About -> { AboutScreen(navController = navController) }
+                                    is Screen.About -> {
+                                        AboutScreen(
+                                            navController = navController,
+                                            playStoreCoinTrendPackageName = packageName,
+                                            onLinkClick = { url ->
+                                                this@MainActivity.openUrlInExternalBrowser(url = url)
+                                            },
+                                            onEmailClick = { email, subject ->
+                                                this@MainActivity.openEmailInExternalApp(
+                                                    toEmailAddresses = setOf(email),
+                                                    subject = subject
+                                                )
+                                            },
+                                            onPlayStoreClick = {
+                                                openAppInPlayStore(packageName = packageName)
+                                            }
+                                        )
+                                    }
                                 }
                             }
                         }
