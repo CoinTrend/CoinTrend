@@ -120,14 +120,6 @@ bc1qszr4jv77n737569vhsdwgq3zc2x47n39mlq82f
 <p><img src="https://raw.githubusercontent.com/CoinTrend/.github/main/support/monero.png" width="200"></p>
 
 
-## Follow us
-
-<p> 
-  <a href='https://www.instagram.com/cointrend.android/'>
-    <img alt='Follow us on Instagram' src='https://github.com/CoinTrend/.github/blob/main/support/Instagram_Glyph_Gradient.png' height=65/></a>
-</p>
-
-
 ## License
 
 CoinTrend is released under the [GPL-3.0 License](./LICENSE). Unless explicitly 
