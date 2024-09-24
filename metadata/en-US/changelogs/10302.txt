@@ -1,0 +1,3 @@
+Updates:
+- Added support for Android 14
+- Updated internal libraries
