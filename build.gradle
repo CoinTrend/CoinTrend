@@ -36,13 +36,13 @@ buildscript {
 }
 
 plugins {
-    id 'com.android.application' version '8.1.4' apply false
-    id 'com.android.library' version '8.1.4' apply false
+    id 'com.android.application' version '7.4.2' apply false
+    id 'com.android.library' version '7.4.2' apply false
     id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
     id "org.jetbrains.kotlin.jvm" version "1.7.20" apply false
     id 'com.google.dagger.hilt.android' version "$dagger_version" apply false
 }
 
-tasks.register('clean', Delete) {
+task clean(type: Delete) {
     delete rootProject.buildDir
 }
