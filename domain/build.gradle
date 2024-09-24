@@ -5,8 +5,8 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 compileKotlin {
@@ -25,7 +25,7 @@ dependencies {
     implementation "com.github.davidepanidev:kotlin-extensions:$kotlin_extensions_version"
 
     // Flow
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
 
     // Hilt
     implementation "com.google.dagger:dagger:$dagger_version"
