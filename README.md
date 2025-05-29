@@ -8,8 +8,8 @@
 
 [![Android](https://img.shields.io/badge/Android-grey?logo=android&style=flat)](https://www.android.com/)
 [![AndroidAPI](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat)](https://www.android.com/)
-[![Kotlin](https://img.shields.io/badge/kotlin-1.9.22-blue.svg?logo=kotlin)](https://kotlinlang.org)
-[![JetpackCompose](https://img.shields.io/badge/Jetpack%20Compose-1.5.4-yellow)](https://developer.android.com/jetpack/compose)
+[![Kotlin](https://img.shields.io/badge/kotlin-1.9.25-blue.svg?logo=kotlin)](https://kotlinlang.org)
+[![JetpackCompose](https://img.shields.io/badge/Jetpack%20Compose-1.6.8-yellow)](https://developer.android.com/jetpack/compose)
 [![License](https://img.shields.io/github/license/CoinTrend/CoinTrend?color=orange)](./LICENSE)
 [![Release](https://badgen.net/github/release/CoinTrend/CoinTrend?color=red)](https://github.com/CoinTrend/CoinTrend/releases)
 
