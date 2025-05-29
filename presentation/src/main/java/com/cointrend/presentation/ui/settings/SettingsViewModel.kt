@@ -30,7 +30,7 @@ class SettingsViewModel @Inject constructor(
 
     var state by mutableStateOf(
         SettingsState(
-            priceChangePeriodOptions = SettingsPriceChangePeriodUi.values().toList().toImmutableList(),
+            priceChangePeriodOptions = SettingsPriceChangePeriodUi.entries.toImmutableList(),
             selectedPriceChangePeriod = null
         )
     )

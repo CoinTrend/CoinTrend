@@ -13,8 +13,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.TipsAndUpdates
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -24,7 +38,11 @@ import com.cointrend.presentation.customcomposables.sharedelements.SharedElement
 import com.cointrend.presentation.models.BottomNavigationItem
 import com.cointrend.presentation.models.CoinsListUiState
 import com.cointrend.presentation.models.Screen
-import com.cointrend.presentation.theme.*
+import com.cointrend.presentation.theme.CoinTrendTheme
+import com.cointrend.presentation.theme.StocksDarkPrimaryText
+import com.cointrend.presentation.theme.StocksDarkSecondaryText
+import com.cointrend.presentation.theme.StocksDarkSelectedCard
+import com.cointrend.presentation.theme.StocksDarkTopAppBarCollapsed
 import com.cointrend.presentation.ui.about.AboutScreen
 import com.cointrend.presentation.ui.coindetail.CoinDetailScreen
 import com.cointrend.presentation.ui.coinslist.CoinsListScreen
@@ -36,19 +54,15 @@ import com.github.davidepanidev.androidextensions.views.openAppInPlayStore
 import com.github.davidepanidev.androidextensions.views.openEmailInExternalApp
 import com.github.davidepanidev.androidextensions.views.openUrlInExternalBrowser
 import dagger.hilt.android.AndroidEntryPoint
-import dev.olshevski.navigation.reimagined.*
+import dev.olshevski.navigation.reimagined.NavBackHandler
+import dev.olshevski.navigation.reimagined.NavHost
 import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
+import dev.olshevski.navigation.reimagined.navigate
+import dev.olshevski.navigation.reimagined.popAll
+import dev.olshevski.navigation.reimagined.rememberNavController
 
 @AndroidEntryPoint
-@OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
-
-    /*
-    private val mainNavHostTransitionSpec =
-        AnimatedNavHostTransitionSpec<Screen> { _, _, _ ->
-            fadeIn(tween(100)) with fadeOut(tween(100))
-        }
-    */
 
     private val viewModel: MainViewModel by viewModels()
     private val startDestinationViewModel: CoinsListViewModel by viewModels()
@@ -99,7 +113,7 @@ class MainActivity : ComponentActivity() {
                         NavigationBar(
                             containerColor = StocksDarkTopAppBarCollapsed
                         ) {
-                            BottomNavigationItem.values().forEach { item ->
+                            BottomNavigationItem.entries.forEach { item ->
                                 NavigationBarItem(
                                     icon = { Icon(item.icon, contentDescription = stringResource(id = item.title)) },
                                     label = { Text(stringResource(id = item.title)) },

@@ -15,7 +15,13 @@ import com.cointrend.domain.features.marketdata.models.CoinMarketDataInputParams
 import com.cointrend.domain.features.settings.models.GlobalSettingsConfiguration
 import com.cointrend.domain.models.CoinMarketData
 import com.cointrend.presentation.mappers.UiMapper
-import com.cointrend.presentation.models.*
+import com.cointrend.presentation.models.COIN_DETAIL_PARAMETER
+import com.cointrend.presentation.models.CoinDetailState
+import com.cointrend.presentation.models.CoinMarketChartState
+import com.cointrend.presentation.models.CoinMarketDataState
+import com.cointrend.presentation.models.CoinMarketUiData
+import com.cointrend.presentation.models.CoinUiItem
+import com.cointrend.presentation.models.MarketChartTimeRangeUi
 import com.github.davidepanidev.kotlinextensions.utils.dispatchers.DispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.haan.resultat.Resultat
@@ -24,10 +30,15 @@ import fr.haan.resultat.onLoading
 import fr.haan.resultat.onSuccess
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -58,8 +69,8 @@ class CoinDetailViewModel @Inject constructor(
             ),
             coinMarketChartState = CoinMarketChartState.Loading,
             isMarketChartVisible = false,
-            marketChartTimeRangeOptions = MarketChartTimeRangeUi.values().toList().toImmutableList(),
-            marketChartTimeRangeSelected = MarketChartTimeRangeUi.values().first(),
+            marketChartTimeRangeOptions = MarketChartTimeRangeUi.entries.toImmutableList(),
+            marketChartTimeRangeSelected = MarketChartTimeRangeUi.entries.first(),
             isFavourite = false
         )
     )
@@ -74,7 +85,7 @@ class CoinDetailViewModel @Inject constructor(
 
         val defaultTimeRange = settingsConfiguration.getDefaultTimeRange()
         state = state.copy(
-            marketChartTimeRangeSelected = MarketChartTimeRangeUi.values().first { it.timeRange == defaultTimeRange }
+            marketChartTimeRangeSelected = MarketChartTimeRangeUi.entries.first { it.timeRange == defaultTimeRange }
         )
 
         getMarketChartData()

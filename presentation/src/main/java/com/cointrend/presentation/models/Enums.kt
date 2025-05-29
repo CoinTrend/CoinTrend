@@ -19,7 +19,7 @@ enum class MarketChartTimeRangeUi(
     Month(TimeRange.Month, "1M"),
     SixMonths(TimeRange.SixMonths, "6M"),
     Year(TimeRange.Year, "1Y"),
-    Max(TimeRange.Max, "MAX")
+    //Max(TimeRange.Max, "MAX") // Not supported by free CoinGecko API anymore
 }
 
 // Enum used in SettingsScreen to allow the user to choose the default price change period
