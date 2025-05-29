@@ -1,7 +1,16 @@
 package com.cointrend.domain.features.topcoins
 
 import app.cash.turbine.test
-import com.cointrend.domain.features.topcoins.mocks.*
+import com.cointrend.domain.features.topcoins.mocks.TopCoinsRepositoryWithFailure
+import com.cointrend.domain.features.topcoins.mocks.TopCoinsRepositoryWithInitialEmptyDatabase
+import com.cointrend.domain.features.topcoins.mocks.TopCoinsRepositoryWithInitialEmptyDatabaseAndThenFailure
+import com.cointrend.domain.features.topcoins.mocks.TopCoinsRepositoryWithInitialEmptyDatabaseAndThenSuccessData
+import com.cointrend.domain.features.topcoins.mocks.TopCoinsRepositoryWithManualEmitOfData
+import com.cointrend.domain.features.topcoins.mocks.TopCoinsRepositoryWithSuccessRefreshedData
+import com.cointrend.domain.features.topcoins.mocks.expectedTopCoinDataThatDontRequireRefresh
+import com.cointrend.domain.features.topcoins.mocks.expectedTopCoinDataThatShouldBeRefreshed
+import com.cointrend.domain.features.topcoins.mocks.expectedTopCoinDataThatShouldBeRefreshedAndWithMissingMarketData
+import com.cointrend.domain.features.topcoins.mocks.expectedTopCoinDataUpdatedButWithMissingMarketDataThatShouldBeRefreshed
 import com.cointrend.domain.mocks.expectedException
 import com.github.davidepanidev.kotlinextensions.utils.test.BaseCoroutineTestWithTestDispatcherProvider
 import fr.haan.resultat.Resultat
@@ -10,7 +19,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.impl.annotations.MockK
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -19,7 +27,6 @@ import strikt.api.expectThat
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class GetTopCoinsFlowUseCaseTest : BaseCoroutineTestWithTestDispatcherProvider(
     dispatcher = StandardTestDispatcher()
 ) {

@@ -2,16 +2,25 @@ package com.cointrend.data.features.favouritecoins
 
 import com.cointrend.data.features.marketdata.CoinMarketDataLocalDataSource
 import com.cointrend.data.features.marketdata.CoinMarketDataRemoteDataSource
-import com.cointrend.data.features.mocks.*
+import com.cointrend.data.features.mocks.expectedCoinWithMarketDataBtc
+import com.cointrend.data.features.mocks.expectedCoinWithMarketDataEth
+import com.cointrend.data.features.mocks.expectedCoinWithMarketDataSol
+import com.cointrend.data.features.mocks.expectedCoinWithMarketDataUsdc
+import com.cointrend.data.features.mocks.expectedCoinWithMarketDataUsdt
+import com.cointrend.data.features.mocks.getCoinsWithMarketDataList
 import com.cointrend.domain.models.toCoin
 import com.github.davidepanidev.kotlinextensions.utils.test.BaseCoroutineTestWithTestDispatcherProvider
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.confirmVerified
 import io.mockk.impl.annotations.MockK
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import io.mockk.just
+import io.mockk.runs
+import io.mockk.verify
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import strikt.api.expectThat
@@ -19,7 +28,6 @@ import strikt.assertions.isA
 import strikt.assertions.isFailure
 import strikt.assertions.isSuccess
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class FavouriteCoinsRepositoryImplTest : BaseCoroutineTestWithTestDispatcherProvider(
     dispatcher = StandardTestDispatcher()
 ) {

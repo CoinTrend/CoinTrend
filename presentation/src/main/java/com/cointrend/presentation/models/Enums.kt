@@ -2,10 +2,10 @@ package com.cointrend.presentation.models
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.cointrend.domain.models.TimeRange
 import com.cointrend.presentation.R
@@ -41,7 +41,7 @@ enum class BottomNavigationItem(val route: Screen, val icon: ImageVector, @Strin
 
     Market(
         route = Screen.CoinsList,
-        icon = Icons.Default.TrendingUp,
+        icon = Icons.AutoMirrored.Filled.TrendingUp,
         title = R.string.market
     ),
     Favourites(

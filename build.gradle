@@ -5,23 +5,23 @@ buildscript {
         android_extensions_version = "2.2.1"
         kotlin_extensions_version = "2.1"
 
-        compose_version = "1.5.4"
-        compose_compiler_version = "1.5.8"
+        compose_version = "1.6.8"
+        compose_compiler_version = "1.5.15"
 
         accompanist_version = "0.25.1"
         resultat_version = "1.0.0"
 
         turbine_version = "0.12.0"
 
-        dagger_version = "2.50"
+        dagger_version = "2.52"
         core_ktx_version = "1.12.0"
         junit_version = "4.13.2"
         appcompat_version = "1.4.2"
         material_version = "1.6.1"
-        androidx_junit_version = "1.1.3"
-        espresso_core_version = "3.4.0"
+        androidx_junit_version = "1.2.1"
+        espresso_core_version = "3.6.1"
         lifecycle_ktx_version = "2.7.0"
-        mockk_version = "1.12.3"
+        mockk_version = "1.13.11"
         coroutines_test_version = "1.6.0"
         arch_core_testing_version = "2.1.0"
         strikt_version = "0.34.1"
@@ -33,17 +33,20 @@ buildscript {
         splash_screen_version = "1.0.1"
     }
 
+    /*
     dependencies {
         classpath("com.android.tools:r8:8.5.35")
     }
 
+     */
+
 }
 
 plugins {
-    id 'com.android.application' version '8.2.0' apply false
-    id 'com.android.library' version '8.2.0' apply false
-    id 'org.jetbrains.kotlin.android' version '1.9.22' apply false
-    id "org.jetbrains.kotlin.jvm" version "1.9.22" apply false
+    id 'com.android.application' version '8.10.0' apply false
+    id 'com.android.library' version '8.10.0' apply false
+    id 'org.jetbrains.kotlin.android' version '1.9.25' apply false
+    id "org.jetbrains.kotlin.jvm" version "1.9.25" apply false
     id 'com.google.dagger.hilt.android' version "$dagger_version" apply false
 }
 

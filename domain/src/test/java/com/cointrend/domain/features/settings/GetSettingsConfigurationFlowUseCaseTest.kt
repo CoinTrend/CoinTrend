@@ -8,13 +8,14 @@ import com.cointrend.domain.models.Currency
 import com.cointrend.domain.models.Ordering
 import com.cointrend.domain.models.TimeRange
 import com.github.davidepanidev.kotlinextensions.utils.test.BaseCoroutineTestWithTestDispatcherProvider
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.confirmVerified
 import io.mockk.impl.annotations.MockK
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import strikt.api.expectThat
@@ -22,7 +23,6 @@ import strikt.assertions.isEqualTo
 import strikt.assertions.isNotEqualTo
 
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class GetSettingsConfigurationFlowUseCaseTest : BaseCoroutineTestWithTestDispatcherProvider(
     dispatcher = StandardTestDispatcher()
 ) {
