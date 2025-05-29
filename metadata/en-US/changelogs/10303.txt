@@ -1,0 +1,5 @@
+Updates:
+- Added support for Android 15
+- Updated internal libraries
+- Cleared MAX value as not supported anymore by CoinGecko free API
+- Added extra space in coin items to better fit Bitcoin larger price :)

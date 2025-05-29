@@ -1,0 +1,5 @@
+Aggiornamenti:
+- Aggiunto supporto per Android 15
+- Aggiornate librerie interne
+- Ripulito il valore MAX in quanto non più supportato dall'API gratuita di CoinGecko
+- Aggiunto uno spazio ulteriore nel dettaglio delle monete per visualizzare meglio il prezzo aumentato di Bitcoin :)
