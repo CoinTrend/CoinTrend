@@ -1,8 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
     id 'dagger.hilt.android.plugin'
+    id 'org.jetbrains.kotlin.plugin.compose'
 }
 
 android {
@@ -49,10 +50,6 @@ android {
         buildConfig = true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion compose_compiler_version
-    }
-
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
@@ -64,11 +61,6 @@ android {
 
 hilt {
     enableAggregatingTask = true
-}
-
-// Added as suggested in Hilt documentation at https://dagger.dev/hilt/gradle-setup
-kapt {
-    correctErrorTypes true
 }
 
 dependencies {
@@ -87,7 +79,7 @@ dependencies {
 
     // Hilt
     implementation "com.google.dagger:hilt-android:$dagger_version"
-    kapt "com.google.dagger:hilt-compiler:$dagger_version"
+    ksp "com.google.dagger:hilt-compiler:$dagger_version"
 
     // Compose
     implementation "androidx.compose.ui:ui:$compose_version"

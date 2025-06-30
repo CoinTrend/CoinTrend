@@ -33,12 +33,9 @@ abstract class KeyframeBasedMotion : PathMotion {
 
     private var start = Offset.Unspecified
     private var end = Offset.Unspecified
-    private var keyframes: Pair<FloatArray, LongArray>? = null
+    private var keyframes: Pair<FloatArray, Array<Offset>>? = null
 
-    protected abstract fun getKeyframes(start: Offset, end: Offset): Pair<FloatArray, LongArray>
-
-    private fun LongArray.getOffset(index: Int) =
-        @Suppress("INVISIBLE_MEMBER") Offset(get(index))
+    protected abstract fun getKeyframes(start: Offset, end: Offset): Pair<FloatArray, Array<Offset>>
 
     override fun invoke(start: Offset, end: Offset, fraction: Float): Offset {
         var frac = fraction
@@ -57,8 +54,8 @@ abstract class KeyframeBasedMotion : PathMotion {
         return when {
             frac < 0f -> interpolateInRange(fractions, offsets, frac, 0, 1)
             frac > 1f -> interpolateInRange(fractions, offsets, frac, count - 2, count - 1)
-            frac == 0f -> offsets.getOffset(0)
-            frac == 1f -> offsets.getOffset(count - 1)
+            frac == 0f -> offsets[0]
+            frac == 1f -> offsets[count - 1]
             else -> {
                 // Binary search for the correct section
                 var low = 0
@@ -70,7 +67,7 @@ abstract class KeyframeBasedMotion : PathMotion {
                     when {
                         frac < midFraction -> high = mid - 1
                         frac > midFraction -> low = mid + 1
-                        else -> return offsets.getOffset(mid)
+                        else -> return offsets[mid]
                     }
                 }
 
@@ -81,15 +78,14 @@ abstract class KeyframeBasedMotion : PathMotion {
     }
 
     private fun interpolateInRange(
-        fractions: FloatArray, offsets: LongArray,
+        fractions: FloatArray, offsets: Array<Offset>, // Changed LongArray to Array<Offset>
         fraction: Float, startIndex: Int, endIndex: Int
     ): Offset {
         val startFraction = fractions[startIndex]
         val endFraction = fractions[endIndex]
         val intervalFraction = (fraction - startFraction) / (endFraction - startFraction)
-        val start = offsets.getOffset(startIndex)
-        val end = offsets.getOffset(endIndex)
-        return lerp(start, end, intervalFraction)
+        val startOffset = offsets[startIndex]
+        val endOffset = offsets[endIndex]
+        return lerp(startOffset, endOffset, intervalFraction)
     }
-
 }

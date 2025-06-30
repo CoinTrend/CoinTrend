@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
     id 'org.jetbrains.kotlin.jvm'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
 }
 
 java {
@@ -15,11 +15,6 @@ compileKotlin {
     }
 }
 
-// Added as suggested in Hilt documentation at https://dagger.dev/hilt/gradle-setup
-kapt {
-    correctErrorTypes true
-}
-
 dependencies {
 
     implementation "com.github.davidepanidev:kotlin-extensions:$kotlin_extensions_version"
@@ -29,7 +24,7 @@ dependencies {
 
     // Hilt
     implementation "com.google.dagger:dagger:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    ksp "com.google.dagger:dagger-compiler:$dagger_version"
 
     // Resultat - Kotlin Result with loading state support
     implementation "fr.haan.resultat:resultat:$resultat_version"

@@ -51,7 +51,7 @@ internal object QuadraticBezier {
     fun approximate(
         p0: Offset, p1: Offset, p2: Offset,
         acceptableError: Float
-    ): Pair<FloatArray, LongArray> {
+    ): Pair<FloatArray, Array<Offset>> {
         val errorSquared = acceptableError * acceptableError
 
         val start = PointEntry(0f, coordinate(0f, p0, p1, p2))
@@ -87,12 +87,11 @@ internal object QuadraticBezier {
         cur = start
         var length = 0f
         var last = Offset.Unspecified
-        val result = LongArray(count)
+        val result = Array(count) { Offset.Unspecified }
         val lengths = FloatArray(count)
         for (i in result.indices) {
             val point = cur.point
-            @Suppress("INVISIBLE_MEMBER")
-            result[i] = point.packedValue
+            result[i] = point
             if (i > 0) {
                 val distance = (point - last).getDistance()
                 length += distance

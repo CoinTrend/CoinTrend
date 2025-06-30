@@ -30,7 +30,7 @@ import androidx.compose.ui.geometry.Offset
 
 class MaterialArcMotion : KeyframeBasedMotion() {
 
-    override fun getKeyframes(start: Offset, end: Offset): Pair<FloatArray, LongArray> =
+    override fun getKeyframes(start: Offset, end: Offset): Pair<FloatArray, Array<Offset>> =
         QuadraticBezier.approximate(
             start,
             if (start.y > end.y) Offset(end.x, start.y) else Offset(start.x, end.y),
