@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
@@ -15,11 +14,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -28,7 +25,6 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
@@ -42,49 +38,36 @@ import com.cointrend.presentation.R
 import com.cointrend.presentation.commoncomposables.CoinItemCompact
 import com.cointrend.presentation.commoncomposables.CoinWithMarketDataItem
 import com.cointrend.presentation.commoncomposables.SectionTitle
-import com.cointrend.presentation.models.COINS_LIST_SCREEN_KEY
 import com.cointrend.presentation.models.CoinUiItem
+import com.cointrend.presentation.models.CoinsListState
 import com.cointrend.presentation.models.CoinsListUiState
-import com.cointrend.presentation.models.Screen
 import com.cointrend.presentation.theme.MainHorizontalPadding
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
-import dev.olshevski.navigation.reimagined.navigate
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CoinsListScreen(
-    navController: NavController<Screen>,
-    viewModel: CoinsListViewModel = hiltViewModel()
+fun CoinsListContent(
+    uiState: CoinsListState,
+    onNavigateToCoinDetail: (CoinUiItem) -> Unit,
+    onSwipeRefresh: () -> Unit,
+    onRetryClick: () -> Unit
 ) {
-
     val coinsListState = rememberLazyListState()
 
     val swipeRefreshState = remember {
         derivedStateOf {
-            viewModel.state.state == CoinsListUiState.Refreshing(isAutomaticRefresh = false)
+            uiState.state == CoinsListUiState.Refreshing(isAutomaticRefresh = false)
         }
     }
 
     val automaticRefreshState = remember {
         derivedStateOf {
-            viewModel.state.state == CoinsListUiState.Refreshing(isAutomaticRefresh = true)
+            uiState.state == CoinsListUiState.Refreshing(isAutomaticRefresh = true)
         }
     }
 
     val snackbarHostState = remember { SnackbarHostState() }
-
-    val goToCoinDetail: (CoinUiItem) -> Unit = {
-        navController.navigate(
-            Screen.CoinDetail(
-                coinDetailMainData = it
-            )
-        )
-    }
-
 
     Scaffold(
         modifier = Modifier,
@@ -97,36 +80,24 @@ fun CoinsListScreen(
                 actions = {
                     LastUpdateDateText(
                         modifier = Modifier.padding(end = 16.dp),
-                        lastUpdateDate = viewModel.state.lastUpdateDate,
+                        lastUpdateDate = uiState.lastUpdateDate,
                         isRefreshing = automaticRefreshState.value
                     )
-                },
-                //scrollBehavior = scrollBehavior,
+                }
             )
         }
     ) { innerPadding ->
-
-        DisposableEffect(key1 = null) {
-            viewModel.init()
-
-            onDispose {
-                viewModel.onDispose()
-            }
-        }
-
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing = swipeRefreshState.value),
-            onRefresh = { viewModel.onSwipeRefresh() },
+            onRefresh = onSwipeRefresh,
             modifier = Modifier.fillMaxSize(),
             indicatorPadding = innerPadding,
         ) {
-
             LazyColumn(
                 state = coinsListState,
                 contentPadding = innerPadding,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-
                 item {
                     SectionTitle(
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -139,16 +110,13 @@ fun CoinsListScreen(
                         contentPadding = PaddingValues(horizontal = 8.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-
-                        items(viewModel.state.trendingCoinsList) { item ->
+                        items(uiState.trendingCoinsList) { item ->
                             CoinItemCompact(
-                                item = { item },
-                                sharedElementScreenKey = { COINS_LIST_SCREEN_KEY }
+                                item = { item }
                             ) {
-                                goToCoinDetail(item)
+                                onNavigateToCoinDetail(item)
                             }
                         }
-
                     }
                 }
 
@@ -159,15 +127,13 @@ fun CoinsListScreen(
                     )
                 }
 
-                viewModel.state.topCoinsList.forEach { item ->
-
+                uiState.topCoinsList.forEach { item ->
                     item {
                         CoinWithMarketDataItem(
                             modifier = Modifier.padding(horizontal = MainHorizontalPadding),
                             item = { item },
-                            sharedElementScreenKey = { COINS_LIST_SCREEN_KEY },
                             onCoinItemClick = {
-                                goToCoinDetail(
+                                onNavigateToCoinDetail(
                                     with(item) {
                                         CoinUiItem(
                                             id = id,
@@ -181,21 +147,17 @@ fun CoinsListScreen(
                             }
                         )
                     }
-
                 }
 
-                item { 
+                item {
                     Spacer(modifier = Modifier.size(32.dp))
                 }
-                
             }
-
         }
 
-        when(val state = viewModel.state.state) {
+        when(val state = uiState.state) {
             is CoinsListUiState.Error -> {
                 LaunchedEffect(key1 = snackbarHostState) {
-
                     val result = snackbarHostState.showSnackbar(
                         message = state.message,
                         actionLabel = "Retry",
@@ -204,19 +166,15 @@ fun CoinsListScreen(
                     )
 
                     if (result == SnackbarResult.ActionPerformed) {
-                        viewModel.onRetryClick()
+                        onRetryClick()
                     }
-
                 }
-
             }
             else -> {
                 // If Idle do nothing whereas Refreshing is handled by SwipeRefresh
             }
         }
-
     }
-
 }
 
 @Composable
@@ -267,7 +225,6 @@ private fun LastUpdateDateText(
 private fun PoweredByCoinGeckoText(
     modifier: Modifier = Modifier
 ) {
-
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -285,30 +242,5 @@ private fun PoweredByCoinGeckoText(
             painter = painterResource(id = R.drawable.ic_coingecko),
             contentDescription = null,
         )
-    }
-}
-
-@Composable
-private fun ErrorItem(
-    modifier: Modifier,
-    message: String,
-    onRetryClick: () -> Unit
-) {
-    Column(
-        modifier = modifier
-            .padding(16.dp)
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = message, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center)
-        OutlinedButton(
-            onClick = { onRetryClick.invoke() },
-            colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = MaterialTheme.colorScheme.onBackground
-            )
-        ) {
-            Text(text = "Retry")
-        }
     }
 }

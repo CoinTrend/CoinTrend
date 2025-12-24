@@ -37,25 +37,21 @@ enum class SettingsPriceChangePeriodUi(
     Year(TimeRange.Year, "1 Year")
 }
 
-enum class BottomNavigationItem(val route: Screen, val icon: ImageVector, @StringRes val title: Int) {
+enum class BottomNavigationItem(val icon: ImageVector, @StringRes val title: Int) {
 
     Market(
-        route = Screen.CoinsList,
         icon = Icons.AutoMirrored.Filled.TrendingUp,
         title = R.string.market
     ),
     Favourites(
-        route = Screen.FavouriteCoinsList,
         icon = Icons.Default.Star,
         title = R.string.favorite
     ),
     Search(
-        route = Screen.Search,
         icon = Icons.Default.Search,
         title = R.string.search
     ),
     Settings(
-        route = Screen.Settings,
         icon = Icons.Default.Settings,
         title = R.string.settings
     )

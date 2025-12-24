@@ -93,8 +93,6 @@ dependencies {
     // Kotlin Serialization for type-safe navigation routes
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2"
 
-    // Temporarily keep Reimagined Navigation for migration adapter
-    implementation "dev.olshevski.navigation:reimagined-hilt:1.5.0"
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01") {
         exclude group: "androidx.test"
     }

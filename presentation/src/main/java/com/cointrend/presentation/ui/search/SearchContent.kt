@@ -38,31 +38,28 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import com.cointrend.presentation.commoncomposables.CoinItem
 import com.cointrend.presentation.commoncomposables.LoadingItem
-import com.cointrend.presentation.models.COINS_LIST_SCREEN_KEY
-import com.cointrend.presentation.models.Screen
+import com.cointrend.presentation.models.CoinUiItem
+import com.cointrend.presentation.models.SearchTextFieldState
 import com.cointrend.presentation.models.SearchUiState
 import com.cointrend.presentation.theme.StocksDarkPrimaryText
 import com.cointrend.presentation.theme.StocksDarkSecondaryText
-import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
-import dev.olshevski.navigation.reimagined.navigate
-
 
 @Composable
-fun SearchScreen(
-    navController: NavController<Screen>,
-    viewModel: SearchViewModel = hiltViewModel()
+fun SearchContent(
+    searchTextFieldState: SearchTextFieldState,
+    searchUiState: SearchUiState,
+    onSearchValueChanged: (String) -> Unit,
+    onClearSearchClick: () -> Unit,
+    onRetryClick: () -> Unit,
+    onNavigateToCoinDetail: (CoinUiItem) -> Unit
 ) {
-
     val focusManager = LocalFocusManager.current
-
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
         modifier = Modifier,
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { padding ->
-
         Column(
             Modifier
                 .fillMaxSize()
@@ -76,15 +73,12 @@ fun SearchScreen(
                     )
                 }
         ) {
-
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(end = 8.dp, top = 24.dp, bottom = 16.dp, start = 8.dp),
-                value = viewModel.searchTextFieldState.text,
-                onValueChange = {
-                    viewModel.onSearchValueChanged(text = it)
-                },
+                value = searchTextFieldState.text,
+                onValueChange = onSearchValueChanged,
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Done,
                     autoCorrect = false,
@@ -100,99 +94,91 @@ fun SearchScreen(
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
-                        contentDescription = null,
-                        tint = StocksDarkSecondaryText
+                        contentDescription = null
                     )
-
                 },
                 trailingIcon = {
-                    if (viewModel.searchTextFieldState.isTrailingIconVisible) {
-                        IconButton(onClick = { viewModel.onSearchValueChanged("") }) {
+                    if (searchTextFieldState.text.isNotEmpty()) {
+                        IconButton(
+                            onClick = {
+                                onClearSearchClick()
+                                focusManager.clearFocus()
+                            }
+                        ) {
                             Icon(
                                 imageVector = Icons.Default.Cancel,
-                                contentDescription = "Cancel",
-                                tint = StocksDarkSecondaryText
+                                contentDescription = null
                             )
                         }
                     }
                 },
-                textStyle = TextStyle(
+                textStyle = TextStyle.Default.copy(
                     color = StocksDarkPrimaryText
                 ),
                 placeholder = {
                     Text(
-                        color = StocksDarkSecondaryText,
-                        text = viewModel.searchTextFieldState.placeholderText
+                        text = "Search cryptocurrencies",
+                        color = StocksDarkSecondaryText
                     )
                 },
-                shape = MaterialTheme.shapes.large,
                 colors = TextFieldDefaults.colors(
-                    cursorColor = StocksDarkPrimaryText,
-                    //containerColor = StocksDarkSelectedChip,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
+                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
                 )
             )
 
-            when(val state = viewModel.searchUiState) {
-                is SearchUiState.Success -> {
-                    LazyColumn(
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp)
-                            .fillMaxSize(),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                if (searchUiState is SearchUiState.Success) {
+                    searchUiState.coins.forEach { item ->
                         item {
-                            Spacer(modifier = Modifier.size(8.dp))
-                        }
-
-                        state.coins.forEach {
-                            item {
-                                CoinItem(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    item = { it },
-                                    sharedElementScreenKey = { COINS_LIST_SCREEN_KEY },
-                                ) {
-                                    navController.navigate(
-                                        Screen.CoinDetail(
-                                            coinDetailMainData = it
-                                        )
-                                    )
-                                }
+                            CoinItem(
+                            modifier = Modifier.padding(horizontal = 8.dp),
+                            item = { item },
+                            onCoinItemClick = {
+                                focusManager.clearFocus()
+                                onNavigateToCoinDetail(item)
                             }
-                        }
-
-                        item {
-                            Spacer(modifier = Modifier.size(32.dp))
-                        }
-                    }
-                }
-
-                is SearchUiState.Error -> {
-                    LaunchedEffect(key1 = snackbarHostState) {
-
-                        val result = snackbarHostState.showSnackbar(
-                            message = state.message,
-                            actionLabel = "Retry",
-                            withDismissAction = true,
-                            duration = SnackbarDuration.Indefinite
                         )
-
-                        if (result == SnackbarResult.ActionPerformed) {
-                            viewModel.onRetryClick()
-                        }
-
                     }
                 }
-                is SearchUiState.Loading -> {
-                    LoadingItem(modifier = Modifier.fillMaxSize())
+                }
+
+                if (searchUiState == SearchUiState.Loading) {
+                    repeat(6) {
+                        item {
+                            LoadingItem(modifier = Modifier.padding(horizontal = 8.dp))
+                        }
+                    }
+                }
+
+                item {
+                    Spacer(modifier = Modifier.size(32.dp))
                 }
             }
-
-
-
         }
 
-    }
+        when(searchUiState) {
+            is SearchUiState.Error -> {
+                LaunchedEffect(key1 = snackbarHostState) {
+                    val result = snackbarHostState.showSnackbar(
+                        message = searchUiState.message,
+                        actionLabel = "Retry",
+                        withDismissAction = true,
+                        duration = SnackbarDuration.Indefinite
+                    )
 
+                    if (result == SnackbarResult.ActionPerformed) {
+                        onRetryClick()
+                    }
+                }
+            }
+            else -> {
+                // Do nothing for other states
+            }
+        }
+    }
 }

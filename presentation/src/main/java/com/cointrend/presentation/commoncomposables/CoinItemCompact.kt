@@ -3,9 +3,6 @@ package com.cointrend.presentation.commoncomposables
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
@@ -13,46 +10,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.cointrend.presentation.customcomposables.sharedelements.SharedElement
-import com.cointrend.presentation.customcomposables.sharedelements.SharedElementsRoot
 import com.cointrend.presentation.models.CoinUiItem
 import com.cointrend.presentation.theme.CoinTrendTheme
 import com.cointrend.presentation.theme.StocksDarkPrimaryText
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CoinItemCompact(
     item: () -> CoinUiItem,
-    sharedElementScreenKey: () -> String,
     onCoinItemClick: () -> Unit,
 ) {
-
-    val coroutineScope = rememberCoroutineScope()
-
-    // The setup of the SharedElement Composable is only set
-    // when the user taps on the card.
-    val setupSharedElement = rememberSaveable {
-        mutableStateOf(false)
-    }
-
     Card(
         modifier = Modifier
             .width(120.dp)
             .semantics(mergeDescendants = true) {},
-        onClick = {
-            if (setupSharedElement.value) {
-                onCoinItemClick()
-            } else {
-                setupSharedElement.value = true
-
-                coroutineScope.launch {
-                    delay(50L)
-                    onCoinItemClick()
-                }
-            }
-        },
+        onClick = onCoinItemClick,
         colors = CardDefaults.cardColors(
             contentColor = StocksDarkPrimaryText
         ),
@@ -67,13 +39,7 @@ fun CoinItemCompact(
             verticalArrangement = Arrangement.Center
         ) {
 
-            if (setupSharedElement.value) {
-                SharedElement(key = item().imageUrl, screenKey = sharedElementScreenKey()) {
-                    CoinIcon(imageUrl = item().imageUrl)
-                }
-            } else {
-                CoinIcon(imageUrl = item().imageUrl)
-            }
+            CoinIcon(imageUrl = item().imageUrl)
 
             Spacer(modifier = Modifier.size(4.dp))
 
@@ -123,20 +89,17 @@ fun CoinItemCompact(
 @Composable
 private fun CoinItemCompactPreview() {
     CoinTrendTheme {
-        SharedElementsRoot {
-            CoinItemCompact(
-                item = {
-                    CoinUiItem(
-                        id = "",
-                        name = "Bitcoin",
-                        symbol = "BTC",
-                        imageUrl = "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
-                        marketCapRank = "1"
-                    )
-                },
-                sharedElementScreenKey = { "" },
-                onCoinItemClick = {}
-            )
-        }
+        CoinItemCompact(
+            item = {
+                CoinUiItem(
+                    id = "",
+                    name = "Bitcoin",
+                    symbol = "BTC",
+                    imageUrl = "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
+                    marketCapRank = "1"
+                )
+            },
+            onCoinItemClick = {}
+        )
     }
 }

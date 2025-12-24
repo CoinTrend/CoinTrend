@@ -3,7 +3,6 @@ package com.cointrend.presentation.commoncomposables
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,8 +13,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cointrend.presentation.customcomposables.LineChart
-import com.cointrend.presentation.customcomposables.sharedelements.SharedElement
-import com.cointrend.presentation.customcomposables.sharedelements.SharedElementsRoot
 import com.cointrend.presentation.models.BaseCoinWithMarketDataUiItem
 import com.cointrend.presentation.models.CoinWithMarketDataUiItem
 import com.cointrend.presentation.theme.CoinTrendTheme
@@ -23,41 +20,18 @@ import com.cointrend.presentation.theme.PositiveTrend
 import com.cointrend.presentation.theme.StocksDarkPrimaryText
 import com.cointrend.presentation.theme.StocksDarkSecondaryText
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CoinWithMarketDataItemCompact(
     item: () -> BaseCoinWithMarketDataUiItem,
-    sharedElementScreenKey: () -> String,
     onCoinItemClick: () -> Unit,
 ) {
-
-    val coroutineScope = rememberCoroutineScope()
-
-    // The setup of the SharedElement Composable is only set
-    // when the user taps on the card.
-    val setupSharedElement = rememberSaveable {
-        mutableStateOf(false)
-    }
-    
     Card(
         modifier = Modifier
             .width(112.dp)
             .semantics(mergeDescendants = true) {},
-        onClick = {
-            if (setupSharedElement.value) {
-                onCoinItemClick()
-            } else {
-                setupSharedElement.value = true
-
-                coroutineScope.launch {
-                    delay(50L)
-                    onCoinItemClick()
-                }
-            }
-        },
+        onClick = onCoinItemClick,
         colors = CardDefaults.cardColors(
             contentColor = StocksDarkPrimaryText
         ),
@@ -72,13 +46,7 @@ fun CoinWithMarketDataItemCompact(
             verticalArrangement = Arrangement.Center
         ) {
 
-            if (setupSharedElement.value) {
-                SharedElement(key = item().imageUrl, screenKey = sharedElementScreenKey()) {
-                    CoinIcon(imageUrl = item().imageUrl)
-                }
-            } else {
-                CoinIcon(imageUrl = item().imageUrl)
-            }
+            CoinIcon(imageUrl = item().imageUrl)
 
             // TODO: handle shimmer if market data is missing
             /*
@@ -174,8 +142,7 @@ fun CoinWithMarketDataItemCompact(
 @Composable
 private fun CoinItemCompactPreview() {
     CoinTrendTheme {
-        SharedElementsRoot {
-            CoinWithMarketDataItemCompact(
+        CoinWithMarketDataItemCompact(
                 item = {
                     CoinWithMarketDataUiItem(
                         id = "",
@@ -190,9 +157,7 @@ private fun CoinItemCompactPreview() {
                         lastUpdate = ""
                     )
                 },
-                sharedElementScreenKey = { "" },
                 onCoinItemClick = {}
             )
-        }
     }
 }
