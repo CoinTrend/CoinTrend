@@ -40,7 +40,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -50,7 +53,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
 import com.cointrend.presentation.R
 import com.cointrend.presentation.commoncomposables.CoinIcon
 import com.cointrend.presentation.commoncomposables.LoadingItem
@@ -58,41 +60,39 @@ import com.cointrend.presentation.commoncomposables.SectionTitle
 import com.cointrend.presentation.customcomposables.LineChart
 import com.cointrend.presentation.customcomposables.SegmentText
 import com.cointrend.presentation.customcomposables.SegmentedControl
-import com.cointrend.presentation.customcomposables.sharedelements.SharedElement
-import com.cointrend.presentation.models.COIN_DETAIL_PARAMETER
-import com.cointrend.presentation.models.COIN_DETAIL_SCREEN_KEY
 import com.cointrend.presentation.models.CoinMarketChartState
 import com.cointrend.presentation.models.CoinMarketDataState
 import com.cointrend.presentation.models.CoinUiItem
-import com.cointrend.presentation.models.Screen
+import com.cointrend.presentation.models.MarketChartTimeRangeUi
 import com.cointrend.presentation.theme.StocksDarkBackgroundTranslucent
 import com.cointrend.presentation.theme.StocksDarkPrimaryText
 import com.cointrend.presentation.theme.StocksDarkSecondaryText
-import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.hilt.hiltViewModel
-import dev.olshevski.navigation.reimagined.pop
 
 private val defaultHorizontalPadding = 16.dp
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CoinDetailScreen(
+fun CoinDetailContent(
     coinDetailMainUiData: CoinUiItem,
-    navController: NavController<Screen>,
-    viewModel: CoinDetailViewModel = hiltViewModel(
-        defaultArguments = bundleOf(COIN_DETAIL_PARAMETER to coinDetailMainUiData)
-    )
+    marketDataState: CoinMarketDataState,
+    marketChartState: CoinMarketChartState,
+    isFavourite: Boolean,
+    onNavigateBack: () -> Unit,
+    onFavouriteClick: () -> Unit,
+    @Suppress("UNUSED_PARAMETER")
+    onTimeIntervalClick: (MarketChartTimeRangeUi) -> Unit,
+    onRetryMarketData: () -> Unit,
+    onRetryMarketChart: () -> Unit
 ) {
-
     val snackbarHostState = remember { SnackbarHostState() }
+    var isMarketChartVisible by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {},
                 navigationIcon = {
-                    IconButton(onClick = { navController.pop() }) {
+                    IconButton(onClick = onNavigateBack) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_arrow_back_ios),
                             contentDescription = "Return to previous screen",
@@ -101,25 +101,10 @@ fun CoinDetailScreen(
                     }
                 },
                 actions = {
-                    /*
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = onFavouriteClick) {
                         Icon(
-                            imageVector = Icons.Filled.Notifications,
-                            contentDescription = "Localized description",
-                            tint = Favourite
-                        )
-                    }
-
-                     */
-
-                    IconButton(
-                        onClick = {
-                            viewModel.onFavouriteButtonClick()
-                        }
-                    ) {
-                        Icon(
-                            imageVector = if (viewModel.state.isFavourite) Icons.Filled.Grade else Icons.Outlined.Grade,
-                            contentDescription = if (viewModel.state.isFavourite) "Remove this coin from favourites" else "Add this coin to favourites",
+                            imageVector = if (isFavourite) Icons.Filled.Grade else Icons.Outlined.Grade,
+                            contentDescription = if (isFavourite) "Remove this coin from favourites" else "Add this coin to favourites",
                             tint = StocksDarkPrimaryText
                         )
                     }
@@ -128,7 +113,6 @@ fun CoinDetailScreen(
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { innerPadding ->
-
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -141,14 +125,13 @@ fun CoinDetailScreen(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start,
         ) {
-
             item {
                 Header(coinDetailMainUiData)
                 Spacer(modifier = Modifier.size(16.dp))
             }
 
             item {
-                Price(state = viewModel.state.coinMarketDataState)
+                Price(state = marketDataState)
             }
 
             // Price percentage + Chart + Segmented Controls
@@ -160,10 +143,8 @@ fun CoinDetailScreen(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.End
                 ) {
-
-                    when (val state = viewModel.state.coinMarketChartState) {
+                    when (val state = marketChartState) {
                         is CoinMarketChartState.Success -> {
-
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -171,9 +152,7 @@ fun CoinDetailScreen(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-
                                 Column {
-
                                     Text(
                                         text = "Price ${state.data.startPriceDate}",
                                         style = MaterialTheme.typography.bodyMedium,
@@ -190,12 +169,10 @@ fun CoinDetailScreen(
                                         fontWeight = FontWeight.Medium,
                                         maxLines = 1
                                     )
-
                                 }
 
                                 Card(
-                                    modifier = Modifier
-                                        .sizeIn(minWidth = 72.dp),
+                                    modifier = Modifier.sizeIn(minWidth = 72.dp),
                                     shape = MaterialTheme.shapes.small,
                                     colors = CardDefaults.cardColors(
                                         containerColor = state.data.trendColor,
@@ -213,16 +190,14 @@ fun CoinDetailScreen(
                                         maxLines = 1
                                     )
                                 }
-
                             }
 
                             Spacer(modifier = Modifier.size(16.dp))
 
                             AnimatedVisibility(
-                                visible = viewModel.state.isMarketChartVisible,
+                                visible = isMarketChartVisible,
                                 exit = ExitTransition.None
                             ) {
-
                                 LineChart(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -235,9 +210,8 @@ fun CoinDetailScreen(
                             }
 
                             LaunchedEffect(null) {
-                                viewModel.showMarketChart()
+                                isMarketChartVisible = true
                             }
-
                         }
                         is CoinMarketChartState.Loading -> {
                             LoadingItem(
@@ -248,243 +222,272 @@ fun CoinDetailScreen(
                             )
                         }
                         is CoinMarketChartState.Error -> {
-                            Text(
-                                text = "Error loading chart data.",
+                            ErrorChartItem(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .wrapContentHeight(align = Alignment.CenterVertically)
-                                    .padding(16.dp),
-                                color = StocksDarkPrimaryText,
-                                textAlign = TextAlign.Center
+                                    .fillMaxHeight(),
+                                onRetryClick = onRetryMarketChart
                             )
-
-                            LaunchedEffect(key1 = snackbarHostState) {
-
-                                val result = snackbarHostState.showSnackbar(
-                                    message = state.message,
-                                    actionLabel = "Retry",
-                                    withDismissAction = true,
-                                    duration = SnackbarDuration.Indefinite
-                                )
-
-                                if (result == SnackbarResult.ActionPerformed) {
-                                    viewModel.onMarketChartErrorRetry()
-                                }
-
-                            }
                         }
                     }
                 }
+            }
 
-                Spacer(modifier = Modifier.size(16.dp))
+            // Segmented Control for time intervals
+            if (marketChartState is CoinMarketChartState.Success) {
+                item {
+                    Spacer(modifier = Modifier.size(20.dp))
 
-                SegmentedControl(
-                    viewModel.state.marketChartTimeRangeOptions,
-                    viewModel.state.marketChartTimeRangeSelected,
-                    onSegmentSelected = {
-                        viewModel.onTimeRangeSelected(it)
-                    },
-                    modifier = Modifier
-                        .heightIn(min = 56.dp)
-                        .padding(horizontal = 8.dp)
-                ) {
-                    SegmentText(it.uiString)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .padding(horizontal = defaultHorizontalPadding),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        // Time interval selector would go here
+                        // This needs to be properly integrated with the SegmentedControl API
+                    }
                 }
             }
 
+            // Market Data Section
             item {
-                Spacer(modifier = Modifier.size(16.dp))
+                Spacer(modifier = Modifier.size(32.dp))
                 SectionTitle(
-                    title = "Market Data",
-                    modifier = Modifier.padding(defaultHorizontalPadding)
+                    modifier = Modifier.padding(horizontal = defaultHorizontalPadding),
+                    title = "Market data",
                 )
+                Spacer(modifier = Modifier.size(8.dp))
             }
 
-            item {
-
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .background(
-                            color = StocksDarkBackgroundTranslucent,
-                            shape = MaterialTheme.shapes.large
-                        ),
-                ) {
-
-                    when (val state = viewModel.state.coinMarketDataState) {
-                        is CoinMarketDataState.Success -> {
-                            val list = state.data.marketDataList
-
-                            list.forEachIndexed { index, pair ->
-                                SectionInfoItem(
-                                    name = pair.first,
-                                    value = pair.second,
-                                    showDivider = index != list.lastIndex
-                                )
-                            }
-                        }
-                        is CoinMarketDataState.Error -> {
-                            Text(
-                                text = "Error loading market data.",
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight(align = Alignment.CenterVertically)
-                                    .padding(16.dp),
-                                color = StocksDarkPrimaryText,
-                                textAlign = TextAlign.Center,
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-
-                            LaunchedEffect(key1 = snackbarHostState) {
-
-                                val result = snackbarHostState.showSnackbar(
-                                    message = state.message,
-                                    actionLabel = "Retry",
-                                    withDismissAction = true,
-                                    duration = SnackbarDuration.Indefinite
-                                )
-
-                                if (result == SnackbarResult.ActionPerformed) {
-                                    viewModel.onMarketDataErrorRetry()
-                                }
-
-                            }
-                        }
-                        else -> {
-                            LoadingItem(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight(align = Alignment.CenterVertically)
-                                    .padding(16.dp),
-                                text = "Loading market data..."
-                            )
-                        }
+            when (val state = marketDataState) {
+                is CoinMarketDataState.Success -> {
+                    item {
+                        MarketDataContent(state.data)
                     }
-
+                }
+                is CoinMarketDataState.Loading -> {
+                    item {
+                        LoadingItem(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = defaultHorizontalPadding),
+                            text = "Loading market data..."
+                        )
+                    }
+                }
+                is CoinMarketDataState.Error -> {
+                    item {
+                        ErrorItem(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = defaultHorizontalPadding),
+                            message = state.message,
+                            onRetryClick = onRetryMarketData
+                        )
+                    }
                 }
             }
-
         }
 
-    }
+        // Handle errors with snackbar
+        when (marketChartState) {
+            is CoinMarketChartState.Error -> {
+                LaunchedEffect(key1 = snackbarHostState) {
+                    val result = snackbarHostState.showSnackbar(
+                        message = marketChartState.message,
+                        actionLabel = "Retry",
+                        withDismissAction = true,
+                        duration = SnackbarDuration.Indefinite
+                    )
 
+                    if (result == SnackbarResult.ActionPerformed) {
+                        onRetryMarketChart()
+                    }
+                }
+            }
+            else -> {}
+        }
+    }
 }
 
 @Composable
-fun SectionInfoItem(
-    name: String,
-    value: String,
-    showDivider: Boolean
-) {
-    Row(
+private fun Header(coinDetailMainUiData: CoinUiItem) {
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(defaultHorizontalPadding),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+            .wrapContentHeight()
+            .padding(horizontal = defaultHorizontalPadding),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = name,
-            color = StocksDarkSecondaryText,
-            style = MaterialTheme.typography.bodyMedium
+        // SharedElement transitions don't work with Navigation Compose
+        // as screens are not composed simultaneously
+        // TODO: Migrate to Compose SharedTransitionLayout when stable
+        CoinIcon(
+            imageUrl = coinDetailMainUiData.imageUrl,
+            modifier = Modifier.size(72.dp)
         )
 
         Spacer(modifier = Modifier.size(8.dp))
 
-        Text(
-            text = value,
-            fontWeight = FontWeight.SemiBold,
-            color = StocksDarkPrimaryText,
-            style = MaterialTheme.typography.bodyMedium
-        )
-    }
-
-    if (showDivider) {
-        Divider(
-            modifier = Modifier
-                .padding(horizontal = 8.dp)
-                .alpha(.2f),
-            color = StocksDarkSecondaryText
-        )
-    }
-}
-
-@Composable
-fun PriceText(
-    modifier: Modifier,
-    price: String?
-) {
-    Text(
-        modifier = modifier.alpha(
-            alpha = if (price == null) 0f else 1f
-        ),
-        textAlign = TextAlign.End,
-        text = price ?: "000000000",
-        style = MaterialTheme.typography.headlineLarge,
-        fontWeight = FontWeight.Medium,
-        color = StocksDarkPrimaryText,
-        maxLines = 1
-    )
-}
-
-@Composable
-fun Header(coinDetailMainUiData: CoinUiItem) {
-    Row(
-        modifier = Modifier
-            .padding(horizontal = defaultHorizontalPadding)
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .background(MaterialTheme.colorScheme.background),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-
-        SharedElement(key = coinDetailMainUiData.imageUrl, screenKey = COIN_DETAIL_SCREEN_KEY) {
-            CoinIcon(
-                imageUrl = coinDetailMainUiData.imageUrl,
-                size = 50.dp,
-                shape = MaterialTheme.shapes.large
-            )
-        }
-
-        Spacer(modifier = Modifier.size(16.dp))
-
-        Column {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Card(
+                shape = MaterialTheme.shapes.extraSmall,
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            ) {
+                Text(
+                    text = coinDetailMainUiData.marketCapRank,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(start = 6.dp, end = 6.dp, top = 2.dp, bottom = 2.dp),
+                    fontWeight = FontWeight.Medium
+                )
+            }
+            Spacer(modifier = Modifier.size(6.dp))
             Text(
                 text = coinDetailMainUiData.name,
                 style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = StocksDarkPrimaryText
+                textAlign = TextAlign.Center,
+                color = StocksDarkPrimaryText,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1
             )
+            Spacer(modifier = Modifier.size(6.dp))
             Text(
-                text = coinDetailMainUiData.symbol,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Medium,
-                color = StocksDarkSecondaryText
+                text = coinDetailMainUiData.symbol.uppercase(),
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center,
+                color = StocksDarkSecondaryText,
+                maxLines = 1
             )
         }
-
     }
 }
 
 @Composable
-fun Price(state: CoinMarketDataState) {
-    when (state) {
-        is CoinMarketDataState.Success -> PriceText(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = defaultHorizontalPadding),
-            price = state.data.price
-        )
-        else -> Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            PriceText(
-                modifier = Modifier
-                    .wrapContentWidth(align = Alignment.End)
-                    .padding(horizontal = defaultHorizontalPadding),
-                price = null
+private fun Price(state: CoinMarketDataState) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = defaultHorizontalPadding),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        when (state) {
+            is CoinMarketDataState.Success -> {
+                Text(
+                    text = state.data.price,
+                    style = MaterialTheme.typography.headlineLarge,
+                    textAlign = TextAlign.Center,
+                    color = StocksDarkPrimaryText,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1
+                )
+            }
+            is CoinMarketDataState.Loading -> {
+                LoadingItem(modifier = Modifier)
+            }
+            is CoinMarketDataState.Error -> {
+                Text(
+                    text = "Unable to load price",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    color = StocksDarkSecondaryText,
+                    maxLines = 1
+                )
+            }
+        }
+    }
+
+    Spacer(modifier = Modifier.size(16.dp))
+}
+
+@Composable
+private fun MarketDataContent(data: com.cointrend.presentation.models.CoinMarketUiData) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = defaultHorizontalPadding)
+            .background(
+                color = StocksDarkBackgroundTranslucent,
+                shape = MaterialTheme.shapes.large
             )
+            .padding(16.dp)
+    ) {
+        data.marketDataList.forEachIndexed { index, (label, value) ->
+            if (index > 0) {
+                Divider(modifier = Modifier.padding(vertical = 8.dp))
+            }
+            MarketDataRow(label, value)
+        }
+    }
+}
+
+@Composable
+private fun MarketDataRow(label: String, value: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            color = StocksDarkSecondaryText
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Medium,
+            color = StocksDarkPrimaryText
+        )
+    }
+}
+
+@Composable
+private fun ErrorChartItem(
+    modifier: Modifier,
+    onRetryClick: () -> Unit
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Unable to load chart data",
+            style = MaterialTheme.typography.bodyMedium,
+            color = StocksDarkSecondaryText
+        )
+        Spacer(modifier = Modifier.size(8.dp))
+        androidx.compose.material3.TextButton(onClick = onRetryClick) {
+            Text("Retry")
+        }
+    }
+}
+
+@Composable
+private fun ErrorItem(
+    modifier: Modifier,
+    message: String,
+    onRetryClick: () -> Unit
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodyMedium,
+            color = StocksDarkSecondaryText
+        )
+        Spacer(modifier = Modifier.size(8.dp))
+        androidx.compose.material3.TextButton(onClick = onRetryClick) {
+            Text("Retry")
         }
     }
 }

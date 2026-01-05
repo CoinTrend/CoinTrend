@@ -35,8 +35,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cointrend.presentation.customcomposables.LineChart
-import com.cointrend.presentation.customcomposables.sharedelements.SharedElement
-import com.cointrend.presentation.customcomposables.sharedelements.SharedElementsRoot
 import com.cointrend.presentation.models.BaseCoinWithMarketDataUiItem
 import com.cointrend.presentation.models.CoinWithMarketDataUiItem
 import com.cointrend.presentation.models.CoinWithShimmeringMarketDataUiItem
@@ -54,35 +52,15 @@ import timber.log.Timber
 fun CoinWithMarketDataItem(
     modifier: Modifier = Modifier,
     item: () -> BaseCoinWithMarketDataUiItem,
-    sharedElementScreenKey: () -> String,
     onCoinItemClick: () -> Unit,
 ) {
     Timber.d("CoinItem recomposition")
-
-    val coroutineScope = rememberCoroutineScope()
-
-    // The setup of the SharedElement Composable is only set
-    // when the user taps on the card.
-    val setupSharedElement = rememberSaveable {
-        mutableStateOf(false)
-    }
 
     Card(
         modifier = modifier
             .wrapContentHeight()
             .semantics(mergeDescendants = true) {},
-        onClick = {
-            if (setupSharedElement.value) {
-                onCoinItemClick()
-            } else {
-                setupSharedElement.value = true
-
-                coroutineScope.launch {
-                    delay(50L)
-                    onCoinItemClick()
-                }
-            }
-        },
+        onClick = onCoinItemClick,
         colors = CardDefaults.cardColors(
             contentColor = StocksDarkPrimaryText
         ),
@@ -96,7 +74,7 @@ fun CoinWithMarketDataItem(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Timber.d("CoinItem card recomposition ${item().symbol} $sharedElementScreenKey")
+            Timber.d("CoinItem card recomposition ${item().symbol}")
 
             val shouldShimmerMarketData by remember(key1 = item()) {
                 mutableStateOf(item() is CoinWithShimmeringMarketDataUiItem)
@@ -110,13 +88,10 @@ fun CoinWithMarketDataItem(
                 mutableStateOf(false)
             }
 
-            if (setupSharedElement.value) {
-                SharedElement(key = item().imageUrl, screenKey = sharedElementScreenKey()) {
-                    CoinIcon(imageUrl = item().imageUrl)
-                }
-            } else {
-                CoinIcon(imageUrl = item().imageUrl)
-            }
+            // SharedElement transitions don't work with Navigation Compose
+            // as screens are not composed simultaneously
+            // TODO: Migrate to Compose SharedTransitionLayout when stable
+            CoinIcon(imageUrl = item().imageUrl)
 
             Column(
                 modifier = Modifier.weight(1f),
@@ -250,8 +225,7 @@ fun CoinWithMarketDataItem(
 private fun CoinWithMarketDataItemPreview() {
 
     CoinTrendTheme {
-        SharedElementsRoot {
-            CoinWithMarketDataItem(
+        CoinWithMarketDataItem(
                 item = {
                     CoinWithMarketDataUiItem(
                         id = "",
@@ -273,9 +247,7 @@ private fun CoinWithMarketDataItemPreview() {
                         lastUpdate = ""
                     )
                 },
-                sharedElementScreenKey = { "" },
                 onCoinItemClick = {}
             )
-        }
     }
 }

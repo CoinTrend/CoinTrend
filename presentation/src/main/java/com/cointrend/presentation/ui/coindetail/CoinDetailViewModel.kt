@@ -56,8 +56,14 @@ class CoinDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val coinDetailMainUiData: CoinUiItem
-        get() = savedStateHandle[COIN_DETAIL_PARAMETER]
-            ?: throw RuntimeException("CoinDetailViewModel must be provided with $COIN_DETAIL_PARAMETER parameter.")
+        get() = savedStateHandle.get<CoinUiItem>(COIN_DETAIL_PARAMETER)
+            ?: CoinUiItem(
+                id = savedStateHandle.get<String>("coinId") ?: "",
+                name = savedStateHandle.get<String>("coinName") ?: "",
+                symbol = savedStateHandle.get<String>("coinSymbol") ?: "",
+                imageUrl = savedStateHandle.get<String>("coinImageUrl") ?: "",
+                marketCapRank = savedStateHandle.get<String>("coinMarketCapRank") ?: ""
+            )
 
     var state by mutableStateOf(
         CoinDetailState(
@@ -91,7 +97,11 @@ class CoinDetailViewModel @Inject constructor(
         getMarketChartData()
     }
 
-    private fun getCoinMarketData() {
+    fun setCoinDetailData(coinUiItem: CoinUiItem) {
+        savedStateHandle[COIN_DETAIL_PARAMETER] = coinUiItem
+    }
+
+    fun getCoinMarketData() {
         getCoinMarketDataFlowUseCase(
             inputParams = CoinMarketDataInputParams(
                 coinId = coinDetailMainUiData.id
@@ -128,6 +138,10 @@ class CoinDetailViewModel @Inject constructor(
             )
             getMarketChartData()
         }
+    }
+
+    fun getCoinMarketChart() {
+        getMarketChartData()
     }
 
     private fun getMarketChartData() {
