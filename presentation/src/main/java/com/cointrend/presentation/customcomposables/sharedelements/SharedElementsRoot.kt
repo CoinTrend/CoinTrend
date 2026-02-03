@@ -32,20 +32,40 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.RecomposeScope
+import androidx.compose.runtime.currentRecomposeScope
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.TransformOrigin
-import androidx.compose.ui.layout.*
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.toSize
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastMap
 import com.cointrend.presentation.customcomposables.sharedelements.SharedElementTransition.InProgress
 import com.cointrend.presentation.customcomposables.sharedelements.SharedElementTransition.WaitingForEndElementPosition
-import com.cointrend.presentation.customcomposables.sharedelements.SharedElementsTracker.State.*
+import com.cointrend.presentation.customcomposables.sharedelements.SharedElementsTracker.State.Empty
+import com.cointrend.presentation.customcomposables.sharedelements.SharedElementsTracker.State.EndElementRegistered
+import com.cointrend.presentation.customcomposables.sharedelements.SharedElementsTracker.State.InTransition
+import com.cointrend.presentation.customcomposables.sharedelements.SharedElementsTracker.State.StartElementPositioned
+import com.cointrend.presentation.customcomposables.sharedelements.SharedElementsTracker.State.StartElementRegistered
 
 @Composable
 internal fun BaseSharedElement(
@@ -417,7 +437,7 @@ private class SharedElementsTracker(
     }
 
     sealed class State {
-        object Empty : State()
+        data object Empty : State()
 
         open class StartElementRegistered(val startElementInfo: SharedElementInfo) : State() {
             open fun isRegistered(elementInfo: SharedElementInfo): Boolean {
@@ -437,7 +457,7 @@ private class SharedElementsTracker(
             }
         }
 
-        object InTransition : State()
+        data object InTransition : State()
     }
 }
 

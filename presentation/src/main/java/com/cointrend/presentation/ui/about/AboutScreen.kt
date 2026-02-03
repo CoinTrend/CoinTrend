@@ -3,10 +3,28 @@ package com.cointrend.presentation.ui.about
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -19,9 +37,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.cointrend.presentation.R
-import com.cointrend.presentation.commoncomposables.*
-import com.cointrend.presentation.models.*
-import com.cointrend.presentation.theme.*
+import com.cointrend.presentation.commoncomposables.SectionTitle
+import com.cointrend.presentation.models.REPOSITORY_DONATE_URL
+import com.cointrend.presentation.models.REPOSITORY_ISSUES_URL
+import com.cointrend.presentation.models.REPOSITORY_RELEASES_URL
+import com.cointrend.presentation.models.REPOSITORY_URL
+import com.cointrend.presentation.models.SUPPORT_EMAIL
+import com.cointrend.presentation.models.Screen
+import com.cointrend.presentation.theme.StocksDarkSelectedChip
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
 
@@ -291,7 +314,7 @@ fun SectionInfoItemAbout(
         }
     }
     if (showDivider) {
-        Divider(
+        HorizontalDivider(
             modifier = Modifier
                 .padding(horizontal = 8.dp)
                 .alpha(.2f),

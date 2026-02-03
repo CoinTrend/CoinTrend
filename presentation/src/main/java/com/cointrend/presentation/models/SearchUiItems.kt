@@ -10,6 +10,6 @@ data class SearchTextFieldState(
 
 sealed interface SearchUiState {
     data class Success(val coins: ImmutableList<CoinUiItem>) : SearchUiState
-    object Loading : SearchUiState
+    data object Loading : SearchUiState
     data class Error(val message: String) : SearchUiState
 }

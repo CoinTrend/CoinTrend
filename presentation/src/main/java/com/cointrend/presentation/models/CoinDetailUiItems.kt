@@ -41,13 +41,13 @@ data class CoinDetailState(
 )
 
 sealed interface CoinMarketChartState {
-    object Loading : CoinMarketChartState
+    data object Loading : CoinMarketChartState
     data class Error(val message: String) : CoinMarketChartState
     data class Success(val data: MarketChartUiData) : CoinMarketChartState
 }
 
 sealed interface CoinMarketDataState {
-    object Loading : CoinMarketDataState
+    data object Loading : CoinMarketDataState
     data class Error(val message: String) : CoinMarketDataState
     data class Success(val data: CoinMarketUiData) : CoinMarketDataState
 }

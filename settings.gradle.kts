@@ -11,12 +11,12 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://jitpack.io/" }
+        maven { setUrl("https://jitpack.io/") }
     }
 }
 
 rootProject.name = "CoinTrend"
-include ':app'
-include ':presentation'
-include ':domain'
-include ':data'
+include(":app")
+include(":presentation")
+include(":domain")
+include(":data")

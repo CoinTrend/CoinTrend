@@ -6,19 +6,19 @@ import kotlinx.parcelize.Parcelize
 sealed interface Screen : Parcelable {
 
     @Parcelize
-    object CoinsList : Screen
+    data object CoinsList : Screen
 
     @Parcelize
-    object FavouriteCoinsList : Screen
+    data object FavouriteCoinsList : Screen
 
     @Parcelize
-    object Search : Screen
+    data object Search : Screen
 
     @Parcelize
-    object Settings : Screen
+    data object Settings : Screen
 
     @Parcelize
-    object About : Screen
+    data object About : Screen
 
     @Parcelize
     data class CoinDetail(val coinDetailMainData: CoinUiItem) : Screen

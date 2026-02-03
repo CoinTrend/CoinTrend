@@ -26,7 +26,7 @@ data class FavouriteCoinsState(
 )
 
 sealed interface CoinsListUiState {
-    object Idle : CoinsListUiState
+    data object Idle : CoinsListUiState
     data class Refreshing(val isAutomaticRefresh: Boolean) : CoinsListUiState
     data class Error(val message: String) : CoinsListUiState
 }

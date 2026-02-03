@@ -87,7 +87,7 @@ fun SearchScreen(
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Done,
-                    autoCorrect = false,
+                    autoCorrectEnabled = false,
                     capitalization = KeyboardCapitalization.None
                 ),
                 keyboardActions = KeyboardActions(
