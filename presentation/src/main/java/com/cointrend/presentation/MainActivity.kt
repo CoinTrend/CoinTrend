@@ -7,8 +7,10 @@ import android.view.animation.AccelerateInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -20,7 +22,6 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -68,6 +69,31 @@ class MainActivity : ComponentActivity() {
     private val startDestinationViewModel: CoinsListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                startDestinationViewModel.state.topCoinsList.isEmpty() &&
+                        startDestinationViewModel.state.state !is CoinsListUiState.Error
+            }
+
+            setOnExitAnimationListener { screen ->
+                val fade = ObjectAnimator.ofFloat(
+                    screen.view,
+                    View.ALPHA,
+                    1f,
+                    0f
+                ).apply {
+                    interpolator = AccelerateInterpolator()
+                    duration = 150L
+                    doOnEnd { screen.remove() }
+                }
+
+                fade.start()
+            }
+        }
+
+        enableEdgeToEdge()
+
         super.onCreate(savedInstanceState)
 
         setContent {
@@ -115,7 +141,12 @@ class MainActivity : ComponentActivity() {
                         ) {
                             BottomNavigationItem.entries.forEach { item ->
                                 NavigationBarItem(
-                                    icon = { Icon(item.icon, contentDescription = stringResource(id = item.title)) },
+                                    icon = {
+                                        Icon(
+                                            item.icon,
+                                            contentDescription = stringResource(id = item.title)
+                                        )
+                                    },
                                     label = { Text(stringResource(id = item.title)) },
                                     selected = item.route == currentDestination,
                                     colors = NavigationBarItemDefaults.colors(
@@ -133,18 +164,52 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) {
-                    Surface(modifier = Modifier.padding(it)) {
+                    Box(
+                        modifier = Modifier.padding(
+                            bottom = it.calculateBottomPadding(),
+                        )
+                    ) {
                         SharedElementsRoot {
                             NavHost(
                                 controller = navController,
                                 //transitionSpec = mainNavHostTransitionSpec
                             ) { route ->
-                                when(route) {
-                                    is Screen.CoinsList -> { CoinsListScreen(navController = navController, viewModel = startDestinationViewModel) }
-                                    is Screen.FavouriteCoinsList -> { FavouriteCoinsScreen(navController = navController, viewModel = hiltViewModel(viewModelStoreOwner = this@MainActivity)) }
-                                    is Screen.CoinDetail -> { CoinDetailScreen(coinDetailMainUiData = route.coinDetailMainData, navController = navController) }
-                                    is Screen.Search -> { SearchScreen(navController = navController, viewModel = hiltViewModel(viewModelStoreOwner = this@MainActivity)) }
-                                    is Screen.Settings -> { SettingsScreen(navController = navController, viewModel = hiltViewModel(viewModelStoreOwner = this@MainActivity)) }
+                                when (route) {
+                                    is Screen.CoinsList -> {
+                                        CoinsListScreen(
+                                            navController = navController,
+                                            viewModel = startDestinationViewModel
+                                        )
+                                    }
+
+                                    is Screen.FavouriteCoinsList -> {
+                                        FavouriteCoinsScreen(
+                                            navController = navController,
+                                            viewModel = hiltViewModel(viewModelStoreOwner = this@MainActivity)
+                                        )
+                                    }
+
+                                    is Screen.CoinDetail -> {
+                                        CoinDetailScreen(
+                                            coinDetailMainUiData = route.coinDetailMainData,
+                                            navController = navController
+                                        )
+                                    }
+
+                                    is Screen.Search -> {
+                                        SearchScreen(
+                                            navController = navController,
+                                            viewModel = hiltViewModel(viewModelStoreOwner = this@MainActivity)
+                                        )
+                                    }
+
+                                    is Screen.Settings -> {
+                                        SettingsScreen(
+                                            navController = navController,
+                                            viewModel = hiltViewModel(viewModelStoreOwner = this@MainActivity)
+                                        )
+                                    }
+
                                     is Screen.About -> {
                                         AboutScreen(
                                             navController = navController,
@@ -186,28 +251,6 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
-            }
-        }
-
-        installSplashScreen().apply {
-            setKeepOnScreenCondition {
-                startDestinationViewModel.state.topCoinsList.isEmpty() &&
-                        startDestinationViewModel.state.state !is CoinsListUiState.Error
-            }
-
-            setOnExitAnimationListener { screen ->
-                val fade = ObjectAnimator.ofFloat(
-                    screen.view,
-                    View.ALPHA,
-                    1f,
-                    0f
-                ).apply {
-                    interpolator = AccelerateInterpolator()
-                    duration = 150L
-                    doOnEnd { screen.remove() }
-                }
-
-                fade.start()
             }
         }
 
