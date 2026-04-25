@@ -1,0 +1,3 @@
+Aggiornamenti:
+- Aggiunto supporto per Android 16
+- Aggiornate librerie interne
