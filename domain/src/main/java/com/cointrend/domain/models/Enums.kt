@@ -14,6 +14,7 @@ enum class Ordering {
 enum class Currency {
     USD,
     EUR,
+    GBP,
     BTC
 }
 

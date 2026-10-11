@@ -1,7 +1,9 @@
 package com.cointrend.presentation.mappers
 
+import com.cointrend.domain.models.Currency
 import com.cointrend.domain.models.TimeRange
 import com.cointrend.presentation.BuildConfig
+import com.cointrend.presentation.models.SettingsCurrentCurrencyUi
 import com.cointrend.presentation.models.SettingsPriceChangePeriodUi
 import timber.log.Timber
 import javax.inject.Inject
@@ -23,6 +25,15 @@ class SettingsUiMapper @Inject constructor() {
                     SettingsPriceChangePeriodUi.Year
                 }
             }
+        }
+    }
+
+    fun mapCurrentCurrencyUi(currency: Currency): SettingsCurrentCurrencyUi {
+        return when(currency) {
+            Currency.USD -> SettingsCurrentCurrencyUi.USD
+            Currency.EUR -> SettingsCurrentCurrencyUi.EUR
+            Currency.GBP -> SettingsCurrentCurrencyUi.GBP
+            Currency.BTC -> SettingsCurrentCurrencyUi.BTC
         }
     }
 

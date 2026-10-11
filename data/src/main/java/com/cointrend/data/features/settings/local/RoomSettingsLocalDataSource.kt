@@ -5,6 +5,7 @@ import com.cointrend.data.mappers.RoomDataMapper
 import com.cointrend.domain.features.settings.models.GlobalSettingsConfiguration
 import com.cointrend.domain.features.settings.models.SettingsConfiguration
 import com.cointrend.domain.features.settings.models.toSettingsConfiguration
+import com.cointrend.domain.models.Currency
 import com.cointrend.domain.models.TimeRange
 import com.github.davidepanidev.kotlinextensions.utils.dispatchers.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
@@ -33,6 +34,18 @@ class RoomSettingsLocalDataSource @Inject constructor(
                 settings = mapper.mapSettingsEntity(
                     settingsConfiguration = globalSettingsConfiguration.toSettingsConfiguration().copy(
                         defaultTimeRange = timeRange
+                    )
+                )
+            )
+        }
+    }
+
+    override suspend fun setDefaultCurrentCurrency(currency: Currency) {
+        withContext(dispatchers.io) {
+            dao.insertSettingsConfiguration(
+                settings = mapper.mapSettingsEntity(
+                    settingsConfiguration = globalSettingsConfiguration.toSettingsConfiguration().copy(
+                        currency = currency
                     )
                 )
             )

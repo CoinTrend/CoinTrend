@@ -179,6 +179,7 @@ class CoinGeckoDataMapper @Inject constructor(
             Currency.USD -> "usd"
             Currency.EUR -> "eur"
             Currency.BTC -> "btc"
+            Currency.GBP -> "gbp"
         }
     }
 

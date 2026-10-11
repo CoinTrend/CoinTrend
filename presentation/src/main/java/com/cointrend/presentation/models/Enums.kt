@@ -1,5 +1,6 @@
 package com.cointrend.presentation.models
 
+import android.os.Build
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.TrendingUp
@@ -7,6 +8,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.cointrend.domain.models.Currency
 import com.cointrend.domain.models.TimeRange
 import com.cointrend.presentation.R
 
@@ -35,6 +37,16 @@ enum class SettingsPriceChangePeriodUi(
     Month(TimeRange.Month, "1 Month"),
     SixMonths(TimeRange.SixMonths, "6 Months"),
     Year(TimeRange.Year, "1 Year")
+}
+
+enum class SettingsCurrentCurrencyUi(
+    val currency: Currency,
+    val uiString: String
+) {
+    USD(Currency.USD, "$"),
+    EUR(Currency.EUR, "€"),
+    GBP(Currency.GBP, "£"),
+    BTC(Currency.BTC, if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) "₿" else "B")
 }
 
 enum class BottomNavigationItem(val route: Screen, val icon: ImageVector, @StringRes val title: Int) {

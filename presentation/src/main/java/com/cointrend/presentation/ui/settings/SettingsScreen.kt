@@ -92,6 +92,49 @@ fun SettingsScreen(
         ) {
             item {
                 SectionTitle(
+                    title = "Current Currency",
+                    modifier = Modifier.padding(
+                        horizontal = defaultHorizontalPadding,
+                        vertical = 8.dp
+                    )
+                )
+            }
+
+            item {
+
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp, vertical = 8.dp)
+                        .background(
+                            color = StocksDarkBackgroundTranslucent,
+                            shape = MaterialTheme.shapes.large
+                        )
+                        .selectableGroup(),
+                ) {
+
+                    val currentCurrencyOptions = viewModel.state.currentCurrencyOptions
+
+                    currentCurrencyOptions.forEachIndexed { index, item ->
+                        SectionSettingItem(
+                            modifier = Modifier.selectable(
+                                selected = item == viewModel.state.selectedCurrentCurrency,
+                                onClick = {
+                                    viewModel.onCurrentCurrencySelected(
+                                        settingsCurrentCurrencyUi = item
+                                    )
+                                },
+                                role = Role.RadioButton
+                            ),
+                            name = item.uiString,
+                            selected = item == viewModel.state.selectedCurrentCurrency,
+                            showDivider = index != currentCurrencyOptions.lastIndex
+                        )
+                    }
+                }
+            }
+
+            item {
+                SectionTitle(
                     title = "Price Change Percentage Period",
                     modifier = Modifier.padding(horizontal = defaultHorizontalPadding, vertical = 8.dp)
                 )

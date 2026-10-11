@@ -16,10 +16,21 @@ import com.cointrend.presentation.BuildConfig
 import com.cointrend.presentation.di.DateAndTimeFormatter
 import com.cointrend.presentation.di.DateOnlyFormatter
 import com.cointrend.presentation.di.TimeOnlyFormatter
-import com.cointrend.presentation.models.*
+import com.cointrend.presentation.models.BaseCoinWithMarketDataUiItem
+import com.cointrend.presentation.models.CoinMarketUiData
+import com.cointrend.presentation.models.CoinUiItem
+import com.cointrend.presentation.models.CoinWithMarketDataUiItem
+import com.cointrend.presentation.models.CoinWithShimmeringMarketDataUiItem
+import com.cointrend.presentation.models.DataPoint
+import com.cointrend.presentation.models.FavouriteCoinUiData
+import com.cointrend.presentation.models.MarketChartUiData
+import com.cointrend.presentation.models.TopCoinUiData
 import com.cointrend.presentation.theme.NegativeTrend
 import com.cointrend.presentation.theme.PositiveTrend
-import com.github.davidepanidev.kotlinextensions.*
+import com.github.davidepanidev.kotlinextensions.formatToPercentage
+import com.github.davidepanidev.kotlinextensions.isToday
+import com.github.davidepanidev.kotlinextensions.roundToNDecimals
+import com.github.davidepanidev.kotlinextensions.toFormattedString
 import com.github.davidepanidev.kotlinextensions.utils.currencyformatter.CurrencyFormatter
 import com.github.davidepanidev.kotlinextensions.utils.numberformatter.NumberFormatter
 import kotlinx.collections.immutable.ImmutableList
@@ -31,7 +42,9 @@ import java.io.IOException
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import java.text.NumberFormat
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 import javax.inject.Inject
 
 class UiMapper @Inject constructor(
@@ -238,26 +251,44 @@ class UiMapper @Inject constructor(
         return if (this >= 0) PositiveTrend else NegativeTrend
     }
 
-    private fun Number.toFormattedCurrency(withoutSymbol: Boolean = false): String {
+    private fun Number.toFormattedCurrency(
+        withoutSymbol: Boolean = false
+    ): String {
         val number = if (this is Double) {
             this.roundTo2DecimalsIfTooLong()
-        } else this
+        } else { this }
 
-        val symbol = when(settingsConfiguration.getCurrency()) {
-            Currency.USD -> "$"
-            Currency.EUR -> "€"
-            Currency.BTC -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) "₿" else "B"
+        val currency = settingsConfiguration.getCurrency()
+
+        val locale = when (currency) {
+            Currency.USD -> Locale.US
+            Currency.EUR -> Locale.GERMANY
+            Currency.GBP -> Locale.UK
+            Currency.BTC -> Locale.US
         }
 
-        val formattedCurrency = number.formatToCurrency(
-            currencyFormatter,
-            customCurrencySymbol = symbol
-        )
+        val formatter = NumberFormat.getNumberInstance(locale).apply {
+            minimumFractionDigits = 2
+            maximumFractionDigits = 2
+        }
 
-        return if (!withoutSymbol) {
-            formattedCurrency
-        } else {
-            formattedCurrency.replace(symbol, "").trim()
+        val symbol = when (currency) {
+            Currency.USD -> "$"
+            Currency.EUR -> "€"
+            Currency.GBP -> "£"
+            Currency.BTC ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) "₿" else "B"
+        }
+
+        val formattedNumber = formatter.format(number)
+
+        if (withoutSymbol) {
+            return formattedNumber
+        }
+
+        return when (currency) {
+            Currency.EUR -> "$formattedNumber $symbol"
+            Currency.USD, Currency.GBP, Currency.BTC -> "$symbol$formattedNumber"
         }
     }
 

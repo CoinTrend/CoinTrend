@@ -6,9 +6,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cointrend.domain.features.settings.GetSettingsConfigurationFlowUseCase
+import com.cointrend.domain.features.settings.SetDefaultCurrentCurrencyUseCase
 import com.cointrend.domain.features.settings.SetDefaultTimeRangeUseCase
 import com.cointrend.domain.features.settings.models.SettingsConfiguration
 import com.cointrend.presentation.mappers.SettingsUiMapper
+import com.cointrend.presentation.models.SettingsCurrentCurrencyUi
 import com.cointrend.presentation.models.SettingsPriceChangePeriodUi
 import com.cointrend.presentation.models.SettingsState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,13 +27,16 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     private val getSettingsConfigurationFlowUseCase: GetSettingsConfigurationFlowUseCase,
     private val setDefaultTimeRangeUseCase: SetDefaultTimeRangeUseCase,
+    private val setDefaultCurrentCurrencyUseCase: SetDefaultCurrentCurrencyUseCase,
     private val mapper: SettingsUiMapper
 ) : ViewModel() {
 
     var state by mutableStateOf(
         SettingsState(
             priceChangePeriodOptions = SettingsPriceChangePeriodUi.entries.toImmutableList(),
-            selectedPriceChangePeriod = null
+            selectedPriceChangePeriod = null,
+            currentCurrencyOptions = SettingsCurrentCurrencyUi.entries.toImmutableList(),
+            selectedCurrentCurrency = null
         )
     )
     private set
@@ -68,9 +73,12 @@ class SettingsViewModel @Inject constructor(
             Timber.d("getSettingsConfigurationFlowUseCase SUCCESS: $it")
 
             val priceChangePeriodUi = mapper.mapPriceChangePeriodUi(timeRange = it.defaultTimeRange)
+            val currentCurrencyUi = mapper.mapCurrentCurrencyUi(currency = it.currency)
+
 
             state = state.copy(
-                selectedPriceChangePeriod = priceChangePeriodUi
+                selectedPriceChangePeriod = priceChangePeriodUi,
+                selectedCurrentCurrency = currentCurrencyUi
             )
         }.onFailure {
             Timber.e("getSettingsConfigurationFlowUseCase ERROR: $it")
@@ -88,6 +96,20 @@ class SettingsViewModel @Inject constructor(
                     Timber.d("setDefaultTimeRangeUseCase() to ${priceChangePeriodUi.timeRange} SUCCESS")
                 }.onFailure {
                     Timber.e("setDefaultTimeRangeUseCase() to ${priceChangePeriodUi.timeRange} ERROR: $it")
+                }
+            }
+        }
+    }
+
+    fun onCurrentCurrencySelected(settingsCurrentCurrencyUi: SettingsCurrentCurrencyUi) {
+        if (settingsCurrentCurrencyUi != state.selectedCurrentCurrency) {
+            viewModelScope.launch {
+                val result = setDefaultCurrentCurrencyUseCase(currency = settingsCurrentCurrencyUi.currency)
+
+                result.onSuccess {
+                    Timber.d("setDefaultCurrentCurrencyUseCase() to ${settingsCurrentCurrencyUi.currency} SUCCESS")
+                }.onFailure {
+                    Timber.e("setDefaultCurrentCurrencyUseCase() to ${settingsCurrentCurrencyUi.currency} ERROR: $it")
                 }
             }
         }
