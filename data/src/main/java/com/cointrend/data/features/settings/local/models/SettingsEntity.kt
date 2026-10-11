@@ -1,8 +1,10 @@
 package com.cointrend.data.features.settings.local.models
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.cointrend.domain.models.Currency
+import com.cointrend.domain.models.LaunchingPage
 import com.cointrend.domain.models.Ordering
 import com.cointrend.domain.models.TimeRange
 
@@ -14,5 +16,8 @@ data class SettingsEntity(
 
     val defaultTimeRange: TimeRange,
     val currency: Currency,
-    val defaultOrdering: Ordering
+    val defaultOrdering: Ordering,
+
+    @ColumnInfo(defaultValue = "'Market'")  // Market --> CoinList
+    val defaultLaunchingPage: LaunchingPage // Is default screen displaying in navigation app launch
 )

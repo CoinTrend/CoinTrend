@@ -2,6 +2,7 @@ package com.cointrend.di
 
 import com.cointrend.domain.features.settings.models.GlobalSettingsConfiguration
 import com.cointrend.domain.models.Currency
+import com.cointrend.domain.models.LaunchingPage
 import com.cointrend.domain.models.Ordering
 import com.cointrend.domain.models.TimeRange
 import com.github.davidepanidev.kotlinextensions.utils.dispatchers.DefaultDispatcherProvider
@@ -24,7 +25,8 @@ object HiltModule {
         return GlobalSettingsConfiguration(
             currency = Currency.USD,
             ordering = Ordering.MarketCapDesc,
-            defaultTimeRange = TimeRange.Week
+            defaultTimeRange = TimeRange.Week,
+            defaultLaunchingPage = LaunchingPage.Market
         )
     }
 

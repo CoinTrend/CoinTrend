@@ -8,6 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.cointrend.domain.features.app.IsPlayStoreReviewAlertAlreadyShownUseCase
 import com.cointrend.domain.features.app.SetPlayStoreReviewAlertShownUseCase
 import com.cointrend.domain.features.settings.GetSettingsConfigurationFlowUseCase
+import com.cointrend.domain.features.settings.models.SettingsConfiguration
+import com.cointrend.domain.models.LaunchingPage
+import com.cointrend.presentation.mappers.LaunchingPageMapper
+import com.cointrend.presentation.models.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.firstOrNull
@@ -20,11 +24,20 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val isPlayStoreReviewAlertAlreadyShownUseCase: IsPlayStoreReviewAlertAlreadyShownUseCase,
     private val setPlayStoreReviewAlertShownUseCase: SetPlayStoreReviewAlertShownUseCase,
-    private val getSettingsConfigurationFlowUseCase: GetSettingsConfigurationFlowUseCase
+    private val getSettingsConfigurationFlowUseCase: GetSettingsConfigurationFlowUseCase,
+    private val launchingPageMapper: LaunchingPageMapper,
 ) : ViewModel() {
 
+    /** Best practice Maybe for future, pass with MVVM archi UiState & Event
+     *
+    private val _mainEventChannel = Channel<MainEvent>(Channel.BUFFERED)
+    val mainEventFlow = _mainEventChannel.receiveAsFlow()
+
+     **/
     var shouldShowPlayStoreReviewAlert by mutableStateOf(false)
         private set
+
+    var initialSettings : SettingsConfiguration? = null
 
     init {
         // The GetSettingsConfigurationFlowUseCase is called in a blocking way so that the
@@ -32,9 +45,22 @@ class MainViewModel @Inject constructor(
         // and the initial network calls are made with the correct settings.
         // TODO: check if there are better ways to ensure the settings initialization without the runBlocking call.
         runBlocking {
-            val initialSettings = getSettingsConfigurationFlowUseCase().catch {
+             initialSettings = getSettingsConfigurationFlowUseCase().catch {
                 Timber.e("Initial SettingsConfiguration ERROR: $it")
             }.firstOrNull()
+
+            /** Best practice Maybe for future, pass with MVVM archi UiState & Event
+            when (initialSettings?.defaultLaunchingPage {
+            LaunchingPage.Market -> {
+                    _mainEventChannel.send(MainEvent.NavigateToCoinsList)
+                }
+               LaunchingPage.Favorite -> {
+                    _mainEventChannel.send(MainEvent.NavigateToFavouriteCoinsList)
+                }
+                else -> {
+                    // noop maybe future launching page settings
+                }
+            }**/
 
             Timber.d("Initial SettingsConfiguration SUCCESS: $initialSettings")
         }
@@ -53,6 +79,10 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             setPlayStoreReviewAlertShownUseCase()
         }
+    }
+
+    fun getlaunchingPageNavigationScreen(): Screen{
+        return launchingPageMapper.mapScreen(initialSettings?.defaultLaunchingPage?: LaunchingPage.Market) // Market default
     }
 
 }

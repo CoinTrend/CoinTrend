@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cointrend.domain.features.settings.GetSettingsConfigurationFlowUseCase
 import com.cointrend.domain.features.settings.SetDefaultTimeRangeUseCase
+import com.cointrend.domain.features.settings.SetLaunchingPageUseCase
 import com.cointrend.domain.features.settings.models.SettingsConfiguration
 import com.cointrend.presentation.mappers.SettingsUiMapper
+import com.cointrend.presentation.models.SettingsLaunchingPageUi
 import com.cointrend.presentation.models.SettingsPriceChangePeriodUi
 import com.cointrend.presentation.models.SettingsState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,13 +27,16 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     private val getSettingsConfigurationFlowUseCase: GetSettingsConfigurationFlowUseCase,
     private val setDefaultTimeRangeUseCase: SetDefaultTimeRangeUseCase,
+    private val setLaunchingPageUseCase: SetLaunchingPageUseCase,
     private val mapper: SettingsUiMapper
 ) : ViewModel() {
 
     var state by mutableStateOf(
         SettingsState(
             priceChangePeriodOptions = SettingsPriceChangePeriodUi.entries.toImmutableList(),
-            selectedPriceChangePeriod = null
+            selectedPriceChangePeriod = null,
+            launchingPageOptions = SettingsLaunchingPageUi.entries.toImmutableList(),
+            selectedLaunchingPage = null,
         )
     )
     private set
@@ -68,9 +73,12 @@ class SettingsViewModel @Inject constructor(
             Timber.d("getSettingsConfigurationFlowUseCase SUCCESS: $it")
 
             val priceChangePeriodUi = mapper.mapPriceChangePeriodUi(timeRange = it.defaultTimeRange)
+            val launchingPageUi = mapper.mapLaunchingPageUi(launchingPage = it.defaultLaunchingPage)
+
 
             state = state.copy(
-                selectedPriceChangePeriod = priceChangePeriodUi
+                selectedPriceChangePeriod = priceChangePeriodUi,
+                selectedLaunchingPage = launchingPageUi
             )
         }.onFailure {
             Timber.e("getSettingsConfigurationFlowUseCase ERROR: $it")
@@ -88,6 +96,20 @@ class SettingsViewModel @Inject constructor(
                     Timber.d("setDefaultTimeRangeUseCase() to ${priceChangePeriodUi.timeRange} SUCCESS")
                 }.onFailure {
                     Timber.e("setDefaultTimeRangeUseCase() to ${priceChangePeriodUi.timeRange} ERROR: $it")
+                }
+            }
+        }
+    }
+
+    fun onLaunchingPageSelected(settingsLaunchingPageUi: SettingsLaunchingPageUi) {
+        if (settingsLaunchingPageUi != state.selectedLaunchingPage) {
+            viewModelScope.launch {
+                val result = setLaunchingPageUseCase(launchingPage = settingsLaunchingPageUi.page)
+
+                result.onSuccess {
+                    Timber.d("setLaunchingPageUseCase() to ${settingsLaunchingPageUi.page} SUCCESS")
+                }.onFailure {
+                    Timber.e("setLaunchingPageUseCase() to ${settingsLaunchingPageUi.page} ERROR: $it")
                 }
             }
         }

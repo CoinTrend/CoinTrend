@@ -1,7 +1,9 @@
 package com.cointrend.presentation.mappers
 
+import androidx.compose.runtime.LaunchedEffect
 import com.cointrend.domain.features.settings.models.GlobalSettingsConfiguration
 import com.cointrend.domain.models.Currency
+import com.cointrend.domain.models.LaunchingPage
 import com.cointrend.domain.models.Ordering
 import com.cointrend.domain.models.TimeRange
 import com.cointrend.presentation.mocks.expectedCoinWithMarketData
@@ -44,7 +46,8 @@ class UiMapperTest {
             settingsConfiguration = GlobalSettingsConfiguration(
                 currency = Currency.USD,
                 ordering = Ordering.MarketCapDesc,
-                defaultTimeRange = TimeRange.Week
+                defaultTimeRange = TimeRange.Week,
+                defaultLaunchingPage = LaunchingPage.Market
             )
         )
     }

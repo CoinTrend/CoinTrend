@@ -25,3 +25,8 @@ enum class TimeRange {
     Year,
     Max
 }
+
+enum class LaunchingPage {
+    Market, // CoinsList
+    Favorites // FavouriteCoinsList
+}

@@ -125,6 +125,42 @@ fun SettingsScreen(
                     }
                 }
             }
+
+            item {
+                SectionTitle(
+                    title = "Launching Page",
+                    modifier = Modifier.padding(horizontal = defaultHorizontalPadding, vertical = 8.dp)
+                )
+            }
+
+            item {
+
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp, vertical = 8.dp)
+                        .background(
+                            color = StocksDarkBackgroundTranslucent,
+                            shape = MaterialTheme.shapes.large
+                        )
+                        .selectableGroup(),
+                ) {
+
+                    val launchingPageOptions = viewModel.state.launchingPageOptions
+
+                    launchingPageOptions.forEachIndexed { index, item ->
+                        SectionSettingItem(
+                            modifier = Modifier.selectable(
+                                selected = item == viewModel.state.selectedLaunchingPage,
+                                onClick = { viewModel.onLaunchingPageSelected(settingsLaunchingPageUi = item) },
+                                role = Role.RadioButton
+                            ),
+                            name = item.uiString,
+                            selected = item == viewModel.state.selectedLaunchingPage,
+                            showDivider = index != launchingPageOptions.lastIndex
+                        )
+                    }
+                }
+            }
         }
     }
 }

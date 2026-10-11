@@ -197,7 +197,8 @@ class RoomDataMapper @Inject constructor(
             SettingsEntity(
                 defaultTimeRange = defaultTimeRange,
                 currency = currency,
-                defaultOrdering = ordering
+                defaultOrdering = ordering,
+                defaultLaunchingPage = defaultLaunchingPage
             )
         }
     }
@@ -207,7 +208,8 @@ class RoomDataMapper @Inject constructor(
             SettingsConfiguration(
                 currency = currency,
                 ordering = defaultOrdering,
-                defaultTimeRange = defaultTimeRange
+                defaultTimeRange = defaultTimeRange,
+                defaultLaunchingPage = defaultLaunchingPage
             )
         }
     }

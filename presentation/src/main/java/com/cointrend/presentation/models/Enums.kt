@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.cointrend.domain.models.LaunchingPage
 import com.cointrend.domain.models.TimeRange
 import com.cointrend.presentation.R
 
@@ -35,6 +36,14 @@ enum class SettingsPriceChangePeriodUi(
     Month(TimeRange.Month, "1 Month"),
     SixMonths(TimeRange.SixMonths, "6 Months"),
     Year(TimeRange.Year, "1 Year")
+}
+
+enum class SettingsLaunchingPageUi(
+    val page: LaunchingPage,
+    val uiString: String
+) {
+    Market(LaunchingPage.Market, "Market"),
+    Favorite(LaunchingPage.Favorites, "Favorites"),
 }
 
 enum class BottomNavigationItem(val route: Screen, val icon: ImageVector, @StringRes val title: Int) {

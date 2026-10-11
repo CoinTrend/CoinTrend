@@ -5,6 +5,7 @@ import com.cointrend.domain.features.settings.models.GlobalSettingsConfiguration
 import com.cointrend.domain.features.settings.models.SettingsConfiguration
 import com.cointrend.domain.features.settings.models.toSettingsConfiguration
 import com.cointrend.domain.models.Currency
+import com.cointrend.domain.models.LaunchingPage
 import com.cointrend.domain.models.Ordering
 import com.cointrend.domain.models.TimeRange
 import com.github.davidepanidev.kotlinextensions.utils.test.BaseCoroutineTestWithTestDispatcherProvider
@@ -44,7 +45,8 @@ class GetSettingsConfigurationFlowUseCaseTest : BaseCoroutineTestWithTestDispatc
         globalSettingsConfiguration = GlobalSettingsConfiguration(
             currency = Currency.USD,
             ordering = Ordering.MarketCapDesc,
-            defaultTimeRange = TimeRange.Week
+            defaultTimeRange = TimeRange.Week,
+            defaultLaunchingPage = LaunchingPage.Market,
         )
 
         updateGlobalSettingsConfigurationUseCase = UpdateGlobalSettingsConfigurationUseCase(
@@ -83,7 +85,8 @@ class GetSettingsConfigurationFlowUseCaseTest : BaseCoroutineTestWithTestDispatc
         val updatedSettingConfiguration = SettingsConfiguration(
             currency = Currency.BTC,
             ordering = Ordering.PriceChangeAsc,
-            defaultTimeRange = TimeRange.Max
+            defaultTimeRange = TimeRange.Max,
+            defaultLaunchingPage = LaunchingPage.Market
         )
 
         coEvery { settingsRepository.getSettingsConfigurationFlow() } returns flow {

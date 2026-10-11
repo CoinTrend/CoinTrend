@@ -1,7 +1,9 @@
 package com.cointrend.presentation.mappers
 
+import com.cointrend.domain.models.LaunchingPage
 import com.cointrend.domain.models.TimeRange
 import com.cointrend.presentation.BuildConfig
+import com.cointrend.presentation.models.SettingsLaunchingPageUi
 import com.cointrend.presentation.models.SettingsPriceChangePeriodUi
 import timber.log.Timber
 import javax.inject.Inject
@@ -23,6 +25,13 @@ class SettingsUiMapper @Inject constructor() {
                     SettingsPriceChangePeriodUi.Year
                 }
             }
+        }
+    }
+
+    fun mapLaunchingPageUi(launchingPage: LaunchingPage): SettingsLaunchingPageUi {
+        return when(launchingPage) {
+            LaunchingPage.Market -> SettingsLaunchingPageUi.Market
+            LaunchingPage.Favorites -> SettingsLaunchingPageUi.Favorite
         }
     }
 

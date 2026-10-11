@@ -35,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.cointrend.domain.models.LaunchingPage
 import com.cointrend.presentation.customcomposables.sharedelements.SharedElementsRoot
 import com.cointrend.presentation.models.BottomNavigationItem
 import com.cointrend.presentation.models.CoinsListUiState
@@ -72,8 +73,17 @@ class MainActivity : ComponentActivity() {
 
         installSplashScreen().apply {
             setKeepOnScreenCondition {
-                startDestinationViewModel.state.topCoinsList.isEmpty() &&
-                        startDestinationViewModel.state.state !is CoinsListUiState.Error
+                val launchingPage = viewModel.initialSettings?.
+                    defaultLaunchingPage ?: LaunchingPage.Market // default Market
+
+                when (launchingPage) {
+                    LaunchingPage.Market ->
+                        startDestinationViewModel.state.topCoinsList.isEmpty() &&
+                                startDestinationViewModel.state.state !is CoinsListUiState.Error
+
+                    LaunchingPage.Favorites -> false
+                }
+
             }
 
             setOnExitAnimationListener { screen ->
@@ -100,8 +110,23 @@ class MainActivity : ComponentActivity() {
             CoinTrendTheme {
 
                 val navController = rememberNavController<Screen>(
-                    startDestination = Screen.CoinsList
+                    startDestination = viewModel.getlaunchingPageNavigationScreen()
                 )
+
+                /** Best practice Maybe for future, pass with MVVM archi UiState & Event
+                LaunchedEffect(viewModel) {
+                    viewModel.mainEventFlow.collect { event ->
+                        when (event) {
+                            MainEvent.NavigateToCoinsList -> {
+                                navController.navigate(Screen.CoinsList)
+                            }
+
+                            MainEvent.NavigateToFavouriteCoinsList -> {
+                                navController.navigate(Screen.FavouriteCoinsList)
+                            }
+                        }
+                    }
+                }**/
 
                 NavBackHandler(navController)
 

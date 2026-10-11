@@ -15,6 +15,7 @@ class UpdateGlobalSettingsConfigurationUseCase @Inject constructor(
             ordering = settingsConfiguration.ordering
             defaultTimeRange = settingsConfiguration.defaultTimeRange
             currency = settingsConfiguration.currency
+            defaultLaunchingPage = settingsConfiguration.defaultLaunchingPage
         }
     }
 
