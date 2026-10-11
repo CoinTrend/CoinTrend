@@ -10,6 +10,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -31,6 +32,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.animation.doOnEnd
@@ -165,9 +167,52 @@ class MainActivity : ComponentActivity() {
                     }
                 ) {
                     Box(
-                        modifier = Modifier.padding(
-                            bottom = it.calculateBottomPadding(),
-                        )
+                        modifier = Modifier
+                            .padding(
+                                bottom = it.calculateBottomPadding()
+                            )
+                            .pointerInput(currentDestination) {
+                                var dragAmount = 0f
+                                val swipeThreshold = 80.dp.toPx()
+
+                                detectHorizontalDragGestures(
+                                    onHorizontalDrag = { _, drag ->
+                                        dragAmount += drag
+                                    },
+                                    onDragEnd = {
+                                        val tabs = BottomNavigationItem.entries
+
+                                        val currentIndex = tabs.indexOfFirst {
+                                            it.route == currentDestination
+                                        }
+
+                                        if (currentIndex != -1) {
+                                            val targetIndex = when {
+                                                dragAmount < -swipeThreshold ->
+                                                    currentIndex + 1
+
+                                                dragAmount > swipeThreshold ->
+                                                    currentIndex - 1
+
+                                                else -> currentIndex
+                                            }
+
+                                            if (targetIndex in tabs.indices &&
+                                                targetIndex != currentIndex
+                                            ) {
+                                                navController.popAll()
+                                                navController.navigate(
+                                                    tabs[targetIndex].route
+                                                )
+                                            }
+                                        }
+                                        dragAmount = 0f
+                                    },
+                                    onDragCancel = {
+                                        dragAmount = 0f
+                                    }
+                                )
+                            }
                     ) {
                         SharedElementsRoot {
                             NavHost(
