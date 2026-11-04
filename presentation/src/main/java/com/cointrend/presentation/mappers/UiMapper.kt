@@ -16,10 +16,22 @@ import com.cointrend.presentation.BuildConfig
 import com.cointrend.presentation.di.DateAndTimeFormatter
 import com.cointrend.presentation.di.DateOnlyFormatter
 import com.cointrend.presentation.di.TimeOnlyFormatter
-import com.cointrend.presentation.models.*
+import com.cointrend.presentation.models.BaseCoinWithMarketDataUiItem
+import com.cointrend.presentation.models.CoinMarketUiData
+import com.cointrend.presentation.models.CoinUiItem
+import com.cointrend.presentation.models.CoinWithMarketDataUiItem
+import com.cointrend.presentation.models.CoinWithShimmeringMarketDataUiItem
+import com.cointrend.presentation.models.DataPoint
+import com.cointrend.presentation.models.FavouriteCoinUiData
+import com.cointrend.presentation.models.MarketChartUiData
+import com.cointrend.presentation.models.TopCoinUiData
 import com.cointrend.presentation.theme.NegativeTrend
 import com.cointrend.presentation.theme.PositiveTrend
-import com.github.davidepanidev.kotlinextensions.*
+import com.github.davidepanidev.kotlinextensions.formatToCurrency
+import com.github.davidepanidev.kotlinextensions.formatToPercentage
+import com.github.davidepanidev.kotlinextensions.isToday
+import com.github.davidepanidev.kotlinextensions.roundToNDecimals
+import com.github.davidepanidev.kotlinextensions.toFormattedString
 import com.github.davidepanidev.kotlinextensions.utils.currencyformatter.CurrencyFormatter
 import com.github.davidepanidev.kotlinextensions.utils.numberformatter.NumberFormatter
 import kotlinx.collections.immutable.ImmutableList
@@ -37,9 +49,9 @@ import javax.inject.Inject
 class UiMapper @Inject constructor(
     private val currencyFormatter: CurrencyFormatter,
     private val numberFormatter: NumberFormatter,
-    @DateAndTimeFormatter private val dateTimeFormatter: DateTimeFormatter,
-    @DateOnlyFormatter private val dateOnlyFormatter: DateTimeFormatter,
-    @TimeOnlyFormatter private val timeOnlyFormatter: DateTimeFormatter,
+    @param:DateAndTimeFormatter private val dateTimeFormatter: DateTimeFormatter,
+    @param:DateOnlyFormatter private val dateOnlyFormatter: DateTimeFormatter,
+    @param:TimeOnlyFormatter private val timeOnlyFormatter: DateTimeFormatter,
     private val settingsConfiguration: GlobalSettingsConfiguration
 ) {
 
