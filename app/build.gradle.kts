@@ -15,13 +15,13 @@ kotlin {
 }
 
 android {
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.cointrend"
 
         minSdk = 23
-        targetSdk = 36
+        targetSdk = 37
 
         versionCode = 10305
         versionName = "1.3.5"

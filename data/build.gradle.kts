@@ -15,12 +15,12 @@ kotlin {
 }
 
 android {
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 23
-        testOptions.targetSdk = 36
-        lint.targetSdk = 36
+        testOptions.targetSdk = 37
+        lint.targetSdk = 37
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
