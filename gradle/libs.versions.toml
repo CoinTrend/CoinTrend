@@ -1,8 +1,8 @@
 [versions]
 
 android-gradle = "9.5.0"
-kotlin = "2.2.10"
-ksp = "2.2.10-2.0.2"
+kotlin = "2.3.10"
+ksp = "2.3.6"
 
 android-extensions = "2.2.1"
 kotlin-extensions = "2.1"
@@ -43,9 +43,9 @@ datastore-preferences = "1.1.7"
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
 android-library = { id = "com.android.library", version.ref = "android-gradle" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
